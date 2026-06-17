@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spoonstack · playbook · june 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
+  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;--ink4:#B5AA97;
+  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.15);
+  --gold:#DAAF2E;--gold-l:#FDF4D0;--gold-d:#6B4C00;
+  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#085041;
+  --coral:#D85A30;--coral-l:#FAECE7;--coral-d:#993C1D;
+  --plum:#7B2D8B;--plum-l:#EDE5F5;--plum-d:#3D1646;
+  --pink:#E8399A;--teal:#2A7A8C;--teal-l:#E0F2F7;--teal-d:#1A4D57;
+  --sidebar:260px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;-webkit-font-smoothing:antialiased;font-size:14px}
+.sidebar{width:var(--sidebar);flex-shrink:0;background:#1A1714;min-height:100vh;position:sticky;top:0;height:100vh;overflow-y:auto;padding:28px 0 40px;scrollbar-width:thin}
+.sb-logo{font-size:15px;font-weight:700;color:#fff;padding:0 22px 2px;letter-spacing:-.02em}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.3);padding:0 22px 24px;font-family:'IBM Plex Mono',monospace}
+.sb-section{font-size:9px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.25);padding:14px 22px 5px}
+.sb-link{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5);padding:6px 22px;text-decoration:none;line-height:1.4;transition:color .15s}
+.sb-link:hover{color:rgba(255,255,255,.85)}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.main{flex:1;padding:52px 48px;max-width:960px}
+h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
+h2{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:48px 0 6px}
+h3{font-size:15px;font-weight:600;margin:20px 0 8px}
+p{color:var(--ink2);line-height:1.7;margin-bottom:10px;font-size:13px}
+.divider{height:1px;background:var(--border);margin:48px 0}
+.eyebrow{font-size:11px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:10px}
+
+/* PROMPT BOX */
+.prompt-box{background:#1A1714;border-radius:14px;padding:24px;margin:20px 0}
+.prompt-label{font-size:9px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+.prompt-box pre{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.8);white-space:pre-wrap;line-height:1.8}
+.copy-btn{margin-top:14px;background:var(--gold);color:var(--gold-d);border:none;border-radius:6px;padding:8px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Mono',monospace}
+
+/* CALLOUT */
+.callout{border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.65;display:flex;gap:10px}
+.c-gold{background:var(--gold-l);color:var(--gold-d);border:0.5px solid rgba(218,175,46,.3)}
+.c-coral{background:var(--coral-l);color:var(--coral-d);border:0.5px solid rgba(216,90,48,.2)}
+.c-green{background:var(--green-l);color:var(--green-d);border:0.5px solid rgba(29,158,117,.2)}
+.c-plum{background:var(--plum-l);color:var(--plum-d);border:0.5px solid rgba(123,45,139,.2)}
+.c-teal{background:var(--teal-l);color:var(--teal-d);border:0.5px solid rgba(42,122,140,.2)}
+
+/* STATUS CHIPS */
+.chip{display:inline-block;font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 8px;border-radius:100px;margin:1px 2px}
+.chip-done{background:var(--green-l);color:var(--green-d)}
+.chip-broken{background:var(--coral-l);color:var(--coral-d)}
+.chip-new{background:var(--plum-l);color:var(--plum-d)}
+.chip-progress{background:var(--gold-l);color:var(--gold-d)}
+.chip-p0{background:var(--coral);color:#fff}
+.chip-p1{background:var(--gold);color:var(--gold-d)}
+.chip-p2{background:var(--green-l);color:var(--green-d)}
+
+/* CARDS */
+.card{background:var(--card);border:0.5px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:12px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+.stat-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-size:28px;font-weight:700;letter-spacing:-.02em;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.stat-label{font-size:11px;color:var(--ink3);margin-top:4px}
+
+/* TABLE */
+.priority-table{width:100%;border-collapse:collapse;font-size:12px;margin:16px 0}
+.priority-table th{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:8px 12px;border-bottom:1.5px solid var(--border2);text-align:left;background:var(--paper)}
+.priority-table td{padding:10px 12px;border-bottom:0.5px solid var(--border);color:var(--ink2);vertical-align:top;line-height:1.55}
+.priority-table td:first-child{font-weight:600;color:var(--ink)}
+.priority-table tr:last-child td{border-bottom:none}
+
+/* ARTIFACT CARDS */
+.artifact-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);transition:box-shadow .15s}
+.artifact-card:hover{box-shadow:0 2px 12px rgba(44,40,32,.08)}
+.artifact-icon{font-size:22px;flex-shrink:0}
+.artifact-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.artifact-desc{font-size:12px;color:var(--ink3)}
+.artifact-chip{font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 8px;border-radius:100px;background:var(--paper);color:var(--ink3);margin-left:auto;flex-shrink:0}
+
+/* STACK PILLS */
+.stack-pills{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.stack-pill{display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 12px;border-radius:100px;background:var(--card);border:0.5px solid var(--border2);color:var(--ink2)}
+.stack-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* WIDGET GRID */
+.widget-list{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.widget-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border:0.5px solid var(--border);border-radius:8px;font-size:12px}
+.widget-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink4);width:24px}
+.widget-name{font-weight:600;color:var(--ink);flex:1}
+.widget-stack{font-size:10px;color:var(--ink3)}
+
+/* DESIGN TOKENS */
+.token-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.token-card{border-radius:8px;overflow:hidden;border:0.5px solid var(--border2)}
+.token-swatch{height:40px}
+.token-info{padding:6px 8px;background:var(--card)}
+.token-name{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--ink3)}
+.token-hex{font-size:11px;font-weight:600;color:var(--ink)}
+
+/* FAMILY */
+.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.family-card{background:var(--card);border:0.5px solid var(--border2);border-radius:10px;padding:12px 14px}
+.family-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.family-detail{font-size:11px;color:var(--ink2);line-height:1.6}
+
+/* EPIPHANY */
+.epiphany{background:#1A1714;border-radius:14px;padding:28px;margin:20px 0}
+.epiphany-label{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+.epiphany-title{font-size:18px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:14px;letter-spacing:-.02em}
+.epiphany p{color:rgba(255,255,255,.7);font-size:13px;line-height:1.7;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo">spoonstack</div>
+  <div class="sb-sub">playbook · june 2026</div>
+  <div class="sb-section">start here</div>
+  <a href="#opening-prompt" class="sb-link">opening prompt</a>
+  <a href="#project" class="sb-link">what spoonstack is</a>
+  <a href="#current-state" class="sb-link">current state</a>
+  <a href="#bugs" class="sb-link">what's broken</a>
+  <div class="sb-section">product</div>
+  <a href="#epiphany" class="sb-link"><div class="sb-dot" style="background:var(--gold)"></div>brain-first epiphany</a>
+  <a href="#widgets" class="sb-link">29 widgets</a>
+  <a href="#stacks" class="sb-link">7 stacks</a>
+  <a href="#family" class="sb-link">family context</a>
+  <div class="sb-section">research + specs</div>
+  <a href="#nd-research" class="sb-link">ND brain research</a>
+  <a href="#brain-brief" class="sb-link">brain product brief</a>
+  <a href="#qa-blueprint" class="sb-link">QA blueprint</a>
+  <a href="#journey-map" class="sb-link">journey map</a>
+  <div class="sb-section">build</div>
+  <a href="#priorities" class="sb-link">build priorities</a>
+  <a href="#prompts" class="sb-link">Claude Code prompts</a>
+  <a href="#beta" class="sb-link">beta plan</a>
+  <div class="sb-section">reference</div>
+  <a href="#design-system" class="sb-link">design tokens</a>
+  <a href="#tech" class="sb-link">tech stack</a>
+  <a href="#copy-rules" class="sb-link">copy rules</a>
+  <a href="#artifacts" class="sb-link">all artifacts</a>
+</nav>
+
+<main class="main">
+
+  <div class="eyebrow">spoonstack playbook · june 15 2026 · brittany may</div>
+  <h1>everything about spoonstack.<br>in one place.</h1>
+  <p style="font-size:15px;color:var(--ink2);max-width:580px;line-height:1.7;margin-top:8px">decisions made, what's built, what's broken, what to build next, and the research behind all of it. the authoritative source of truth for every new conversation.</p>
+
+  <div class="card-grid-3" style="margin-top:28px">
+    <div class="stat-card"><div class="stat-num">29</div><div class="stat-label">widgets</div></div>
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">stacks</div></div>
+    <div class="stat-card"><div class="stat-num">352</div><div class="stat-label">brain entries seeded</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OPENING PROMPT -->
+  <div id="opening-prompt">
+    <h2>opening prompt</h2>
+    <p>paste this at the start of every new Claude conversation about spoonstack.</p>
+    <div class="prompt-box">
+      <div class="prompt-label">copy · paste into new conversation</div>
+      <pre id="opening-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Project at ~/Downloads/spoonstack-os on this machine.
+
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year)
+
+CURRENT STATE — june 15 2026:
+✓ Sign-in working (use SpoonStack2026! / brittanyhmay@gmail.com)
+✓ 29 widgets across 7 stacks
+✓ Brain seeded with 352 entries
+✓ Payment gate + manual approval live
+✓ Bottom sheet pointer events fixed (WebKit bug)
+✓ Widget 400 errors fixed (9 missing IDs added)
+✓ Brain redesign deployed (light theme, search-first)
+✗ OOO still shows structured form (fix running)
+✗ People circles on home go to wrong place
+✗ Save to brain needs visual confirmation
+✗ Full widget test hasn't run with real responses yet
+
+FAMILY (never change):
+Brittany · AuDHD · founder · Atlanta GA · brittany@alittle.agency
+Branden · partner · ADHD · Morehouse 2011 · photographer · bikes · PS5
+Bella · 13 · cheer tue+fri · makes art
+Ruby · 10 · Jackson's twin · dyslexia + language IEP · tennis · swimming
+Jackson · 10 · Ruby's twin · autistic · obsessions: storybots + maroon 5
+Safe foods: cheez-its, goldfish, bacon, olives, green beans, peas, protein yogurt, red grapes
+
+LOCKED NAMES (never change):
+- "spoonstack" always lowercase everywhere
+- stack: "out of sight, not out of mind" · nav: "out of sight" · route: /display/out-of-sight
+- stack: "my family" · route: /display/my-family
+- stack: "we can do hard things" · route: /display/right-now
+- widget: "where did it go" (not "out of sight tracker")
+
+NEW DIRECTION (june 15 epiphany):
+Brittany had an insight: the brain should be the front door, not the stacks. Widgets may work better as background agents triggered from brain dumps rather than navigated to directly. This is an open question — discuss before building.
+
+SKILLS TO USE:
+spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
+
+NEXT ACTIONS:
+1. Fix remaining P0s (see playbook)
+2. Run full widget test with real responses
+3. Discuss brain-first architecture direction
+4. Let beta users in (20 people from Threads waiting)</pre>
+      <button class="copy-btn" onclick="copy('opening-text',this)">copy prompt</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHAT SPOONSTACK IS -->
+  <div id="project">
+    <h2>what spoonstack is</h2>
+    <p>An AI second brain for neurodivergent adults — AuDHD, ADHD, autistic, late-diagnosed women especially. Built by Brittany May for her own brain because nothing else worked.</p>
+
+    <div class="card" style="margin-top:16px">
+      <div style="font-size:16px;font-weight:700;margin-bottom:8px">the core promise</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.7;margin:0">"your brain works differently. your second brain should too." spoonstack learns your patterns, handles your executive function overhead, and surfaces the right thing at the right moment — without making you organize anything.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:16px">
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">what it's NOT</div>
+        <p style="font-size:12px;margin:0">Not a productivity app. Not a task manager. Not a habit tracker. Not Notion. Not Obsidian. Not Apple Notes with AI bolted on.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">what it IS</div>
+        <p style="font-size:12px;margin:0">A second brain that captures anything, organizes nothing, and brings the right thing back at the right moment. Care, not tracking.</p>
+      </div>
+    </div>
+
+    <h3>business</h3>
+    <p>$79/year early access. price locked forever for early users. manual approval gate — Brittany flips is_approved in Supabase. 20 beta users from Threads ready to come in. launch: june 15 2026.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CURRENT STATE -->
+  <div id="current-state">
+    <h2>current state</h2>
+
+    <div class="callout c-green"><span>✓</span><span>sign-in fixed, brain seeded, bottom sheets working, widget 400 errors resolved, brain redesign live. the app is functionally usable.</span></div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:8px">✓ working</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+          sign-in (SpoonStack2026!) ·
+          7 stacks with tile grid ·
+          bottom sheet widgets ·
+          work with me ·
+          regulator (6 paths) ·
+          right now in my body ·
+          where did the time go ·
+          brain tab (light theme, search) ·
+          question queue ·
+          payment gate ·
+          manual approval ·
+          352 brain entries seeded ·
+          people stack ·
+          my family stack ·
+          out of sight stack ·
+          pattern cards ·
+          capture button
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:8px">✗ broken / incomplete</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+          OOO still has structured form ·
+          people circles → wrong page ·
+          save to brain no confirmation ·
+          texts + messages sometimes stuck ·
+          scan + log camera not working ·
+          full widget test not run yet ·
+          stack names wrong in some places ·
+          sign-in loops on cached Chrome ·
+          no onboarding for new users ·
+          landing page widget count wrong ·
+          RESEND_API_KEY not set in Vercel
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BUGS -->
+  <div id="bugs">
+    <h2>what's broken — fix in this order</h2>
+
+    <table class="priority-table">
+      <thead><tr><th>priority</th><th>issue</th><th>fix</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>OOO shows structured form — should be single textarea brain dump</td><td>grep for "what time do you need to leave" → replace form with single textarea</td></tr>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>People circles on home → go to my day not person card</td><td>router.push('/display/people?person=[name]') on circle tap</td></tr>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>Save to brain buttons do nothing on several widgets</td><td>fix onClick handlers, add "saved to your brain ✦" toast</td></tr>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>Texts + messages stuck on thinking</td><td>15s timeout deployed — verify it works</td></tr>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>Scan + log camera silent fail</td><td>permission check deployed — verify it works</td></tr>
+        <tr><td><span class="chip chip-p0">P0</span></td><td>No onboarding for new users</td><td>"start here" moment on first login — 3 widget cards, one choice</td></tr>
+        <tr><td><span class="chip chip-p1">P1</span></td><td>Landing page widget count wrong</td><td>update count to match actual widget count</td></tr>
+        <tr><td><span class="chip chip-p1">P1</span></td><td>RESEND_API_KEY not in Vercel production</td><td>add from resend.com dashboard</td></tr>
+        <tr><td><span class="chip chip-p1">P1</span></td><td>Stack names wrong in some places (my kids vs my family)</td><td>grep and replace all instances</td></tr>
+        <tr><td><span class="chip chip-p1">P1</span></td><td>Sign-in loops on cached Chrome</td><td>localStorage corruption — service client fix deployed, monitor</td></tr>
+        <tr><td><span class="chip chip-p2">P2</span></td><td>OOO missing times and durations in response</td><td>system prompt updated with ADHD tax timing — verify it works</td></tr>
+        <tr><td><span class="chip chip-p2">P2</span></td><td>Partner briefing needs context input</td><td>add free text field for context before AI call</td></tr>
+        <tr><td><span class="chip chip-p2">P2</span></td><td>No favicon</td><td>add favicon.ico to /public</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EPIPHANY -->
+  <div id="epiphany">
+    <h2>the brain-first epiphany</h2>
+    <p>brittany had this insight on june 15 based on the ND brain architecture research. it changes the product direction. discuss before building anything new.</p>
+
+    <div class="epiphany">
+      <div class="epiphany-label">open question · june 15 2026</div>
+      <div class="epiphany-title">"what if the brain is the front door and widgets are background agents?"</div>
+      <p>right now: users navigate to stacks → open widget tiles → get help. the stacks are the UI.</p>
+      <p>new direction: the brain is the UI. you dump everything there. background agents (which are what widgets are) detect what you need and run automatically or on demand from within the brain. stacks still exist but they're infrastructure, not navigation.</p>
+      <p>the home screen shows a few pinned shortcuts for things you reach for constantly (dinner decider, order of operations, work with me). everything else lives inside the brain.</p>
+      <p style="color:var(--gold);font-weight:600;margin-top:12px">this is the most important product decision to make before building anything else. the ND research backs it: ND brains go to search, not folders. the brain IS the product.</p>
+    </div>
+
+    <div class="callout c-gold"><span>✦</span><span>questions to answer: what does the home screen show? how do agents get triggered? what about widgets you open intentionally (regulator)? are stacks gone or just backgrounded?</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WIDGETS -->
+  <div id="widgets">
+    <h2>29 widgets — the definitive list</h2>
+    <p>built from brittany's real usage patterns. this is the authoritative source — not the widget library file.</p>
+
+    <div class="stack-pills">
+      <div class="stack-pill"><div class="stack-dot" style="background:#7B2D8B"></div>just me (4)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#DAAF2E"></div>my day (6)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#A3D130"></div>this week (2)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#D85A30"></div>hard things (4)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#E8399A"></div>people (3)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#1D9E75"></div>my family (4)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#2A7A8C"></div>out of sight (5)</div>
+      <div class="stack-pill"><div class="stack-dot" style="background:#DAAF2E"></div>home (1)</div>
+    </div>
+
+    <div class="widget-list">
+      <div class="widget-row"><div class="widget-num">01</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">my ideas</div><div class="widget-stack">just me</div></div>
+      <div class="widget-row"><div class="widget-num">02</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">what went well today</div><div class="widget-stack">just me</div></div>
+      <div class="widget-row"><div class="widget-num">03</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">things I know for sure</div><div class="widget-stack">just me</div></div>
+      <div class="widget-row"><div class="widget-num">04</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">my patterns</div><div class="widget-stack">just me</div></div>
+      <div class="widget-row"><div class="widget-num">05</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">scan + log</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">06</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">order of operations</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">07</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">dinner decider</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">08</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">one hard thing</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">09</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">partner briefing</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">10</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">tomorrow preview</div><div class="widget-stack">my day</div></div>
+      <div class="widget-row"><div class="widget-num">11</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#A3D130;flex-shrink:0"></div><div class="widget-name">meal plan + grocery list</div><div class="widget-stack">this week</div></div>
+      <div class="widget-row"><div class="widget-num">12</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#A3D130;flex-shrink:0"></div><div class="widget-name">week at a glance</div><div class="widget-stack">this week</div></div>
+      <div class="widget-row"><div class="widget-num">13</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">regulator (6 paths)</div><div class="widget-stack">hard things</div></div>
+      <div class="widget-row"><div class="widget-num">14</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">right now in my body</div><div class="widget-stack">hard things</div></div>
+      <div class="widget-row"><div class="widget-num">15</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">where did the time go</div><div class="widget-stack">hard things</div></div>
+      <div class="widget-row"><div class="widget-num">16</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">who haven't I talked to</div><div class="widget-stack">hard things + people</div></div>
+      <div class="widget-row"><div class="widget-num">17</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#E8399A;flex-shrink:0"></div><div class="widget-name">this text thread</div><div class="widget-stack">people</div></div>
+      <div class="widget-row"><div class="widget-num">18</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#E8399A;flex-shrink:0"></div><div class="widget-name">texts + messages</div><div class="widget-stack">people</div></div>
+      <div class="widget-row"><div class="widget-num">19</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">teacher email draft</div><div class="widget-stack">my family</div></div>
+      <div class="widget-row"><div class="widget-num">20</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">kid behavior decoder</div><div class="widget-stack">my family</div></div>
+      <div class="widget-row"><div class="widget-num">21</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">iep prep</div><div class="widget-stack">my family</div></div>
+      <div class="widget-row"><div class="widget-num">22</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">delegate to partner</div><div class="widget-stack">my family</div></div>
+      <div class="widget-row"><div class="widget-num">23</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">ask the vault</div><div class="widget-stack">out of sight</div></div>
+      <div class="widget-row"><div class="widget-num">24</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">where did it go</div><div class="widget-stack">out of sight</div></div>
+      <div class="widget-row"><div class="widget-num">25</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">what was I doing</div><div class="widget-stack">out of sight</div></div>
+      <div class="widget-row"><div class="widget-num">26</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">safe foods by person</div><div class="widget-stack">out of sight</div></div>
+      <div class="widget-row"><div class="widget-num">27</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">medical notes</div><div class="widget-stack">out of sight</div></div>
+      <div class="widget-row"><div class="widget-num">28</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">work with me</div><div class="widget-stack">home screen</div></div>
+      <div class="widget-row"><div class="widget-num">29</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">brain inbox</div><div class="widget-stack">my day</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STACKS -->
+  <div id="stacks">
+    <h2>7 stacks — locked names and routes</h2>
+    <div class="callout c-coral"><span>⚠</span><span>these names are locked. never change them. every widget, route, and nav reference must match exactly.</span></div>
+
+    <table class="priority-table" style="margin-top:16px">
+      <thead><tr><th>stack name</th><th>color</th><th>nav label</th><th>route</th></tr></thead>
+      <tbody>
+        <tr><td>just me</td><td><span style="color:#7B2D8B;font-weight:700">#7B2D8B plum</span></td><td>just me</td><td>/display/just-me</td></tr>
+        <tr><td>my day</td><td><span style="color:#DAAF2E;font-weight:700">#DAAF2E gold</span></td><td>my day</td><td>/display/my-day</td></tr>
+        <tr><td>this week</td><td><span style="color:#A3D130;font-weight:700">#A3D130 lime</span></td><td>this week</td><td>/display/this-week</td></tr>
+        <tr><td>we can do hard things</td><td><span style="color:#D85A30;font-weight:700">#D85A30 coral</span></td><td>hard things</td><td>/display/right-now</td></tr>
+        <tr><td>my family</td><td><span style="color:#1D9E75;font-weight:700">#1D9E75 green</span></td><td>my family</td><td>/display/my-family</td></tr>
+        <tr><td>out of sight, not out of mind</td><td><span style="color:#2A7A8C;font-weight:700">#2A7A8C teal</span></td><td>out of sight</td><td>/display/out-of-sight</td></tr>
+        <tr><td>people</td><td><span style="color:#E8399A;font-weight:700">#E8399A pink</span></td><td>people</td><td>/display/people</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FAMILY -->
+  <div id="family">
+    <h2>family context — never change</h2>
+    <p>this is the brain seed data that makes spoonstack personal. every AI call should reference this when relevant.</p>
+
+    <div class="family-grid">
+      <div class="family-card">
+        <div class="family-name">brittany</div>
+        <div class="family-detail">AuDHD · diagnosed ADHD at 19, autism at 37 · founder · Atlanta GA · rollerblading · craft projects · spoonstack builder</div>
+      </div>
+      <div class="family-card">
+        <div class="family-name">branden</div>
+        <div class="family-detail">partner · ADHD · Morehouse 2011 · lead photographer at auction house · street photography · bikes · PS5 · needs short version first</div>
+      </div>
+      <div class="family-card">
+        <div class="family-name">bella</div>
+        <div class="family-detail">13 · cheer tue+fri 4pm · summer cheer 9am-2pm · makes art · wants independence · needs explanation not just rules</div>
+      </div>
+      <div class="family-card">
+        <div class="family-name">ruby</div>
+        <div class="family-detail">10 · jackson's twin · dyslexia + expressive/receptive language disorder · IEP · tennis · swimming · loves her natural hair · needs tasks done before sleepy · makes art</div>
+      </div>
+      <div class="family-card">
+        <div class="family-name">jackson</div>
+        <div class="family-detail">10 · ruby's twin · autistic · interest-based learner · video games · youtube · swimming · storybots · maroon 5 · puzzles · needs plan before transitions · NO OT</div>
+      </div>
+      <div class="family-card" style="border-color:rgba(29,158,117,.3);background:var(--green-l)">
+        <div class="family-name" style="color:var(--green-d)">jackson safe foods</div>
+        <div class="family-detail" style="color:var(--green-d)">cheez-its · goldfish · bacon · olives · green beans · peas · protein yogurt · red grapes (first tried june 10 2026)</div>
+      </div>
+    </div>
+
+    <h3>family safe meals</h3>
+    <p>spaghetti · tacos · salmon · steak · <strong>tuesday = chick-fil-a always</strong> · mio + water (everyone)</p>
+
+    <h3>people in brittany's life</h3>
+    <p>robin (best friend, 3 weeks no contact, new job) · amy (aunt like a sister, just had surgery, back to work) · taylor (call back re love island, book club, summer house finale pt 3) · deanna (friend, 2 months no contact)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ND RESEARCH -->
+  <div id="nd-research">
+    <h2>ND brain architecture research — key findings</h2>
+    <p>synthesized from r/ADHD, r/AuDHD, r/ObsidianMD and academic sources. these findings shape every product decision.</p>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">the surprising finding</div>
+      <p style="font-size:13px;color:var(--ink);margin:0">the real competitor isn't Obsidian or Notion. it's Apple Notes — because it's already open. spoonstack wins if it captures as fast as Apple Notes and surfaces things better. that's it.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">3 modes of touching the brain</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.7">
+          <strong>active retrieval</strong> — "I need something right now." ND brains search by feeling and context, not category.<br><br>
+          <strong>passive surfacing</strong> — "show me something I forgot." situational, not scheduled. never mid-task.<br><br>
+          <strong>serendipitous discovery</strong> — "I forgot I saved this." once a week memory card. pure delight.
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">3 kill conditions</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.7">
+          <strong>capture requires a decision</strong> — any required field loses the thought.<br><br>
+          <strong>AI sounds like it's judging</strong> — "I've noticed you tend to..." = immediate withdrawal.<br><br>
+          <strong>silence framed as failure</strong> — no streaks, no "you haven't checked in," no accumulating unanswered questions.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-teal"><span>✦</span><span>AuDHD users score highest on monotropism — deepest attention tunnels, hardest transitions. never interrupt a user mid-task to surface something. all surfacing happens at natural transition points only.</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BUILD PRIORITIES -->
+  <div id="priorities">
+    <h2>build priorities — in order</h2>
+
+    <div class="card" style="border-left:4px solid var(--coral)">
+      <div style="font-size:12px;font-weight:700;color:var(--coral-d);margin-bottom:4px">NOW — before more beta users</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+        1. Fix OOO structured form → single textarea<br>
+        2. Fix people circles routing<br>
+        3. Fix save to brain + toast confirmation<br>
+        4. Verify texts + messages timeout<br>
+        5. Verify scan + log camera permission<br>
+        6. Add onboarding "start here" for new users<br>
+        7. Run full widget test with real responses<br>
+        8. Add RESEND_API_KEY to Vercel
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--gold);margin-top:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--gold-d);margin-bottom:4px">SPRINT 1 — post-launch</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+        1. Discuss + decide brain-first architecture direction<br>
+        2. Contextual brain surfacing in stacks<br>
+        3. Semantic search in brain tab<br>
+        4. People command center phase 2<br>
+        5. Scan + log full build (iOS share sheet target)<br>
+        6. Entertainment + hobby tracking in brain<br>
+        7. Home screen time-aware cards (tomorrow preview after 8pm, week at a glance sundays)
+      </div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--green);margin-top:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--green-d);margin-bottom:4px">SPRINT 2+</div>
+      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+        1. Connect your tools — Spotify first (work with me sessions)<br>
+        2. iMessage integration (texts + messages phase 2)<br>
+        3. Voice capture<br>
+        4. Brain visualization (warm node graph)<br>
+        5. Persona audit (Priya, Simone, Megan, Alex)<br>
+        6. Copyright registration + ToS
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BETA PLAN -->
+  <div id="beta">
+    <h2>beta plan</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">who's coming in</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.7">~20 people from Threads who commented asking to try it. all free 30-day beta. conversion at day 30: $79/year locked forever.</div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">how to approve</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.7">Supabase → profiles table → flip is_approved = true. they land on /pending until approved. DM them the signup link after approving.</div>
+      </div>
+    </div>
+
+    <h3>feedback touchpoints</h3>
+    <p>day 3: "what's one thing you've actually used it for?" · day 14: "what's confusing or missing?" · day 30: conversion email</p>
+
+    <h3>threads post (ready to send)</h3>
+    <div class="card" style="font-size:13px;line-height:1.8;color:var(--ink)">
+      I built an app for my AuDHD brain because nothing else worked.<br><br>
+      It's called spoonstack. It's an AI second brain for neurodivergent adults — moms especially, but honestly anyone whose brain works differently.<br><br>
+      I'm letting a small group in today. $79/year, locked in forever.<br><br>
+      spoonstack.app if you want in.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DESIGN SYSTEM -->
+  <div id="design-system">
+    <h2>design tokens</h2>
+
+    <div class="token-grid">
+      <div class="token-card"><div class="token-swatch" style="background:#FAFAF7;border-bottom:1px solid #e0dcd4"></div><div class="token-info"><div class="token-name">background</div><div class="token-hex">#FAFAF7</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-info"><div class="token-name">card</div><div class="token-hex">#FFFDF7</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-info"><div class="token-name">paper</div><div class="token-hex">#F4EFE4</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#2C2820"></div><div class="token-info"><div class="token-name">ink</div><div class="token-hex">#2C2820</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-info"><div class="token-name">gold</div><div class="token-hex">#DAAF2E</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-info"><div class="token-name">green</div><div class="token-hex">#1D9E75</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#D85A30"></div><div class="token-info"><div class="token-name">coral</div><div class="token-hex">#D85A30</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-info"><div class="token-name">plum</div><div class="token-hex">#7B2D8B</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#E8399A"></div><div class="token-info"><div class="token-name">pink</div><div class="token-hex">#E8399A</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-info"><div class="token-name">teal</div><div class="token-hex">#2A7A8C</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#A3D130"></div><div class="token-info"><div class="token-name">lime</div><div class="token-hex">#A3D130</div></div></div>
+      <div class="token-card"><div class="token-swatch" style="background:#1A1714"></div><div class="token-info"><div class="token-name">dark</div><div class="token-hex">#1A1714</div></div></div>
+    </div>
+
+    <p style="margin-top:16px"><strong>fonts:</strong> DM Sans (body, headings) · IBM Plex Mono (labels, tags, timestamps, prompts)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TECH STACK -->
+  <div id="tech">
+    <h2>tech stack</h2>
+    <table class="priority-table">
+      <thead><tr><th>layer</th><th>tool</th><th>notes</th></tr></thead>
+      <tbody>
+        <tr><td>framework</td><td>Next.js 14</td><td>App Router, TypeScript strict</td></tr>
+        <tr><td>database</td><td>Supabase</td><td>project: xyxdcwtcfhhczucddhhj · RLS enabled</td></tr>
+        <tr><td>AI</td><td>Anthropic Claude API</td><td>claude-sonnet-4-6 · all calls server-side · /api/ai/widget/route.ts</td></tr>
+        <tr><td>styling</td><td>Tailwind + inline styles</td><td>design tokens in CSS vars</td></tr>
+        <tr><td>deployment</td><td>Vercel</td><td>spoonstack.app · project: alittleagencys-projects/spoonstack-os</td></tr>
+        <tr><td>email</td><td>Resend</td><td>RESEND_API_KEY needed in Vercel — not yet set</td></tr>
+        <tr><td>payments</td><td>Stripe</td><td>$79/year · webhook needs setup</td></tr>
+        <tr><td>analytics</td><td>Vercel Analytics + GA4</td><td>GA injected via postbuild script</td></tr>
+        <tr><td>repo</td><td>github.com/alittleagency/spoonstack-os</td><td>private · local: ~/Downloads/spoonstack-os</td></tr>
+        <tr><td>auth</td><td>Supabase Auth</td><td>email/password · service client for profile fetch (RLS bypass)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COPY RULES -->
+  <div id="copy-rules">
+    <h2>copy rules — app only</h2>
+    <div class="callout c-gold"><span>✦</span><span>these rules apply to APP COPY only — widget text, AI responses, button labels, empty states. NOT to Brittany's personal messages or this document.</span></div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">always</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+          "spoonstack" always lowercase<br>
+          PDA-aware framing throughout<br>
+          Max 150 words per AI response<br>
+          Warm, specific, friend-like tone<br>
+          "want to?" not "you need to"<br>
+          Tentative pattern language ("it looks like...")
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">never</div>
+        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
+          No em dashes (—)<br>
+          No exclamation marks (!)<br>
+          No clinical language (symptoms, disorder)<br>
+          No productivity language (stay on track, organized)<br>
+          No "you need to" or "you should"<br>
+          No streaks or completion metrics<br>
+          No "I've noticed you tend to..."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ARTIFACTS -->
+  <div id="artifacts">
+    <h2>all artifacts</h2>
+    <p>every document, brief, and spec created for spoonstack. most recent and relevant first.</p>
+
+    <h3>specs + briefs (created this session)</h3>
+    <a class="artifact-card" href="#opening-prompt">
+      <div class="artifact-icon">📋</div>
+      <div><div class="artifact-title">spoonstack playbook (this document)</div><div class="artifact-desc">everything about spoonstack in one place · june 15 2026</div></div>
+      <div class="artifact-chip">playbook</div>
+    </a>
+    <div class="artifact-card">
+      <div class="artifact-icon">🧠</div>
+      <div><div class="artifact-title">brain product brief</div><div class="artifact-desc">ND brain architecture research → 14 build priorities + 3 Claude Code prompts · june 14 2026</div></div>
+      <div class="artifact-chip">spoonstack-brain-product-brief.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🔍</div>
+      <div><div class="artifact-title">widget blueprint v3</div><div class="artifact-desc">29 widgets · triggers · inputs · outputs · family safe foods · built from real usage · june 11 2026</div></div>
+      <div class="artifact-chip">spoonstack-widget-blueprint-v3.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🧪</div>
+      <div><div class="artifact-title">QA blueprint v1</div><div class="artifact-desc">every widget · every state · copy rules · spoon budget · crisis protocol · audit 1 Claude Code prompt</div></div>
+      <div class="artifact-chip">spoonstack-qa-blueprint-v1.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🗺</div>
+      <div><div class="artifact-title">journey map — first 5 minutes</div><div class="artifact-desc">new user journey · break report · fix priority list · emotional arc</div></div>
+      <div class="artifact-chip">spoonstack-journey-map.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">✅</div>
+      <div><div class="artifact-title">launch checklist</div><div class="artifact-desc">P0/P1/P2 tasks · visual test checklist · brain seed prompt · threads post · beta flow</div></div>
+      <div class="artifact-chip">spoonstack-launch-checklist.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">📊</div>
+      <div><div class="artifact-title">Playwright test plan</div><div class="artifact-desc">full widget test plan · all 29 widgets · states · realistic Brittany inputs</div></div>
+      <div class="artifact-chip">spoonstack-playwright-test-plan.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🔬</div>
+      <div><div class="artifact-title">ND brain architecture research</div><div class="artifact-desc">8 research areas · 3 modes of touching your brain · 10 design principles · what not to build</div></div>
+      <div class="artifact-chip">nd-brain-architecture-research.html</div>
+    </div>
+
+    <h3 style="margin-top:24px">project files (in repo)</h3>
+    <div class="artifact-card">
+      <div class="artifact-icon">📝</div>
+      <div><div class="artifact-title">ND patterns report</div><div class="artifact-desc">16 named ND patterns · detection logic · community vocabulary · care vs surveillance test</div></div>
+      <div class="artifact-chip">nd-patterns-report.md</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🏠</div>
+      <div><div class="artifact-title">home wireframes</div><div class="artifact-desc">home screen design options A B C · widget grid layout</div></div>
+      <div class="artifact-chip">home-wireframes.html</div>
+    </div>
+    <div class="artifact-card">
+      <div class="artifact-icon">🎨</div>
+      <div><div class="artifact-title">spoonstack landing page v2</div><div class="artifact-desc">current landing page design</div></div>
+      <div class="artifact-chip">spoonstack-landing-v2.html</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OPENING PROMPT REPEATED -->
+  <div>
+    <h2>opening prompt (repeated)</h2>
+    <div class="prompt-box">
+      <div class="prompt-label">copy · paste into new conversation</div>
+      <pre id="opening-text-2">I'm building spoonstack — an AI second brain for neurodivergent adults. Built by Brittany May (AuDHD). Live at spoonstack.app. Repo: alittleagency/spoonstack-os. Project at ~/Downloads/spoonstack-os.
+
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel
+
+WORKING: sign-in, 29 widgets across 7 stacks, brain seeded (352 entries), bottom sheets, work with me, regulator, brain redesign
+
+BROKEN: OOO structured form, people circles routing, save to brain toast, full widget test not run, RESEND_API_KEY not set
+
+FAMILY: Brittany (AuDHD) · Branden (ADHD, partner) · Bella (13, cheer) · Ruby (10, IEP, dyslexia) · Jackson (10, autistic, safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
+
+LOCKED: "spoonstack" always lowercase · stack names never change · route /display/my-family · route /display/out-of-sight · route /display/right-now
+
+NEW DIRECTION: brain-first architecture — discuss before building. widgets may become background agents triggered from brain dumps.
+
+USE SKILLS: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries</pre>
+      <button class="copy-btn" onclick="copy('opening-text-2',this)">copy prompt</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function copy(id, btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(()=>{
+    btn.textContent='copied!';
+    setTimeout(()=>btn.textContent='copy prompt',2000);
+  });
+}
+// Sidebar active state
+const links = document.querySelectorAll('.sb-link[href^="#"]');
+window.addEventListener('scroll',()=>{
+  const sections = document.querySelectorAll('[id]');
+  let cur = '';
+  sections.forEach(s=>{if(window.scrollY >= s.offsetTop-120) cur=s.id});
+  links.forEach(l=>{
+    l.style.color = l.getAttribute('href')==='#'+cur ? 'rgba(255,255,255,.9)' : '';
+  });
+});
+</script>
+</body>
+</html>
