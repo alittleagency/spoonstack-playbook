@@ -3,749 +3,742 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>spoonstack · playbook · june 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>spoonstack · product playbook · june 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
-  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;--ink4:#B5AA97;
-  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.15);
-  --gold:#DAAF2E;--gold-l:#FDF4D0;--gold-d:#6B4C00;
-  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#085041;
-  --coral:#D85A30;--coral-l:#FAECE7;--coral-d:#993C1D;
-  --plum:#7B2D8B;--plum-l:#EDE5F5;--plum-d:#3D1646;
-  --pink:#E8399A;--teal:#2A7A8C;--teal-l:#E0F2F7;--teal-d:#1A4D57;
-  --sidebar:260px;
+:root {
+  --bg: #FAFAF7; --card: #FFFDF7; --paper: #F4EFE4;
+  --ink: #2C2820; --ink2: #6B6254; --ink3: #8A8070; --ink4: #B5AA97;
+  --border: rgba(44,40,32,.10);
+  --gold: #DAAF2E; --gold-l: #FDF4D0; --gold-d: #6B4C00;
+  --green: #1D9E75; --green-l: #E1F5EE; --green-d: #085041;
+  --coral: #D85A30; --coral-l: #FAECE7; --coral-d: #993C1D;
+  --plum: #7B2D8B; --plum-l: #EDE5F5; --plum-d: #3D1646;
+  --pink: #E8399A; --teal: #2A7A8C; --teal-l: #E0F2F7; --teal-d: #1A4D57;
+  --dark: #1A1714;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;-webkit-font-smoothing:antialiased;font-size:14px}
-.sidebar{width:var(--sidebar);flex-shrink:0;background:#1A1714;min-height:100vh;position:sticky;top:0;height:100vh;overflow-y:auto;padding:28px 0 40px;scrollbar-width:thin}
-.sb-logo{font-size:15px;font-weight:700;color:#fff;padding:0 22px 2px;letter-spacing:-.02em}
-.sb-sub{font-size:10px;color:rgba(255,255,255,.3);padding:0 22px 24px;font-family:'IBM Plex Mono',monospace}
-.sb-section{font-size:9px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.25);padding:14px 22px 5px}
-.sb-link{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5);padding:6px 22px;text-decoration:none;line-height:1.4;transition:color .15s}
-.sb-link:hover{color:rgba(255,255,255,.85)}
-.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.main{flex:1;padding:52px 48px;max-width:960px}
-h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
-h2{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:48px 0 6px}
-h3{font-size:15px;font-weight:600;margin:20px 0 8px}
-p{color:var(--ink2);line-height:1.7;margin-bottom:10px;font-size:13px}
-.divider{height:1px;background:var(--border);margin:48px 0}
-.eyebrow{font-size:11px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:10px}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.65; }
+.layout { display: flex; min-height: 100vh; }
 
-/* PROMPT BOX */
-.prompt-box{background:#1A1714;border-radius:14px;padding:24px;margin:20px 0}
-.prompt-label{font-size:9px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
-.prompt-box pre{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.8);white-space:pre-wrap;line-height:1.8}
-.copy-btn{margin-top:14px;background:var(--gold);color:var(--gold-d);border:none;border-radius:6px;padding:8px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:'IBM Plex Mono',monospace}
+/* SIDEBAR */
+.sidebar { width: 248px; min-height: 100vh; background: var(--dark); position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; padding: 28px 0 40px; scrollbar-width: none; }
+.sidebar::-webkit-scrollbar { display: none; }
+.sb-logo { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,.07); margin-bottom: 16px; }
+.sb-mark { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+.sb-name { font-size: 16px; font-weight: 700; color: rgba(255,255,255,.9); margin-top: 4px; letter-spacing: -.02em; }
+.sb-tag { font-size: 11px; color: var(--gold); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+.nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.3); padding: 10px 20px 5px; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 20px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,.5); cursor: pointer; text-decoration: none; transition: all .15s; }
+.nav-item:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.05); }
+.nav-item.active { color: var(--gold); background: rgba(218,175,46,.08); }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-/* CALLOUT */
-.callout{border-radius:10px;padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.65;display:flex;gap:10px}
-.c-gold{background:var(--gold-l);color:var(--gold-d);border:0.5px solid rgba(218,175,46,.3)}
-.c-coral{background:var(--coral-l);color:var(--coral-d);border:0.5px solid rgba(216,90,48,.2)}
-.c-green{background:var(--green-l);color:var(--green-d);border:0.5px solid rgba(29,158,117,.2)}
-.c-plum{background:var(--plum-l);color:var(--plum-d);border:0.5px solid rgba(123,45,139,.2)}
-.c-teal{background:var(--teal-l);color:var(--teal-d);border:0.5px solid rgba(42,122,140,.2)}
+/* MAIN */
+.main { flex: 1; min-width: 0; padding: 52px 64px 100px; max-width: 880px; }
+.page-header { margin-bottom: 52px; padding-bottom: 36px; border-bottom: 1px solid var(--border); }
+.eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--plum); margin-bottom: 12px; }
+.page-title { font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--ink); letter-spacing: -.03em; margin-bottom: 16px; }
+.page-sub { font-size: 17px; color: var(--ink2); line-height: 1.65; max-width: 580px; }
+.meta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.meta-chip { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 4px 12px; border-radius: 20px; background: var(--paper); color: var(--ink3); }
 
-/* STATUS CHIPS */
-.chip{display:inline-block;font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 8px;border-radius:100px;margin:1px 2px}
-.chip-done{background:var(--green-l);color:var(--green-d)}
-.chip-broken{background:var(--coral-l);color:var(--coral-d)}
-.chip-new{background:var(--plum-l);color:var(--plum-d)}
-.chip-progress{background:var(--gold-l);color:var(--gold-d)}
-.chip-p0{background:var(--coral);color:#fff}
-.chip-p1{background:var(--gold);color:var(--gold-d)}
-.chip-p2{background:var(--green-l);color:var(--green-d)}
+/* SECTIONS */
+.section { margin-bottom: 60px; scroll-margin-top: 24px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.section-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.section-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink4); letter-spacing: .1em; }
+.section-title { font-size: 22px; font-weight: 700; color: var(--ink); }
 
 /* CARDS */
-.card{background:var(--card);border:0.5px solid var(--border2);border-radius:14px;padding:20px;margin-bottom:12px}
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
-.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
-.stat-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px;text-align:center}
-.stat-num{font-size:28px;font-weight:700;letter-spacing:-.02em;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
-.stat-label{font-size:11px;color:var(--ink3);margin-top:4px}
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px 26px; margin-bottom: 14px; }
+.card-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.card p { font-size: 14px; color: var(--ink2); line-height: 1.7; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
 
-/* TABLE */
-.priority-table{width:100%;border-collapse:collapse;font-size:12px;margin:16px 0}
-.priority-table th{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:8px 12px;border-bottom:1.5px solid var(--border2);text-align:left;background:var(--paper)}
-.priority-table td{padding:10px 12px;border-bottom:0.5px solid var(--border);color:var(--ink2);vertical-align:top;line-height:1.55}
-.priority-table td:first-child{font-weight:600;color:var(--ink)}
-.priority-table tr:last-child td{border-bottom:none}
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.grid-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+.gc-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 7px; }
+.gc-body { font-size: 13px; color: var(--ink2); line-height: 1.6; }
 
-/* ARTIFACT CARDS */
-.artifact-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink);transition:box-shadow .15s}
-.artifact-card:hover{box-shadow:0 2px 12px rgba(44,40,32,.08)}
-.artifact-icon{font-size:22px;flex-shrink:0}
-.artifact-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
-.artifact-desc{font-size:12px;color:var(--ink3)}
-.artifact-chip{font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 8px;border-radius:100px;background:var(--paper);color:var(--ink3);margin-left:auto;flex-shrink:0}
+/* STATUS */
+.status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.status-card { border-radius: 12px; padding: 16px 18px; border: 1px solid var(--border); background: var(--card); position: relative; overflow: hidden; }
+.status-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.sc-done::before { background: var(--green); }
+.sc-broken::before { background: var(--coral); }
+.sc-new::before { background: var(--plum); }
+.sc-prog::before { background: var(--gold); }
+.sc-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 7px; }
+.sc-done .sc-label { color: var(--green); }
+.sc-broken .sc-label { color: var(--coral); }
+.sc-new .sc-label { color: var(--plum); }
+.sc-prog .sc-label { color: var(--gold-d); }
+.sc-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.sc-body { font-size: 12px; color: var(--ink3); margin-top: 4px; line-height: 1.5; }
 
-/* STACK PILLS */
-.stack-pills{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-.stack-pill{display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 12px;border-radius:100px;background:var(--card);border:0.5px solid var(--border2);color:var(--ink2)}
-.stack-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* PRIORITY TABLE */
+.priority-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+.priority-table th { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink3); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.priority-table td { padding: 12px 12px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--ink2); vertical-align: top; line-height: 1.5; }
+.priority-table tr:last-child td { border-bottom: none; }
+.p-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 4px; display: inline-block; white-space: nowrap; }
+.p0 { background: var(--coral-l); color: var(--coral-d); }
+.p1 { background: var(--gold-l); color: var(--gold-d); }
+.p2 { background: var(--green-l); color: var(--green-d); }
+.p3 { background: var(--paper); color: var(--ink3); }
 
-/* WIDGET GRID */
-.widget-list{display:flex;flex-direction:column;gap:6px;margin:12px 0}
-.widget-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border:0.5px solid var(--border);border-radius:8px;font-size:12px}
-.widget-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink4);width:24px}
-.widget-name{font-weight:600;color:var(--ink);flex:1}
-.widget-stack{font-size:10px;color:var(--ink3)}
+/* DECISION ROWS */
+.decision { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.decision:last-child { border-bottom: none; }
+.decision-num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--plum); flex-shrink: 0; min-width: 24px; padding-top: 1px; }
+.decision-body .d-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.decision-body p { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+
+/* CALLOUTS */
+.callout { border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
+.callout-gold { background: var(--gold-l); border: 1px solid rgba(218,175,46,.3); }
+.callout-gold .callout-label { color: var(--gold-d); }
+.callout-coral { background: var(--coral-l); border: 1px solid rgba(216,90,48,.2); }
+.callout-coral .callout-label { color: var(--coral-d); }
+.callout-plum { background: var(--plum-l); border: 1px solid rgba(123,45,139,.15); }
+.callout-plum .callout-label { color: var(--plum-d); }
+.callout-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 500; margin-bottom: 8px; }
+.callout p { font-size: 14px; line-height: 1.7; color: var(--ink); }
+.callout strong { color: var(--plum); }
 
 /* DESIGN TOKENS */
-.token-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
-.token-card{border-radius:8px;overflow:hidden;border:0.5px solid var(--border2)}
-.token-swatch{height:40px}
-.token-info{padding:6px 8px;background:var(--card)}
-.token-name{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--ink3)}
-.token-hex{font-size:11px;font-weight:600;color:var(--ink)}
+.token-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.token { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+.token-swatch { width: 20px; height: 20px; border-radius: 5px; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08); }
+.token-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink2); }
 
-/* FAMILY */
-.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
-.family-card{background:var(--card);border:0.5px solid var(--border2);border-radius:10px;padding:12px 14px}
-.family-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
-.family-detail{font-size:11px;color:var(--ink2);line-height:1.6}
+/* BRAIN PRINCIPLES */
+.principle { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.principle:last-child { border-bottom: none; }
+.principle-num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--plum); flex-shrink: 0; padding-top: 2px; }
+.principle-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.principle-body { font-size: 13px; color: var(--ink2); line-height: 1.6; }
 
-/* EPIPHANY */
-.epiphany{background:#1A1714;border-radius:14px;padding:28px;margin:20px 0}
-.epiphany-label{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
-.epiphany-title{font-size:18px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:14px;letter-spacing:-.02em}
-.epiphany p{color:rgba(255,255,255,.7);font-size:13px;line-height:1.7;margin-bottom:8px}
+/* FEATURE ROWS */
+.feature-row { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; }
+.fr-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.fr-body { flex: 1; }
+.fr-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.fr-desc { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+.fr-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 3px 9px; border-radius: 100px; margin-top: 8px; display: inline-block; }
+.tag-urgent { background: var(--coral-l); color: var(--coral-d); }
+.tag-next { background: var(--gold-l); color: var(--gold-d); }
+.tag-soon { background: var(--green-l); color: var(--green-d); }
+.tag-open { background: var(--plum-l); color: var(--plum-d); }
+
+/* OPENING PROMPT */
+.prompt-box { background: var(--dark); border-radius: 14px; padding: 28px 32px; margin-bottom: 14px; }
+.prompt-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--gold); margin-bottom: 16px; }
+.prompt-text { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(255,255,255,.8); line-height: 1.85; white-space: pre-wrap; }
+
+/* LOCKED NAMES */
+.locked-row { display: flex; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.locked-row:last-child { border-bottom: none; }
+.locked-name { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--ink); min-width: 220px; }
+.locked-note { font-size: 13px; color: var(--ink3); }
+
+/* DO/DON'T */
+.do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.do-box { background: var(--green-l); border: 1px solid rgba(29,158,117,.2); border-radius: 12px; padding: 16px 18px; }
+.dont-box { background: var(--coral-l); border: 1px solid rgba(216,90,48,.2); border-radius: 12px; padding: 16px 18px; }
+.box-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; font-weight: 500; }
+.do-box .box-label { color: var(--green); }
+.dont-box .box-label { color: var(--coral); }
+.do-box li, .dont-box li { font-size: 13px; color: var(--ink2); line-height: 1.6; padding: 4px 0 4px 18px; position: relative; list-style: none; }
+.do-box li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-size: 12px; }
+.dont-box li::before { content: '✕'; position: absolute; left: 0; color: var(--coral); font-size: 12px; }
+
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; padding: 20px 0; }
+  .main { padding: 32px 24px 60px; }
+  .card-grid, .do-dont { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
+<div class="layout">
 
+<!-- SIDEBAR -->
 <nav class="sidebar">
-  <div class="sb-logo">spoonstack</div>
-  <div class="sb-sub">playbook · june 2026</div>
-  <div class="sb-section">start here</div>
-  <a href="#opening-prompt" class="sb-link">opening prompt</a>
-  <a href="#project" class="sb-link">what spoonstack is</a>
-  <a href="#current-state" class="sb-link">current state</a>
-  <a href="#bugs" class="sb-link">what's broken</a>
-  <div class="sb-section">product</div>
-  <a href="#epiphany" class="sb-link"><div class="sb-dot" style="background:var(--gold)"></div>brain-first epiphany</a>
-  <a href="#widgets" class="sb-link">29 widgets</a>
-  <a href="#stacks" class="sb-link">7 stacks</a>
-  <a href="#family" class="sb-link">family context</a>
-  <div class="sb-section">research + specs</div>
-  <a href="#nd-research" class="sb-link">ND brain research</a>
-  <a href="#brain-brief" class="sb-link">brain product brief</a>
-  <a href="#qa-blueprint" class="sb-link">QA blueprint</a>
-  <a href="#journey-map" class="sb-link">journey map</a>
-  <div class="sb-section">build</div>
-  <a href="#priorities" class="sb-link">build priorities</a>
-  <a href="#prompts" class="sb-link">Claude Code prompts</a>
-  <a href="#beta" class="sb-link">beta plan</a>
-  <div class="sb-section">reference</div>
-  <a href="#design-system" class="sb-link">design tokens</a>
-  <a href="#tech" class="sb-link">tech stack</a>
-  <a href="#copy-rules" class="sb-link">copy rules</a>
-  <a href="#artifacts" class="sb-link">all artifacts</a>
+  <div class="sb-logo">
+    <div class="sb-mark">spoonstack · playbook</div>
+    <div class="sb-name">spoonstack</div>
+    <div class="sb-tag">june 2026 edition</div>
+  </div>
+  <div class="nav-label">start here</div>
+  <a class="nav-item active" href="#opening-prompt"><span class="nav-dot" style="background:var(--gold)"></span>opening prompt</a>
+  <a class="nav-item" href="#current-state"><span class="nav-dot" style="background:var(--green)"></span>current state</a>
+  <a class="nav-item" href="#bugs"><span class="nav-dot" style="background:var(--coral)"></span>known bugs</a>
+
+  <div class="nav-label">architecture</div>
+  <a class="nav-item" href="#brain-first"><span class="nav-dot" style="background:var(--plum)"></span>brain-first direction</a>
+  <a class="nav-item" href="#home-screen"><span class="nav-dot" style="background:var(--teal)"></span>home screen</a>
+  <a class="nav-item" href="#brain-tab"><span class="nav-dot" style="background:var(--pink)"></span>brain tab</a>
+  <a class="nav-item" href="#galaxy"><span class="nav-dot" style="background:var(--gold)"></span>galaxy view</a>
+
+  <div class="nav-label">design</div>
+  <a class="nav-item" href="#decisions"><span class="nav-dot" style="background:var(--plum)"></span>locked decisions</a>
+  <a class="nav-item" href="#nd-principles"><span class="nav-dot" style="background:var(--green)"></span>ND design principles</a>
+  <a class="nav-item" href="#design-system"><span class="nav-dot" style="background:var(--gold)"></span>design system</a>
+  <a class="nav-item" href="#copy-rules"><span class="nav-dot" style="background:var(--teal)"></span>copy + naming rules</a>
+
+  <div class="nav-label">build</div>
+  <a class="nav-item" href="#priorities"><span class="nav-dot" style="background:var(--coral)"></span>build priorities</a>
+  <a class="nav-item" href="#open-questions"><span class="nav-dot" style="background:var(--ink4)"></span>open questions</a>
 </nav>
 
+<!-- MAIN -->
 <main class="main">
 
-  <div class="eyebrow">spoonstack playbook · june 15 2026 · brittany may</div>
-  <h1>everything about spoonstack.<br>in one place.</h1>
-  <p style="font-size:15px;color:var(--ink2);max-width:580px;line-height:1.7;margin-top:8px">decisions made, what's built, what's broken, what to build next, and the research behind all of it. the authoritative source of truth for every new conversation.</p>
-
-  <div class="card-grid-3" style="margin-top:28px">
-    <div class="stat-card"><div class="stat-num">29</div><div class="stat-label">widgets</div></div>
-    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">stacks</div></div>
-    <div class="stat-card"><div class="stat-num">352</div><div class="stat-label">brain entries seeded</div></div>
+  <div class="page-header">
+    <div class="eyebrow">spoonstack · product playbook</div>
+    <h1 class="page-title">the brain-first rebuild</h1>
+    <p class="page-sub">everything decided in june 2026 — architecture, design, ND principles, and build priorities. read this before touching the codebase.</p>
+    <div class="meta-row">
+      <span class="meta-chip">june 17 2026</span>
+      <span class="meta-chip">Next.js 14 · Supabase · Claude API</span>
+      <span class="meta-chip">live: spoonstack.app</span>
+      <span class="meta-chip">repo: alittleagency/spoonstack-os</span>
+      <span class="meta-chip">29 widgets · 7 stacks · 352 brain entries</span>
+    </div>
   </div>
 
-  <div class="divider"></div>
-
   <!-- OPENING PROMPT -->
-  <div id="opening-prompt">
-    <h2>opening prompt</h2>
-    <p>paste this at the start of every new Claude conversation about spoonstack.</p>
+  <section class="section" id="opening-prompt">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--gold)"></span>
+      <div><div class="section-num">START HERE</div><h2 class="section-title">opening prompt</h2></div>
+    </div>
     <div class="prompt-box">
-      <div class="prompt-label">copy · paste into new conversation</div>
-      <pre id="opening-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Project at ~/Downloads/spoonstack-os on this machine.
+      <div class="prompt-label">copy + paste into new conversation</div>
+      <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
 
-Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year)
-
-CURRENT STATE — june 15 2026:
-✓ Sign-in working (use SpoonStack2026! / brittanyhmay@gmail.com)
+CURRENT STATE — june 17 2026:
+✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
 ✓ 29 widgets across 7 stacks
 ✓ Brain seeded with 352 entries
 ✓ Payment gate + manual approval live
-✓ Bottom sheet pointer events fixed (WebKit bug)
-✓ Widget 400 errors fixed (9 missing IDs added)
-✓ Brain redesign deployed (light theme, search-first)
-✗ OOO still shows structured form (fix running)
-✗ People circles on home go to wrong place
-✗ Save to brain needs visual confirmation
-✗ Full widget test hasn't run with real responses yet
+✓ Home screen rebuild committed (branch: claude/home-brain-first) — CaptureBar, PinnedWidgets, NeedsAttention, SmartInbox, /api/ai/inbox-process
+✓ brain_inbox migration complete (new cols: raw_text, brain_text, brain_sub, category, urgency, specific_day)
+
+STILL BROKEN (P0):
+✗ OOO widget still shows structured form instead of textarea
+✗ People circles on home go to wrong route
+✗ Save to Brain has no visual confirmation toast
+✗ Pinned tile tap goes to stack page not widget directly
+
+ARCHITECTURE (locked june 15 epiphany):
+The brain is the front door. Widgets are background agents triggered from brain dumps, not navigated to directly. Capture → inbox (AI processes, auto-sorts) → brain (permanent, searchable). Home screen leads with capture bar. Brain tab has three views: stream (mobile default), wiki (desktop default), galaxy (visual mind map, 12 vision-board category nodes).
 
 FAMILY (never change):
-Brittany · AuDHD · founder · Atlanta GA · brittany@alittle.agency
-Branden · partner · ADHD · Morehouse 2011 · photographer · bikes · PS5
+Brittany · AuDHD · founder · Atlanta GA
+Branden · partner · ADHD · photographer · bikes · PS5
 Bella · 13 · cheer tue+fri · makes art
 Ruby · 10 · Jackson's twin · dyslexia + language IEP · tennis · swimming
-Jackson · 10 · Ruby's twin · autistic · obsessions: storybots + maroon 5
-Safe foods: cheez-its, goldfish, bacon, olives, green beans, peas, protein yogurt, red grapes
+Jackson · 10 · Ruby's twin · autistic · storybots + maroon 5 · safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes
 
 LOCKED NAMES (never change):
-- "spoonstack" always lowercase everywhere
-- stack: "out of sight, not out of mind" · nav: "out of sight" · route: /display/out-of-sight
-- stack: "my family" · route: /display/my-family
-- stack: "we can do hard things" · route: /display/right-now
-- widget: "where did it go" (not "out of sight tracker")
+"spoonstack" always lowercase · stack "out of sight, not out of mind" · nav "out of sight" · route /display/out-of-sight · stack "my family" route /display/my-family · stack "we can do hard things" route /display/right-now · widget "where did it go"
 
-NEW DIRECTION (june 15 epiphany):
-Brittany had an insight: the brain should be the front door, not the stacks. Widgets may work better as background agents triggered from brain dumps rather than navigated to directly. This is an open question — discuss before building.
+SKILLS TO USE: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
 
-SKILLS TO USE:
-spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
-
-NEXT ACTIONS:
-1. Fix remaining P0s (see playbook)
-2. Run full widget test with real responses
-3. Discuss brain-first architecture direction
-4. Let beta users in (20 people from Threads waiting)</pre>
-      <button class="copy-btn" onclick="copy('opening-text',this)">copy prompt</button>
+NEXT ACTIONS (in order):
+1. Fix P0 bugs — OOO textarea, people routing, save-to-brain toast, pinned tile direct widget open
+2. Merge claude/home-brain-first to main and deploy
+3. Build brain tab — mobile stream view + desktop wiki view (spec in playbook)
+4. Build galaxy view — 12 nodes (ideas, questions, home, family, friends, work, fun, rest, active projects, wealth, health, faith)
+5. Let first 5-8 beta users in (20 from Threads waiting)</div>
     </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- WHAT SPOONSTACK IS -->
-  <div id="project">
-    <h2>what spoonstack is</h2>
-    <p>An AI second brain for neurodivergent adults — AuDHD, ADHD, autistic, late-diagnosed women especially. Built by Brittany May for her own brain because nothing else worked.</p>
-
-    <div class="card" style="margin-top:16px">
-      <div style="font-size:16px;font-weight:700;margin-bottom:8px">the core promise</div>
-      <p style="font-size:14px;color:var(--ink);line-height:1.7;margin:0">"your brain works differently. your second brain should too." spoonstack learns your patterns, handles your executive function overhead, and surfaces the right thing at the right moment — without making you organize anything.</p>
-    </div>
-
-    <div class="card-grid" style="margin-top:16px">
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:6px">what it's NOT</div>
-        <p style="font-size:12px;margin:0">Not a productivity app. Not a task manager. Not a habit tracker. Not Notion. Not Obsidian. Not Apple Notes with AI bolted on.</p>
-      </div>
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;margin-bottom:6px">what it IS</div>
-        <p style="font-size:12px;margin:0">A second brain that captures anything, organizes nothing, and brings the right thing back at the right moment. Care, not tracking.</p>
-      </div>
-    </div>
-
-    <h3>business</h3>
-    <p>$79/year early access. price locked forever for early users. manual approval gate — Brittany flips is_approved in Supabase. 20 beta users from Threads ready to come in. launch: june 15 2026.</p>
-  </div>
-
-  <div class="divider"></div>
+  </section>
 
   <!-- CURRENT STATE -->
-  <div id="current-state">
-    <h2>current state</h2>
-
-    <div class="callout c-green"><span>✓</span><span>sign-in fixed, brain seeded, bottom sheets working, widget 400 errors resolved, brain redesign live. the app is functionally usable.</span></div>
-
-    <div class="card-grid">
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:8px">✓ working</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-          sign-in (SpoonStack2026!) ·
-          7 stacks with tile grid ·
-          bottom sheet widgets ·
-          work with me ·
-          regulator (6 paths) ·
-          right now in my body ·
-          where did the time go ·
-          brain tab (light theme, search) ·
-          question queue ·
-          payment gate ·
-          manual approval ·
-          352 brain entries seeded ·
-          people stack ·
-          my family stack ·
-          out of sight stack ·
-          pattern cards ·
-          capture button
-        </div>
-      </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:8px">✗ broken / incomplete</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-          OOO still has structured form ·
-          people circles → wrong page ·
-          save to brain no confirmation ·
-          texts + messages sometimes stuck ·
-          scan + log camera not working ·
-          full widget test not run yet ·
-          stack names wrong in some places ·
-          sign-in loops on cached Chrome ·
-          no onboarding for new users ·
-          landing page widget count wrong ·
-          RESEND_API_KEY not set in Vercel
-        </div>
-      </div>
+  <section class="section" id="current-state">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--green)"></span>
+      <div><div class="section-num">STATUS</div><h2 class="section-title">current state</h2></div>
     </div>
-  </div>
-
-  <div class="divider"></div>
+    <div class="status-grid">
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">sign-in + auth</div><div class="sc-body">working. test: brittanyhmay@gmail.com</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">29 widgets · 7 stacks</div><div class="sc-body">all IDs added, 400 errors fixed</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">brain · 352 entries</div><div class="sc-body">seeded, light theme, search-first</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">payment gate</div><div class="sc-body">stripe $79/year + manual approval</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">bottom sheet</div><div class="sc-body">webkit pointer events bug fixed</div></div>
+      <div class="status-card sc-new"><div class="sc-label">new · committed</div><div class="sc-title">home screen rebuild</div><div class="sc-body">branch: claude/home-brain-first</div></div>
+      <div class="status-card sc-new"><div class="sc-label">new · committed</div><div class="sc-title">inbox AI endpoint</div><div class="sc-body">/api/ai/inbox-process live</div></div>
+      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">OOO widget</div><div class="sc-body">shows form instead of textarea</div></div>
+      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">people circles routing</div><div class="sc-body">navigates to wrong place</div></div>
+      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">save to brain</div><div class="sc-body">no visual confirmation toast</div></div>
+      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">brain tab redesign</div><div class="sc-body">stream + wiki + galaxy designed, not built</div></div>
+      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">beta onboarding</div><div class="sc-body">20 people from threads waiting</div></div>
+    </div>
+  </section>
 
   <!-- BUGS -->
-  <div id="bugs">
-    <h2>what's broken — fix in this order</h2>
-
+  <section class="section" id="bugs">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--coral)"></span>
+      <div><div class="section-num">P0 / P1</div><h2 class="section-title">known bugs</h2></div>
+    </div>
     <table class="priority-table">
-      <thead><tr><th>priority</th><th>issue</th><th>fix</th></tr></thead>
+      <thead><tr><th>priority</th><th>bug</th><th>fix</th></tr></thead>
       <tbody>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>OOO shows structured form — should be single textarea brain dump</td><td>grep for "what time do you need to leave" → replace form with single textarea</td></tr>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>People circles on home → go to my day not person card</td><td>router.push('/display/people?person=[name]') on circle tap</td></tr>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>Save to brain buttons do nothing on several widgets</td><td>fix onClick handlers, add "saved to your brain ✦" toast</td></tr>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>Texts + messages stuck on thinking</td><td>15s timeout deployed — verify it works</td></tr>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>Scan + log camera silent fail</td><td>permission check deployed — verify it works</td></tr>
-        <tr><td><span class="chip chip-p0">P0</span></td><td>No onboarding for new users</td><td>"start here" moment on first login — 3 widget cards, one choice</td></tr>
-        <tr><td><span class="chip chip-p1">P1</span></td><td>Landing page widget count wrong</td><td>update count to match actual widget count</td></tr>
-        <tr><td><span class="chip chip-p1">P1</span></td><td>RESEND_API_KEY not in Vercel production</td><td>add from resend.com dashboard</td></tr>
-        <tr><td><span class="chip chip-p1">P1</span></td><td>Stack names wrong in some places (my kids vs my family)</td><td>grep and replace all instances</td></tr>
-        <tr><td><span class="chip chip-p1">P1</span></td><td>Sign-in loops on cached Chrome</td><td>localStorage corruption — service client fix deployed, monitor</td></tr>
-        <tr><td><span class="chip chip-p2">P2</span></td><td>OOO missing times and durations in response</td><td>system prompt updated with ADHD tax timing — verify it works</td></tr>
-        <tr><td><span class="chip chip-p2">P2</span></td><td>Partner briefing needs context input</td><td>add free text field for context before AI call</td></tr>
-        <tr><td><span class="chip chip-p2">P2</span></td><td>No favicon</td><td>add favicon.ico to /public</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>OOO widget shows structured form, not textarea</td><td>grep "what time do you need to leave" — swap form component for single textarea</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>People circles on home go to wrong route</td><td>add router.push('/display/people?person=${name}') on tap</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>Save to brain has no visual confirmation</td><td>add "saved to your brain ✦" Sonner toast on success</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>Pinned tile tap goes to stack page, not widget directly</td><td>open bottom sheet widget directly from home tile tap, not stack page navigation</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>Full widget test not run with real AI responses</td><td>run full E2E with real Claude API responses, check all 29 widgets</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>New user onboarding missing</td><td>3 widget cards, one choice, shows on first login only — "start here" moment</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>Lapsed-contact query fragile</td><td>currently derived from widget_responses — add last_contact field to brain_entries when people gets its own schema</td></tr>
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <div class="divider"></div>
-
-  <!-- EPIPHANY -->
-  <div id="epiphany">
-    <h2>the brain-first epiphany</h2>
-    <p>brittany had this insight on june 15 based on the ND brain architecture research. it changes the product direction. discuss before building anything new.</p>
-
-    <div class="epiphany">
-      <div class="epiphany-label">open question · june 15 2026</div>
-      <div class="epiphany-title">"what if the brain is the front door and widgets are background agents?"</div>
-      <p>right now: users navigate to stacks → open widget tiles → get help. the stacks are the UI.</p>
-      <p>new direction: the brain is the UI. you dump everything there. background agents (which are what widgets are) detect what you need and run automatically or on demand from within the brain. stacks still exist but they're infrastructure, not navigation.</p>
-      <p>the home screen shows a few pinned shortcuts for things you reach for constantly (dinner decider, order of operations, work with me). everything else lives inside the brain.</p>
-      <p style="color:var(--gold);font-weight:600;margin-top:12px">this is the most important product decision to make before building anything else. the ND research backs it: ND brains go to search, not folders. the brain IS the product.</p>
+  <!-- BRAIN-FIRST ARCHITECTURE -->
+  <section class="section" id="brain-first">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--plum)"></span>
+      <div><div class="section-num">EPIPHANY · JUNE 15</div><h2 class="section-title">brain-first direction</h2></div>
     </div>
-
-    <div class="callout c-gold"><span>✦</span><span>questions to answer: what does the home screen show? how do agents get triggered? what about widgets you open intentionally (regulator)? are stacks gone or just backgrounded?</span></div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- WIDGETS -->
-  <div id="widgets">
-    <h2>29 widgets — the definitive list</h2>
-    <p>built from brittany's real usage patterns. this is the authoritative source — not the widget library file.</p>
-
-    <div class="stack-pills">
-      <div class="stack-pill"><div class="stack-dot" style="background:#7B2D8B"></div>just me (4)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#DAAF2E"></div>my day (6)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#A3D130"></div>this week (2)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#D85A30"></div>hard things (4)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#E8399A"></div>people (3)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#1D9E75"></div>my family (4)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#2A7A8C"></div>out of sight (5)</div>
-      <div class="stack-pill"><div class="stack-dot" style="background:#DAAF2E"></div>home (1)</div>
+    <div class="callout callout-plum">
+      <div class="callout-label">the core insight</div>
+      <p>The brain should be the front door, not the stacks. <strong>Widgets work better as background agents triggered from brain dumps</strong> than as things you navigate to directly. The home screen stops being a stack grid and becomes the capture interface. The brain tab is where your entries live. Stacks still exist but are backgrounded.</p>
     </div>
-
-    <div class="widget-list">
-      <div class="widget-row"><div class="widget-num">01</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">my ideas</div><div class="widget-stack">just me</div></div>
-      <div class="widget-row"><div class="widget-num">02</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">what went well today</div><div class="widget-stack">just me</div></div>
-      <div class="widget-row"><div class="widget-num">03</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">things I know for sure</div><div class="widget-stack">just me</div></div>
-      <div class="widget-row"><div class="widget-num">04</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#7B2D8B;flex-shrink:0"></div><div class="widget-name">my patterns</div><div class="widget-stack">just me</div></div>
-      <div class="widget-row"><div class="widget-num">05</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">scan + log</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">06</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">order of operations</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">07</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">dinner decider</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">08</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">one hard thing</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">09</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">partner briefing</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">10</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">tomorrow preview</div><div class="widget-stack">my day</div></div>
-      <div class="widget-row"><div class="widget-num">11</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#A3D130;flex-shrink:0"></div><div class="widget-name">meal plan + grocery list</div><div class="widget-stack">this week</div></div>
-      <div class="widget-row"><div class="widget-num">12</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#A3D130;flex-shrink:0"></div><div class="widget-name">week at a glance</div><div class="widget-stack">this week</div></div>
-      <div class="widget-row"><div class="widget-num">13</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">regulator (6 paths)</div><div class="widget-stack">hard things</div></div>
-      <div class="widget-row"><div class="widget-num">14</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">right now in my body</div><div class="widget-stack">hard things</div></div>
-      <div class="widget-row"><div class="widget-num">15</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">where did the time go</div><div class="widget-stack">hard things</div></div>
-      <div class="widget-row"><div class="widget-num">16</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#D85A30;flex-shrink:0"></div><div class="widget-name">who haven't I talked to</div><div class="widget-stack">hard things + people</div></div>
-      <div class="widget-row"><div class="widget-num">17</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#E8399A;flex-shrink:0"></div><div class="widget-name">this text thread</div><div class="widget-stack">people</div></div>
-      <div class="widget-row"><div class="widget-num">18</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#E8399A;flex-shrink:0"></div><div class="widget-name">texts + messages</div><div class="widget-stack">people</div></div>
-      <div class="widget-row"><div class="widget-num">19</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">teacher email draft</div><div class="widget-stack">my family</div></div>
-      <div class="widget-row"><div class="widget-num">20</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">kid behavior decoder</div><div class="widget-stack">my family</div></div>
-      <div class="widget-row"><div class="widget-num">21</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">iep prep</div><div class="widget-stack">my family</div></div>
-      <div class="widget-row"><div class="widget-num">22</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#1D9E75;flex-shrink:0"></div><div class="widget-name">delegate to partner</div><div class="widget-stack">my family</div></div>
-      <div class="widget-row"><div class="widget-num">23</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">ask the vault</div><div class="widget-stack">out of sight</div></div>
-      <div class="widget-row"><div class="widget-num">24</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">where did it go</div><div class="widget-stack">out of sight</div></div>
-      <div class="widget-row"><div class="widget-num">25</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">what was I doing</div><div class="widget-stack">out of sight</div></div>
-      <div class="widget-row"><div class="widget-num">26</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">safe foods by person</div><div class="widget-stack">out of sight</div></div>
-      <div class="widget-row"><div class="widget-num">27</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#2A7A8C;flex-shrink:0"></div><div class="widget-name">medical notes</div><div class="widget-stack">out of sight</div></div>
-      <div class="widget-row"><div class="widget-num">28</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">work with me</div><div class="widget-stack">home screen</div></div>
-      <div class="widget-row"><div class="widget-num">29</div><div class="widget-dot" style="width:8px;height:8px;border-radius:50%;background:#DAAF2E;flex-shrink:0"></div><div class="widget-name">brain inbox</div><div class="widget-stack">my day</div></div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- STACKS -->
-  <div id="stacks">
-    <h2>7 stacks — locked names and routes</h2>
-    <div class="callout c-coral"><span>⚠</span><span>these names are locked. never change them. every widget, route, and nav reference must match exactly.</span></div>
-
-    <table class="priority-table" style="margin-top:16px">
-      <thead><tr><th>stack name</th><th>color</th><th>nav label</th><th>route</th></tr></thead>
-      <tbody>
-        <tr><td>just me</td><td><span style="color:#7B2D8B;font-weight:700">#7B2D8B plum</span></td><td>just me</td><td>/display/just-me</td></tr>
-        <tr><td>my day</td><td><span style="color:#DAAF2E;font-weight:700">#DAAF2E gold</span></td><td>my day</td><td>/display/my-day</td></tr>
-        <tr><td>this week</td><td><span style="color:#A3D130;font-weight:700">#A3D130 lime</span></td><td>this week</td><td>/display/this-week</td></tr>
-        <tr><td>we can do hard things</td><td><span style="color:#D85A30;font-weight:700">#D85A30 coral</span></td><td>hard things</td><td>/display/right-now</td></tr>
-        <tr><td>my family</td><td><span style="color:#1D9E75;font-weight:700">#1D9E75 green</span></td><td>my family</td><td>/display/my-family</td></tr>
-        <tr><td>out of sight, not out of mind</td><td><span style="color:#2A7A8C;font-weight:700">#2A7A8C teal</span></td><td>out of sight</td><td>/display/out-of-sight</td></tr>
-        <tr><td>people</td><td><span style="color:#E8399A;font-weight:700">#E8399A pink</span></td><td>people</td><td>/display/people</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- FAMILY -->
-  <div id="family">
-    <h2>family context — never change</h2>
-    <p>this is the brain seed data that makes spoonstack personal. every AI call should reference this when relevant.</p>
-
-    <div class="family-grid">
-      <div class="family-card">
-        <div class="family-name">brittany</div>
-        <div class="family-detail">AuDHD · diagnosed ADHD at 19, autism at 37 · founder · Atlanta GA · rollerblading · craft projects · spoonstack builder</div>
-      </div>
-      <div class="family-card">
-        <div class="family-name">branden</div>
-        <div class="family-detail">partner · ADHD · Morehouse 2011 · lead photographer at auction house · street photography · bikes · PS5 · needs short version first</div>
-      </div>
-      <div class="family-card">
-        <div class="family-name">bella</div>
-        <div class="family-detail">13 · cheer tue+fri 4pm · summer cheer 9am-2pm · makes art · wants independence · needs explanation not just rules</div>
-      </div>
-      <div class="family-card">
-        <div class="family-name">ruby</div>
-        <div class="family-detail">10 · jackson's twin · dyslexia + expressive/receptive language disorder · IEP · tennis · swimming · loves her natural hair · needs tasks done before sleepy · makes art</div>
-      </div>
-      <div class="family-card">
-        <div class="family-name">jackson</div>
-        <div class="family-detail">10 · ruby's twin · autistic · interest-based learner · video games · youtube · swimming · storybots · maroon 5 · puzzles · needs plan before transitions · NO OT</div>
-      </div>
-      <div class="family-card" style="border-color:rgba(29,158,117,.3);background:var(--green-l)">
-        <div class="family-name" style="color:var(--green-d)">jackson safe foods</div>
-        <div class="family-detail" style="color:var(--green-d)">cheez-its · goldfish · bacon · olives · green beans · peas · protein yogurt · red grapes (first tried june 10 2026)</div>
-      </div>
-    </div>
-
-    <h3>family safe meals</h3>
-    <p>spaghetti · tacos · salmon · steak · <strong>tuesday = chick-fil-a always</strong> · mio + water (everyone)</p>
-
-    <h3>people in brittany's life</h3>
-    <p>robin (best friend, 3 weeks no contact, new job) · amy (aunt like a sister, just had surgery, back to work) · taylor (call back re love island, book club, summer house finale pt 3) · deanna (friend, 2 months no contact)</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- ND RESEARCH -->
-  <div id="nd-research">
-    <h2>ND brain architecture research — key findings</h2>
-    <p>synthesized from r/ADHD, r/AuDHD, r/ObsidianMD and academic sources. these findings shape every product decision.</p>
-
     <div class="card">
-      <div style="font-size:13px;font-weight:700;margin-bottom:8px">the surprising finding</div>
-      <p style="font-size:13px;color:var(--ink);margin:0">the real competitor isn't Obsidian or Notion. it's Apple Notes — because it's already open. spoonstack wins if it captures as fast as Apple Notes and surfaces things better. that's it.</p>
+      <div class="card-title">the mental model</div>
+      <p><strong>capture</strong> (home screen, always primary) → <strong>inbox</strong> (AI processes and auto-sorts, temporary waiting room) → <strong>brain</strong> (permanent, searchable, organized by life domain)</p>
+      <p>The inbox is not a permanent home. It's a queue. Things land there, get AI processing, and graduate into the brain. The AI restates items in the brain's voice — not "where did my scissors go" but "did you find your good scissors? last time it was ruby who had them."</p>
     </div>
-
     <div class="card-grid">
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">3 modes of touching the brain</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.7">
-          <strong>active retrieval</strong> — "I need something right now." ND brains search by feeling and context, not category.<br><br>
-          <strong>passive surfacing</strong> — "show me something I forgot." situational, not scheduled. never mid-task.<br><br>
-          <strong>serendipitous discovery</strong> — "I forgot I saved this." once a week memory card. pure delight.
-        </div>
+      <div class="grid-card">
+        <div class="gc-title">what changed</div>
+        <div class="gc-body">Home screen default route now leads with capture bar. Bottom nav: home · brain · people · stacks. Stacks still accessible but not the primary entry point.</div>
       </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">3 kill conditions</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.7">
-          <strong>capture requires a decision</strong> — any required field loses the thought.<br><br>
-          <strong>AI sounds like it's judging</strong> — "I've noticed you tend to..." = immediate withdrawal.<br><br>
-          <strong>silence framed as failure</strong> — no streaks, no "you haven't checked in," no accumulating unanswered questions.
-        </div>
+      <div class="grid-card">
+        <div class="gc-title">what stayed</div>
+        <div class="gc-body">Stacks exist as infrastructure. 29 widgets still work. Bottom sheet still opens per widget. Routes unchanged. Stacks are the back room, not the front door.</div>
       </div>
-    </div>
-
-    <div class="callout c-teal"><span>✦</span><span>AuDHD users score highest on monotropism — deepest attention tunnels, hardest transitions. never interrupt a user mid-task to surface something. all surfacing happens at natural transition points only.</span></div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- BUILD PRIORITIES -->
-  <div id="priorities">
-    <h2>build priorities — in order</h2>
-
-    <div class="card" style="border-left:4px solid var(--coral)">
-      <div style="font-size:12px;font-weight:700;color:var(--coral-d);margin-bottom:4px">NOW — before more beta users</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-        1. Fix OOO structured form → single textarea<br>
-        2. Fix people circles routing<br>
-        3. Fix save to brain + toast confirmation<br>
-        4. Verify texts + messages timeout<br>
-        5. Verify scan + log camera permission<br>
-        6. Add onboarding "start here" for new users<br>
-        7. Run full widget test with real responses<br>
-        8. Add RESEND_API_KEY to Vercel
+      <div class="grid-card">
+        <div class="gc-title">ambiguity + multi-widget dumps</div>
+        <div class="gc-body">When a brain dump contains 2+ items or unclear intent, /api/ai/inbox-process extracts each item, restates it in the brain's voice, assigns urgency and category, and surfaces them as inbox task rows.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">never interrupt a tunnel</div>
+        <div class="gc-body">AuDHD brains have deep attention tunnels. Brain surfacing only happens at natural transition points — opening a stack, finishing a widget, explicitly visiting the brain tab. Never mid-task.</div>
       </div>
     </div>
+  </section>
 
-    <div class="card" style="border-left:4px solid var(--gold);margin-top:10px">
-      <div style="font-size:12px;font-weight:700;color:var(--gold-d);margin-bottom:4px">SPRINT 1 — post-launch</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-        1. Discuss + decide brain-first architecture direction<br>
-        2. Contextual brain surfacing in stacks<br>
-        3. Semantic search in brain tab<br>
-        4. People command center phase 2<br>
-        5. Scan + log full build (iOS share sheet target)<br>
-        6. Entertainment + hobby tracking in brain<br>
-        7. Home screen time-aware cards (tomorrow preview after 8pm, week at a glance sundays)
-      </div>
+  <!-- HOME SCREEN -->
+  <section class="section" id="home-screen">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--teal)"></span>
+      <div><div class="section-num">BUILT · BRANCH: claude/home-brain-first</div><h2 class="section-title">home screen spec</h2></div>
+    </div>
+    <div class="card">
+      <div class="card-title">layout order (top to bottom)</div>
+      <p>Status bar → greeting ("good [morning/afternoon/evening], [first name]" + date/weather) → CaptureBar → PinnedWidgets (2×2 grid, customizable) → NeedsAttention (single card, hidden if nothing urgent) → SmartInbox (task rows) → BottomNav</p>
     </div>
 
-    <div class="card" style="border-left:4px solid var(--green);margin-top:10px">
-      <div style="font-size:12px;font-weight:700;color:var(--green-d);margin-bottom:4px">SPRINT 2+</div>
-      <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-        1. Connect your tools — Spotify first (work with me sessions)<br>
-        2. iMessage integration (texts + messages phase 2)<br>
-        3. Voice capture<br>
-        4. Brain visualization (warm node graph)<br>
-        5. Persona audit (Priya, Simone, Megan, Alex)<br>
-        6. Copyright registration + ToS
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--dark)">⬛</div>
+      <div class="fr-body">
+        <div class="fr-title">CaptureBar</div>
+        <div class="fr-desc">Dark rounded bar (#1A1714). Placeholder: "what's on your mind" italic faint. Blinking gold cursor. Attachment button (paperclip) + send button (arrow-up gold). Below it: "ask brain something" dashed row — navigates to /brain with search focused. No suggestion chips.</div>
+        <span class="fr-tag tag-urgent">built</span>
       </div>
     </div>
-  </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--paper)">📌</div>
+      <div class="fr-body">
+        <div class="fr-title">PinnedWidgets</div>
+        <div class="fr-desc">2×2 grid. Default pinned: regulator (coral), out of sight (teal), dinner decider (green), work with me (plum). "Customize" link opens sheet — user picks up to 4 widgets or stacks. Saved to localStorage "spoonstack_pinned_widgets". Each tile has a 3px color bar at top, widget name, stack name below. No pin icon on tiles.</div>
+        <span class="fr-tag tag-urgent">built</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--pink)">👁</div>
+      <div class="fr-body">
+        <div class="fr-title">NeedsAttention</div>
+        <div class="fr-desc">Single card only. Queries brain_entries + brain_patterns for: people with no contact >14 days, upcoming deadlines in 48hrs, urgent flags. Brain voice — not "no contact for 21 days" but "robin hasn't heard from you in 3 weeks — she just started that new job." Hidden entirely if nothing urgent.</div>
+        <span class="fr-tag tag-urgent">built</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--gold-l)">✦</div>
+      <div class="fr-body">
+        <div class="fr-title">SmartInbox</div>
+        <div class="fr-desc">Task rows: colored dot + text block (brain's restatement + contextual sub line) + time label. No colored pill backgrounds. Dot color: coral=urgent, pink=people, teal=home/objects, green=family/food, gold=admin. Time labels: today (coral) · soon (pink) · this week (teal) · specific day (pink) · whenever (ghost). "✦ sorted N items from your last dump" above rows.</div>
+        <span class="fr-tag tag-urgent">built</span>
+      </div>
+    </div>
+    <div class="callout callout-gold">
+      <div class="callout-label">inbox brain voice rule</div>
+      <p>Raw dump → brain restatement. "need to call robin" → "call robin back about the job." "cant find my scissors" → "did you find your good scissors? last time it was ruby who had them." "jackson meds" → "did jackson's meds get refilled? you mentioned this 2 days ago." Always lowercase. Never em dashes. Never exclamation marks.</p>
+    </div>
+  </section>
 
-  <div class="divider"></div>
-
-  <!-- BETA PLAN -->
-  <div id="beta">
-    <h2>beta plan</h2>
-
+  <!-- BRAIN TAB -->
+  <section class="section" id="brain-tab">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--pink)"></span>
+      <div><div class="section-num">DESIGNED · NOT YET BUILT</div><h2 class="section-title">brain tab spec</h2></div>
+    </div>
+    <div class="callout callout-plum">
+      <div class="callout-label">the core insight from research</div>
+      <p>The real competitor is <strong>Apple Notes</strong>, not Obsidian. spoonstack wins if it captures as fast as Apple Notes and surfaces things better than it. The brain tab doesn't need to be powerful — it needs to feel effortless. Search is the hero. Everything else is secondary.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">three views of the same brain</div>
+      <p><strong>stream (mobile default)</strong> — dark header anchors search, light body for reading. Entries flow recency-first. Clusters emerge from colored cluster headers + spine lines. Question queue as gold ambient card. Domain filter chips scroll horizontally.</p>
+      <p style="margin-top:10px"><strong>wiki (desktop default)</strong> — sidebar with people and topics. Main panel shows wiki page for selected person/topic. Facts the brain has extracted from entries + raw entries below. Organized but self-built — no templates required.</p>
+      <p style="margin-top:10px"><strong>galaxy (visual overlay)</strong> — 12 vision-board category nodes radiating from center "your brain." Tap a node to see its entries bloom in a detail panel. One cluster at a time. Never the whole graph at once. See galaxy section below.</p>
+    </div>
     <div class="card-grid">
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">who's coming in</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.7">~20 people from Threads who commented asking to try it. all free 30-day beta. conversion at day 30: $79/year locked forever.</div>
+      <div class="grid-card">
+        <div class="gc-title">search behavior</div>
+        <div class="gc-body">Semantic, not keyword. "The thing about Jackson's food" must find it. "The idea I had when I was anxious" must find it. Placeholder: "search by feeling, fragment, anything." Always focused on open.</div>
       </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">how to approve</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.7">Supabase → profiles table → flip is_approved = true. they land on /pending until approved. DM them the signup link after approving.</div>
+      <div class="grid-card">
+        <div class="gc-title">default sort</div>
+        <div class="gc-body">Recency first, always. "This week" then "earlier." Never by category or alphabetically. Timestamps always visible. "You saved this 3 days ago" beats any folder tree.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">question queue</div>
+        <div class="gc-body">"✦ the brain's been wondering" — one question, derived from user's own entries, framed as curiosity. "swipe away · no pressure · no tracking." Never scheduled, never tracked, never more than one. PDA-safe framing always.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">crash mode</div>
+        <div class="gc-body">Low spoon: banner "keeping things simple." Search bar only + 3 most recent entries. No clusters, no question, no connections. "the brain asks nothing on hard days." Never triggered automatically — detected from spoon level or explicit low-spoon toggle.</div>
       </div>
     </div>
+  </section>
 
-    <h3>feedback touchpoints</h3>
-    <p>day 3: "what's one thing you've actually used it for?" · day 14: "what's confusing or missing?" · day 30: conversion email</p>
-
-    <h3>threads post (ready to send)</h3>
-    <div class="card" style="font-size:13px;line-height:1.8;color:var(--ink)">
-      I built an app for my AuDHD brain because nothing else worked.<br><br>
-      It's called spoonstack. It's an AI second brain for neurodivergent adults — moms especially, but honestly anyone whose brain works differently.<br><br>
-      I'm letting a small group in today. $79/year, locked in forever.<br><br>
-      spoonstack.app if you want in.
+  <!-- GALAXY VIEW -->
+  <section class="section" id="galaxy">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--gold)"></span>
+      <div><div class="section-num">DESIGNED · NOT YET BUILT</div><h2 class="section-title">galaxy view spec</h2></div>
     </div>
-  </div>
+    <div class="card">
+      <div class="card-title">the 12 nodes</div>
+      <p>Vision-board categories, not app categories. These are how Brittany actually thinks about her life at a high level. Entries get AI-sorted into these buckets on the way through the inbox.</p>
+    </div>
+    <div class="token-grid">
+      <div class="token"><div class="token-swatch" style="background:#EDE5F5;border-color:#7B2D8B"></div><div class="token-label">ideas · #7B2D8B</div></div>
+      <div class="token"><div class="token-swatch" style="background:#E0F2F7;border-color:#2A7A8C"></div><div class="token-label">questions · #2A7A8C</div></div>
+      <div class="token"><div class="token-swatch" style="background:#FDF4D0;border-color:#DAAF2E"></div><div class="token-label">home · #DAAF2E</div></div>
+      <div class="token"><div class="token-swatch" style="background:#E1F5EE;border-color:#1D9E75"></div><div class="token-label">family · #1D9E75</div></div>
+      <div class="token"><div class="token-swatch" style="background:#FBEAF0;border-color:#E8399A"></div><div class="token-label">friends · #E8399A</div></div>
+      <div class="token"><div class="token-swatch" style="background:#EEEDFE;border-color:#5C4FC7"></div><div class="token-label">work · #5C4FC7</div></div>
+      <div class="token"><div class="token-swatch" style="background:#FAECE7;border-color:#D85A30"></div><div class="token-label">fun · #D85A30</div></div>
+      <div class="token"><div class="token-swatch" style="background:#F4EFE4;border-color:#8A8070"></div><div class="token-label">rest · #8A8070</div></div>
+      <div class="token"><div class="token-swatch" style="background:#C4ECD9;border-color:#0F6E56"></div><div class="token-label">active projects · #0F6E56</div></div>
+      <div class="token"><div class="token-swatch" style="background:#EAF3DE;border-color:#639922"></div><div class="token-label">wealth · #639922</div></div>
+      <div class="token"><div class="token-swatch" style="background:#FCEBEB;border-color:#A32D2D"></div><div class="token-label">health · #A32D2D</div></div>
+      <div class="token"><div class="token-swatch" style="background:#FDE8D8;border-color:#C4713A"></div><div class="token-label">faith · #C4713A (peach)</div></div>
+    </div>
+    <div class="card-grid">
+      <div class="grid-card">
+        <div class="gc-title">interaction model</div>
+        <div class="gc-body">Tap any node → entries slide up from bottom in detail panel. Tap same node again → close. Tap elsewhere → close. One cluster at a time. Never the whole graph. Center node always visible: "your brain" with ✦.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">why not a full graph</div>
+        <div class="gc-body">The hairball problem — 352 entries shown at once = unusable. ND brains need one tunnel at a time. One cluster at a time respects monotropism. The galaxy feels like Obsidian without the navigation anxiety.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">search still works</div>
+        <div class="gc-body">Search bar at top always available. Typing highlights the matching node. You never have to navigate — you can always just search.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">mobile access</div>
+        <div class="gc-body">Galaxy opens as full-screen overlay via ✦ button on the brain tab. Stream is still the mobile default. Galaxy is optional, beautiful, explorable.</div>
+      </div>
+    </div>
+  </section>
 
-  <div class="divider"></div>
+  <!-- LOCKED DECISIONS -->
+  <section class="section" id="decisions">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--plum)"></span>
+      <div><div class="section-num">LOCKED</div><h2 class="section-title">decisions made this session</h2></div>
+    </div>
+    <div class="decision"><div class="decision-num">01</div><div class="decision-body"><div class="d-title">brain tab is NOT the home screen</div><p>Home screen = capture + pinned + inbox. Brain tab = where your entries live. Separate nav destinations. Never confuse them in code or copy.</p></div></div>
+    <div class="decision"><div class="decision-num">02</div><div class="decision-num"></div><div class="decision-body"><div class="d-title">desktop brain is wiki-only, no separate stream view</div><p>Desktop defaults to wiki. Stream is mobile. Toggle between wiki and galaxy on desktop. No "desktop stream" as a third view.</p></div></div>
+    <div class="decision"><div class="decision-num">03</div><div class="decision-body"><div class="d-title">inbox items must sound like the brain knows you</div><p>Not the raw dump. The brain's restatement. Always uses what's in memory (jackson's safe foods, who had the scissors, how long since you talked to robin). This is what separates spoonstack from Apple Notes.</p></div></div>
+    <div class="decision"><div class="decision-num">04</div><div class="decision-num"></div><div class="decision-body"><div class="d-title">no colored pill backgrounds in inbox</div><p>Dots only for color. Time label gets the accent color. Row background stays neutral. The color signals category, not urgency level.</p></div></div>
+    <div class="decision"><div class="decision-num">05</div><div class="decision-body"><div class="d-title">light theme throughout — no dark brain view</div><p>Warm dark (#1A1714) is reserved for the capture bar and the wiki/stream dark header. The brain content area is always light. Not negotiable.</p></div></div>
+    <div class="decision"><div class="decision-num">06</div><div class="decision-body"><div class="d-title">galaxy nodes = vision board categories</div><p>12 nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith. These are life domains, not app domains. Faith is peach (#C4713A).</p></div></div>
+    <div class="decision"><div class="decision-num">07</div><div class="decision-body"><div class="d-title">beta sequence locked</div><p>Fix P0s → merge home screen branch → flip is_approved for first 5-8 users → watch behavior → brain-first architecture will be validated or revised based on what users actually do.</p></div></div>
+  </section>
+
+  <!-- ND PRINCIPLES -->
+  <section class="section" id="nd-principles">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--green)"></span>
+      <div><div class="section-num">FROM RESEARCH</div><h2 class="section-title">ND design principles</h2></div>
+    </div>
+    <div class="callout callout-gold">
+      <div class="callout-label">the most important finding</div>
+      <p>The real competitor is Apple Notes — not Obsidian, not Notion. ND brains return to Apple Notes because it has <strong>zero decision cost at capture.</strong> spoonstack wins if it captures as fast as Apple Notes and surfaces things better than it. Simplicity first. Intelligence second.</p>
+    </div>
+    <div class="principle"><div class="principle-num">01</div><div><div class="principle-title">capture must be frictionless</div><div class="principle-body">One tap from anywhere. No required fields. No "where does this go?" moment. Under 3 seconds total. One hesitation = thought lost = trust broken. Users won't give a second chance.</div></div></div>
+    <div class="principle"><div class="principle-num">02</div><div><div class="principle-title">organization is a gift, never a requirement</div><div class="principle-body">AI suggests routing. User confirms or ignores. Nothing forces categorization. Items stay in inbox indefinitely without penalty. The system organizes around the user's capacity, not a schedule.</div></div></div>
+    <div class="principle"><div class="principle-num">03</div><div><div class="principle-title">design for the bad day first</div><div class="principle-body">Low spoon mode is not an edge case — it's a regular Tuesday. Brain tab at CRISIS shows 2-3 entries max. All language softens. No suggestions, no questions, just retrieval.</div></div></div>
+    <div class="principle"><div class="principle-num">04</div><div><div class="principle-title">recency is the primary retrieval cue</div><div class="principle-body">ND brains remember by context and time, not category. Default sort is always recency. Always show timestamps. "What did I save this week?" beats "what's in my health folder?"</div></div></div>
+    <div class="principle"><div class="principle-num">05</div><div><div class="principle-title">the brain delivers — the user doesn't navigate</div><div class="principle-body">Relevant brain entries surface in stack context automatically. Brain surfacing only at natural transition points — never mid-task (monotropism). The tunnel is sacred.</div></div></div>
+    <div class="principle"><div class="principle-num">06</div><div><div class="principle-title">care, not surveillance</div><div class="principle-body">Use specific language — "this reminds me of..." not "I've noticed you tend to..." One instance of feeling surveilled and users stop sharing real things. The brain becomes a performance, not a brain.</div></div></div>
+    <div class="principle"><div class="principle-num">07</div><div><div class="principle-title">one thing at a time, always</div><div class="principle-body">One question. One surfaced memory. One connection. One entry per context. Restraint is care. Galaxy shows one cluster at a time, not the whole graph.</div></div></div>
+    <div class="principle"><div class="principle-num">08</div><div><div class="principle-title">never make silence feel like failure</div><div class="principle-body">No streaks. No completion percentages. No "you haven't checked in in 5 days." The brain feels equally welcoming whether the user was here yesterday or three weeks ago.</div></div></div>
+    <div class="principle"><div class="principle-num">09</div><div><div class="principle-title">hold the past gently</div><div class="principle-body">Old entries are treasure. Interest cycling is real — hyperfixations hibernate and return. Surface past entries as memories, not archives. Zero judgment always.</div></div></div>
+    <div class="principle"><div class="principle-num">10</div><div><div class="principle-title">semantic search, not keyword search</div><div class="principle-body">"The thing about the hard week" should find it. "The idea I had when I was anxious" should find it. Zero failed retrieval moments is the goal.</div></div></div>
+
+    <div class="do-dont" style="margin-top:20px">
+      <div class="do-box">
+        <div class="box-label">do this</div>
+        <ul>
+          <li>capture bar always primary, always reachable</li>
+          <li>one question in the brain at a time</li>
+          <li>swipe to dismiss anything — no confirmation</li>
+          <li>"the brain's been wondering..." not "answer this"</li>
+          <li>show timestamps always</li>
+          <li>recency sort as default</li>
+          <li>crash mode dramatically simpler</li>
+          <li>voice as equal-status capture option</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <div class="box-label">never do this</div>
+        <ul>
+          <li>streaks, completion %, check-in tracking</li>
+          <li>"I've noticed you tend to..."</li>
+          <li>"you haven't checked in in N days"</li>
+          <li>required fields at capture</li>
+          <li>interrupt mid-task to surface a memory</li>
+          <li>scheduled mandatory check-ins</li>
+          <li>more than one question visible at once</li>
+          <li>show the full graph at once</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
   <!-- DESIGN SYSTEM -->
-  <div id="design-system">
-    <h2>design tokens</h2>
-
-    <div class="token-grid">
-      <div class="token-card"><div class="token-swatch" style="background:#FAFAF7;border-bottom:1px solid #e0dcd4"></div><div class="token-info"><div class="token-name">background</div><div class="token-hex">#FAFAF7</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-info"><div class="token-name">card</div><div class="token-hex">#FFFDF7</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-info"><div class="token-name">paper</div><div class="token-hex">#F4EFE4</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#2C2820"></div><div class="token-info"><div class="token-name">ink</div><div class="token-hex">#2C2820</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-info"><div class="token-name">gold</div><div class="token-hex">#DAAF2E</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-info"><div class="token-name">green</div><div class="token-hex">#1D9E75</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#D85A30"></div><div class="token-info"><div class="token-name">coral</div><div class="token-hex">#D85A30</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-info"><div class="token-name">plum</div><div class="token-hex">#7B2D8B</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#E8399A"></div><div class="token-info"><div class="token-name">pink</div><div class="token-hex">#E8399A</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-info"><div class="token-name">teal</div><div class="token-hex">#2A7A8C</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#A3D130"></div><div class="token-info"><div class="token-name">lime</div><div class="token-hex">#A3D130</div></div></div>
-      <div class="token-card"><div class="token-swatch" style="background:#1A1714"></div><div class="token-info"><div class="token-name">dark</div><div class="token-hex">#1A1714</div></div></div>
+  <section class="section" id="design-system">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--gold)"></span>
+      <div><div class="section-num">TOKENS</div><h2 class="section-title">design system</h2></div>
     </div>
-
-    <p style="margin-top:16px"><strong>fonts:</strong> DM Sans (body, headings) · IBM Plex Mono (labels, tags, timestamps, prompts)</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- TECH STACK -->
-  <div id="tech">
-    <h2>tech stack</h2>
-    <table class="priority-table">
-      <thead><tr><th>layer</th><th>tool</th><th>notes</th></tr></thead>
-      <tbody>
-        <tr><td>framework</td><td>Next.js 14</td><td>App Router, TypeScript strict</td></tr>
-        <tr><td>database</td><td>Supabase</td><td>project: xyxdcwtcfhhczucddhhj · RLS enabled</td></tr>
-        <tr><td>AI</td><td>Anthropic Claude API</td><td>claude-sonnet-4-6 · all calls server-side · /api/ai/widget/route.ts</td></tr>
-        <tr><td>styling</td><td>Tailwind + inline styles</td><td>design tokens in CSS vars</td></tr>
-        <tr><td>deployment</td><td>Vercel</td><td>spoonstack.app · project: alittleagencys-projects/spoonstack-os</td></tr>
-        <tr><td>email</td><td>Resend</td><td>RESEND_API_KEY needed in Vercel — not yet set</td></tr>
-        <tr><td>payments</td><td>Stripe</td><td>$79/year · webhook needs setup</td></tr>
-        <tr><td>analytics</td><td>Vercel Analytics + GA4</td><td>GA injected via postbuild script</td></tr>
-        <tr><td>repo</td><td>github.com/alittleagency/spoonstack-os</td><td>private · local: ~/Downloads/spoonstack-os</td></tr>
-        <tr><td>auth</td><td>Supabase Auth</td><td>email/password · service client for profile fetch (RLS bypass)</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="divider"></div>
+    <div class="card">
+      <div class="card-title">fonts</div>
+      <p><strong>DM Sans</strong> — body, headings, UI text. Weights: 400, 500, 600, 700.</p>
+      <p><strong>IBM Plex Mono</strong> — labels, timestamps, meta, tags, monospace sections. Weights: 400, 500.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">background surfaces</div>
+      <div class="token-grid">
+        <div class="token"><div class="token-swatch" style="background:#FAFAF7"></div><div class="token-label">bg #FAFAF7 — page</div></div>
+        <div class="token"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-label">card #FFFDF7 — cards</div></div>
+        <div class="token"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-label">paper #F4EFE4 — tags, inputs</div></div>
+        <div class="token"><div class="token-swatch" style="background:#1A1714;border-color:#444"></div><div class="token-label">dark #1A1714 — capture bar, headers</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">ink (text)</div>
+      <div class="token-grid">
+        <div class="token"><div class="token-swatch" style="background:#2C2820"></div><div class="token-label">ink #2C2820 — primary text</div></div>
+        <div class="token"><div class="token-swatch" style="background:#6B6254"></div><div class="token-label">ink2 #6B6254 — secondary</div></div>
+        <div class="token"><div class="token-swatch" style="background:#8A8070"></div><div class="token-label">ink3 #8A8070 — faint</div></div>
+        <div class="token"><div class="token-swatch" style="background:#B5AA97"></div><div class="token-label">ink4 #B5AA97 — ghost</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">accent colors</div>
+      <div class="token-grid">
+        <div class="token"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-label">gold #DAAF2E — primary accent, ✦, send btn</div></div>
+        <div class="token"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-label">green #1D9E75 — family, success, my family stack</div></div>
+        <div class="token"><div class="token-swatch" style="background:#D85A30"></div><div class="token-label">coral #D85A30 — urgent, regulator, we can do hard things</div></div>
+        <div class="token"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-label">plum #7B2D8B — ideas, just me, work with me</div></div>
+        <div class="token"><div class="token-swatch" style="background:#E8399A"></div><div class="token-label">pink #E8399A — people, social, friends</div></div>
+        <div class="token"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-label">teal #2A7A8C — out of sight stack, home objects</div></div>
+        <div class="token"><div class="token-swatch" style="background:#C4713A"></div><div class="token-label">peach #C4713A — faith category</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">border + radius</div>
+      <p>Borders: 0.5px solid rgba(44,40,32,.09) default · rgba(44,40,32,.15) emphasis</p>
+      <p>Radius: 16px cards · 12px smaller cards · 9px inner elements · 100px pills/chips</p>
+    </div>
+  </section>
 
   <!-- COPY RULES -->
-  <div id="copy-rules">
-    <h2>copy rules — app only</h2>
-    <div class="callout c-gold"><span>✦</span><span>these rules apply to APP COPY only — widget text, AI responses, button labels, empty states. NOT to Brittany's personal messages or this document.</span></div>
+  <section class="section" id="copy-rules">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--teal)"></span>
+      <div><div class="section-num">LOCKED</div><h2 class="section-title">copy + naming rules</h2></div>
+    </div>
+    <div class="callout callout-coral">
+      <div class="callout-label">these never change</div>
+      <p>These are locked. Code, copy, UI labels, database values, routes — all of these must match exactly and never be changed without explicit decision.</p>
+    </div>
+    <div class="locked-row"><div class="locked-name">"spoonstack"</div><div class="locked-note">always lowercase, everywhere, no exceptions</div></div>
+    <div class="locked-row"><div class="locked-name">stack: "out of sight, not out of mind"</div><div class="locked-note">nav label: "out of sight" · route: /display/out-of-sight</div></div>
+    <div class="locked-row"><div class="locked-name">stack: "my family"</div><div class="locked-note">route: /display/my-family</div></div>
+    <div class="locked-row"><div class="locked-name">stack: "we can do hard things"</div><div class="locked-note">route: /display/right-now</div></div>
+    <div class="locked-row"><div class="locked-name">widget: "where did it go"</div><div class="locked-note">not "out of sight tracker" or any other name</div></div>
+    <div class="locked-row"><div class="locked-name">no em dashes anywhere</div><div class="locked-note">in copy, in AI responses, in the system prompt — never</div></div>
+    <div class="locked-row"><div class="locked-name">no exclamation marks</div><div class="locked-note">in copy, in AI responses, in toasts — never</div></div>
+    <div class="locked-row"><div class="locked-name">lowercase throughout</div><div class="locked-note">all UI copy, all brain responses, all placeholder text</div></div>
+    <div class="locked-row"><div class="locked-name">star copy (ad use)</div><div class="locked-note">"works like a mom brain instead of a man brain" — Brittany flagged this for advertising</div></div>
+  </section>
 
-    <div class="card-grid">
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">always</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-          "spoonstack" always lowercase<br>
-          PDA-aware framing throughout<br>
-          Max 150 words per AI response<br>
-          Warm, specific, friend-like tone<br>
-          "want to?" not "you need to"<br>
-          Tentative pattern language ("it looks like...")
-        </div>
+  <!-- BUILD PRIORITIES -->
+  <section class="section" id="priorities">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--coral)"></span>
+      <div><div class="section-num">IN ORDER</div><h2 class="section-title">build priorities</h2></div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--coral-l)">🔧</div>
+      <div class="fr-body">
+        <div class="fr-title">1. fix remaining P0 bugs</div>
+        <div class="fr-desc">OOO textarea · people circles routing · save-to-brain toast · pinned tile opens widget directly (not stack page). All are under 30 min each. Do these first before anything else ships.</div>
+        <span class="fr-tag tag-urgent">blocking beta</span>
       </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:700;margin-bottom:6px">never</div>
-        <div style="font-size:12px;color:var(--ink2);line-height:1.8">
-          No em dashes (—)<br>
-          No exclamation marks (!)<br>
-          No clinical language (symptoms, disorder)<br>
-          No productivity language (stay on track, organized)<br>
-          No "you need to" or "you should"<br>
-          No streaks or completion metrics<br>
-          No "I've noticed you tend to..."
-        </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--gold-l)">🚀</div>
+      <div class="fr-body">
+        <div class="fr-title">2. merge + deploy home screen branch</div>
+        <div class="fr-desc">Branch claude/home-brain-first is committed. Verify on mobile viewport (375px), confirm capture bar works on iOS Safari, check smart inbox renders correctly. Then merge to main and deploy.</div>
+        <span class="fr-tag tag-next">next</span>
       </div>
     </div>
-  </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--plum-l)">🧠</div>
+      <div class="fr-body">
+        <div class="fr-title">3. build brain tab — stream + wiki</div>
+        <div class="fr-desc">Mobile stream: dark header, recency clusters, question queue, domain chips. Desktop wiki: sidebar with people/topics, main panel shows person/topic page with facts + entries. Toggle: stream / galaxy / wiki in top right. Spec in brain tab section above.</div>
+        <span class="fr-tag tag-next">after deploy</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--gold-l)">🌌</div>
+      <div class="fr-body">
+        <div class="fr-title">4. build galaxy view</div>
+        <div class="fr-desc">12 nodes on a canvas. Center "your brain" ✦. Nodes radiate outward. Tap to open detail panel from bottom. Search bar at top always available. Mobile: full-screen overlay via ✦ button on brain tab. Desktop: accessible via mode toggle. Color + node specs in galaxy section above.</div>
+        <span class="fr-tag tag-soon">sprint 2</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--green-l)">👥</div>
+      <div class="fr-body">
+        <div class="fr-title">5. let beta users in</div>
+        <div class="fr-desc">Flip is_approved for first 5-8 users from Threads (20 waiting). Watch what they reach for first. Does the stream feel right? Do they use stacks or capture? Let their behavior inform whether brain-first direction is validated before building more.</div>
+        <span class="fr-tag tag-soon">sprint 2</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--teal-l)">🔍</div>
+      <div class="fr-body">
+        <div class="fr-title">6. semantic search</div>
+        <div class="fr-desc">Current search is lexical. Need meaning-based retrieval — "the thing about Jackson's food" must find the safe foods entry. Likely: embed entries on save, vector search on query. This is the differentiator from Apple Notes. Do not ship as full product without it.</div>
+        <span class="fr-tag tag-open">backlog</span>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--paper)">🎙</div>
+      <div class="fr-body">
+        <div class="fr-title">7. voice capture</div>
+        <div class="fr-desc">Research shows voice notes outperform text journaling significantly for ND brains. Attachment button in capture bar is the entry point. Open question: does playback anxiety reduce usage? Test with beta users before building full voice pipeline.</div>
+        <span class="fr-tag tag-open">backlog</span>
+      </div>
+    </div>
+  </section>
 
-  <div class="divider"></div>
+  <!-- OPEN QUESTIONS -->
+  <section class="section" id="open-questions">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--ink4)"></span>
+      <div><div class="section-num">UNRESOLVED</div><h2 class="section-title">open questions</h2></div>
+    </div>
+    <div class="card">
+      <div class="card-title">product</div>
+      <p>Does voice capture actually replace text capture for ND moms, or does playback anxiety reduce usage? What's the right threshold for AI-suggested connections — how many entries before connections feel useful vs. overwhelming? Does "this entry is connected to 3 others" as a badge create pressure to review those connections? At what cadence does a "from a while back" memory card delight vs. feel like the app is time-traveling on you?</p>
+    </div>
+    <div class="card">
+      <div class="card-title">architecture</div>
+      <p>"ask brain" button on home — does it open a dedicated chat-style view, or expand the capture bar inline into a back-and-forth? Pinned tiles grid — 2×2 for 4, or scrollable horizontal for unlimited? Lapsed-contact query — when should we add a real last_contact field to brain_entries vs. deriving from widget_responses?</p>
+    </div>
+    <div class="card">
+      <div class="card-title">beta</div>
+      <p>How many users before we can validate the brain-first direction? What do we watch for — are they using the stream, the stacks, or just the capture bar? If users stop going to stacks after 2 weeks, brain-first is confirmed. If they still go to stacks, the direction needs revision.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">cascade care (separate project)</div>
+      <p>Outstanding before real onboarding: attorney review of consent copy, production Supabase, Resend wiring, real staff invite flow. Pricing: $250/month per church, 70/30 split with Dr. Kevin Murriel. Do not confuse with spoonstack build work.</p>
+    </div>
+  </section>
 
-  <!-- ARTIFACTS -->
-  <div id="artifacts">
-    <h2>all artifacts</h2>
-    <p>every document, brief, and spec created for spoonstack. most recent and relevant first.</p>
-
-    <h3>specs + briefs (created this session)</h3>
-    <a class="artifact-card" href="#opening-prompt">
-      <div class="artifact-icon">📋</div>
-      <div><div class="artifact-title">spoonstack playbook (this document)</div><div class="artifact-desc">everything about spoonstack in one place · june 15 2026</div></div>
-      <div class="artifact-chip">playbook</div>
-    </a>
-    <div class="artifact-card">
-      <div class="artifact-icon">🧠</div>
-      <div><div class="artifact-title">brain product brief</div><div class="artifact-desc">ND brain architecture research → 14 build priorities + 3 Claude Code prompts · june 14 2026</div></div>
-      <div class="artifact-chip">spoonstack-brain-product-brief.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🔍</div>
-      <div><div class="artifact-title">widget blueprint v3</div><div class="artifact-desc">29 widgets · triggers · inputs · outputs · family safe foods · built from real usage · june 11 2026</div></div>
-      <div class="artifact-chip">spoonstack-widget-blueprint-v3.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🧪</div>
-      <div><div class="artifact-title">QA blueprint v1</div><div class="artifact-desc">every widget · every state · copy rules · spoon budget · crisis protocol · audit 1 Claude Code prompt</div></div>
-      <div class="artifact-chip">spoonstack-qa-blueprint-v1.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🗺</div>
-      <div><div class="artifact-title">journey map — first 5 minutes</div><div class="artifact-desc">new user journey · break report · fix priority list · emotional arc</div></div>
-      <div class="artifact-chip">spoonstack-journey-map.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">✅</div>
-      <div><div class="artifact-title">launch checklist</div><div class="artifact-desc">P0/P1/P2 tasks · visual test checklist · brain seed prompt · threads post · beta flow</div></div>
-      <div class="artifact-chip">spoonstack-launch-checklist.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">📊</div>
-      <div><div class="artifact-title">Playwright test plan</div><div class="artifact-desc">full widget test plan · all 29 widgets · states · realistic Brittany inputs</div></div>
-      <div class="artifact-chip">spoonstack-playwright-test-plan.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🔬</div>
-      <div><div class="artifact-title">ND brain architecture research</div><div class="artifact-desc">8 research areas · 3 modes of touching your brain · 10 design principles · what not to build</div></div>
-      <div class="artifact-chip">nd-brain-architecture-research.html</div>
-    </div>
-
-    <h3 style="margin-top:24px">project files (in repo)</h3>
-    <div class="artifact-card">
-      <div class="artifact-icon">📝</div>
-      <div><div class="artifact-title">ND patterns report</div><div class="artifact-desc">16 named ND patterns · detection logic · community vocabulary · care vs surveillance test</div></div>
-      <div class="artifact-chip">nd-patterns-report.md</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🏠</div>
-      <div><div class="artifact-title">home wireframes</div><div class="artifact-desc">home screen design options A B C · widget grid layout</div></div>
-      <div class="artifact-chip">home-wireframes.html</div>
-    </div>
-    <div class="artifact-card">
-      <div class="artifact-icon">🎨</div>
-      <div><div class="artifact-title">spoonstack landing page v2</div><div class="artifact-desc">current landing page design</div></div>
-      <div class="artifact-chip">spoonstack-landing-v2.html</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- OPENING PROMPT REPEATED -->
-  <div>
-    <h2>opening prompt (repeated)</h2>
+  <!-- OPENING PROMPT REPEAT -->
+  <section class="section">
     <div class="prompt-box">
-      <div class="prompt-label">copy · paste into new conversation</div>
-      <pre id="opening-text-2">I'm building spoonstack — an AI second brain for neurodivergent adults. Built by Brittany May (AuDHD). Live at spoonstack.app. Repo: alittleagency/spoonstack-os. Project at ~/Downloads/spoonstack-os.
+      <div class="prompt-label">opening prompt · copy + paste</div>
+      <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
 
-Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel
+CURRENT STATE — june 17 2026:
+✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
+✓ 29 widgets across 7 stacks · brain seeded with 352 entries
+✓ Home screen rebuild committed (branch: claude/home-brain-first)
+✓ brain_inbox migration complete
 
-WORKING: sign-in, 29 widgets across 7 stacks, brain seeded (352 entries), bottom sheets, work with me, regulator, brain redesign
+STILL BROKEN (P0):
+✗ OOO widget shows form not textarea
+✗ People circles wrong route
+✗ Save to brain no toast
+✗ Pinned tile opens stack page not widget
 
-BROKEN: OOO structured form, people circles routing, save to brain toast, full widget test not run, RESEND_API_KEY not set
+ARCHITECTURE (locked):
+Brain is front door. Capture → inbox (AI processes) → brain. Home leads with capture bar. Brain tab: stream (mobile) + wiki (desktop) + galaxy (12 vision-board nodes). Galaxy nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith (peach).
 
-FAMILY: Brittany (AuDHD) · Branden (ADHD, partner) · Bella (13, cheer) · Ruby (10, IEP, dyslexia) · Jackson (10, autistic, safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
+FAMILY: Brittany (AuDHD founder) · Branden (partner ADHD) · Bella (13 cheer) · Ruby (10 twins dyslexia IEP) · Jackson (10 twins autistic storybots+maroon5 safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
 
-LOCKED: "spoonstack" always lowercase · stack names never change · route /display/my-family · route /display/out-of-sight · route /display/right-now
+LOCKED NAMES: spoonstack lowercase always · "out of sight, not out of mind" · "my family" · "we can do hard things" · "where did it go" · no em dashes · no exclamation marks
 
-NEW DIRECTION: brain-first architecture — discuss before building. widgets may become background agents triggered from brain dumps.
+SKILLS: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
 
-USE SKILLS: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries</pre>
-      <button class="copy-btn" onclick="copy('opening-text-2',this)">copy prompt</button>
+NEXT: 1. Fix P0 bugs 2. Merge + deploy home screen 3. Build brain tab stream+wiki 4. Build galaxy view 5. Let first 5-8 beta users in</div>
     </div>
-  </div>
+  </section>
 
 </main>
+</div>
 
 <script>
-function copy(id, btn){
-  navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(()=>{
-    btn.textContent='copied!';
-    setTimeout(()=>btn.textContent='copy prompt',2000);
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => {
+        n.classList.toggle('active', n.getAttribute('href') === '#' + e.target.id);
+      });
+    }
   });
-}
-// Sidebar active state
-const links = document.querySelectorAll('.sb-link[href^="#"]');
-window.addEventListener('scroll',()=>{
-  const sections = document.querySelectorAll('[id]');
-  let cur = '';
-  sections.forEach(s=>{if(window.scrollY >= s.offsetTop-120) cur=s.id});
-  links.forEach(l=>{
-    l.style.color = l.getAttribute('href')==='#'+cur ? 'rgba(255,255,255,.9)' : '';
+}, { threshold: 0.2 });
+sections.forEach(s => observer.observe(s));
+navItems.forEach(n => {
+  n.addEventListener('click', e => {
+    e.preventDefault();
+    const id = n.getAttribute('href').slice(1);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   });
 });
 </script>
