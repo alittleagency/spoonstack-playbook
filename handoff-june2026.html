@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>spoonstack — handoff june 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --gold: #DAAF2E;
+    --gold-tint: #FDF6DC;
+    --gold-text: #6B4C00;
+    --cream: #FFFDF7;
+    --page-bg: #FAFAF7;
+    --dark: #2C2820;
+    --mid: #6B6254;
+    --muted: #8A8070;
+    --faint: #B5AA97;
+    --ink-light: rgba(44,40,32,.08);
+    --plum: #7B2D8B;
+    --plum-tint: #F3EAF7;
+    --green: #1D9E75;
+    --green-tint: #E1F5EE;
+    --red: #D85A30;
+    --red-tint: #FAECE7;
+    --teal: #2A7A8C;
+    --teal-tint: #E0F2F7;
+    --purple: #5C4FC7;
+    --purple-tint: #ECEAFA;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--page-bg);
+    color: var(--dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  .toc-sidebar {
+    position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+    background: var(--cream); border-right: .5px solid var(--ink-light);
+    overflow-y: auto; padding: 28px 0 40px; z-index: 10;
+  }
+  .toc-logo {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 0 20px 20px; border-bottom: .5px solid var(--ink-light); margin-bottom: 16px;
+  }
+  .toc-section {
+    padding: 6px 20px 2px; font-family: var(--mono); font-size: 8px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-top: 10px;
+  }
+  .toc-link {
+    display: block; padding: 5px 20px; font-size: 11px; color: var(--mid);
+    text-decoration: none; line-height: 1.4; transition: color .12s, background .12s;
+  }
+  .toc-link:hover { color: var(--dark); background: var(--page-bg); }
+
+  .main { margin-left: 220px; max-width: 860px; padding: 0 48px; }
+
+  .doc-header { padding: 52px 0 40px; border-bottom: .5px solid var(--ink-light); margin-bottom: 48px; }
+  .doc-eyebrow { font-family: var(--mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .doc-title { font-size: 36px; font-weight: 800; letter-spacing: -.03em; line-height: 1.05; color: var(--dark); margin-bottom: 14px; }
+  .doc-sub { font-size: 15px; color: var(--mid); line-height: 1.65; max-width: 560px; }
+
+  .section {
+    margin-bottom: 56px; padding-bottom: 56px; border-bottom: .5px solid var(--ink-light);
+    scroll-margin-top: 24px;
+  }
+  .section:last-child { border-bottom: none; }
+  .section-eyebrow {
+    font-family: var(--mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .section-title { font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--dark); margin-bottom: 20px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--cream); border: .5px solid var(--ink-light); border-radius: 14px;
+    padding: 20px 22px; margin-bottom: 12px;
+  }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+  .card-body { font-size: 12.5px; color: var(--mid); line-height: 1.7; }
+  .card-body p + p { margin-top: 6px; }
+
+  /* ── Status rows ── */
+  .status-list { display: flex; flex-direction: column; gap: 8px; }
+  .status-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; background: var(--cream);
+    border: .5px solid var(--ink-light); border-radius: 10px; font-size: 12.5px;
+  }
+  .status-row.done { border-left: 3px solid var(--green); }
+  .status-row.open { border-left: 3px solid var(--gold); }
+  .status-row.critical { border-left: 3px solid var(--red); }
+  .status-dot { flex-shrink: 0; margin-top: 3px; }
+  .status-text { color: var(--dark); line-height: 1.55; }
+  .status-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── Chips ── */
+  .chip {
+    display: inline-block; padding: 2px 8px; border-radius: 100px;
+    font-family: var(--mono); font-size: 8px; letter-spacing: .07em;
+    text-transform: uppercase; font-weight: 600; vertical-align: middle;
+  }
+  .chip-done { background: var(--green-tint); color: var(--green); }
+  .chip-open { background: var(--gold-tint); color: var(--gold-text); }
+  .chip-critical { background: var(--red-tint); color: var(--red); }
+  .chip-info { background: var(--teal-tint); color: var(--teal); }
+
+  /* ── People cards ── */
+  .people-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .person-card {
+    padding: 14px 16px; background: var(--cream);
+    border: .5px solid var(--ink-light); border-radius: 12px;
+  }
+  .person-name { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 2px; }
+  .person-note { font-size: 11.5px; color: var(--mid); line-height: 1.5; }
+
+  /* ── Stack grid ── */
+  .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stack-card {
+    padding: 14px 16px; background: var(--cream);
+    border: .5px solid var(--ink-light); border-radius: 12px; border-top: 3px solid currentColor;
+  }
+  .stack-name { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .stack-widgets { font-size: 11px; color: var(--mid); line-height: 1.6; }
+
+  /* ── Code block ── */
+  .code-block {
+    font-family: var(--mono); font-size: 11px; line-height: 1.9;
+    background: #1A1714; color: rgba(255,255,255,.82); border-radius: 10px;
+    padding: 16px 18px; margin: 12px 0; overflow-x: auto;
+  }
+  .code-block .k { color: #DAAF2E; }
+  .code-block .s { color: #7DD8A4; }
+  .code-block .c { color: rgba(255,255,255,.35); font-style: italic; }
+
+  /* ── Section divider ── */
+  .divider {
+    display: flex; align-items: center; gap: 12px; margin: 28px 0 20px;
+  }
+  .divider-line { flex: 1; height: .5px; background: var(--ink-light); }
+  .divider-label { font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    padding: 18px 22px; border-radius: 14px; margin-top: 20px;
+  }
+  .highlight-box.gold { background: var(--gold-tint); border: .5px solid rgba(218,175,46,.2); }
+  .highlight-box.red { background: var(--red-tint); border: .5px solid rgba(216,90,48,.2); }
+  .highlight-box .hb-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px;
+  }
+  .highlight-box.red .hb-label { color: var(--red); }
+  .highlight-box p { font-size: 13px; color: var(--dark); line-height: 1.7; }
+
+  code {
+    font-family: var(--mono); font-size: .85em; background: var(--page-bg);
+    border: .5px solid var(--ink-light); border-radius: 4px; padding: 1px 5px; color: var(--mid);
+  }
+
+  @media (max-width: 800px) {
+    .toc-sidebar { display: none; }
+    .main { margin-left: 0; padding: 0 20px; }
+    .people-grid, .stack-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc-sidebar">
+  <div class="toc-logo">spoonstack<br>handoff · june 2026</div>
+
+  <div class="toc-section">what's live</div>
+  <a class="toc-link" href="#live">production status</a>
+  <a class="toc-link" href="#stacks">stacks + widgets</a>
+  <a class="toc-link" href="#auth">auth + middleware</a>
+  <a class="toc-link" href="#payments">payments + approval</a>
+  <a class="toc-link" href="#tests">test suite</a>
+
+  <div class="toc-section">still open</div>
+  <a class="toc-link" href="#open">open items</a>
+  <a class="toc-link" href="#phase2">phase 2</a>
+
+  <div class="toc-section">context</div>
+  <a class="toc-link" href="#family">real family</a>
+  <a class="toc-link" href="#demo">demo family</a>
+  <a class="toc-link" href="#tech">tech + repo</a>
+</nav>
+
+<div class="main">
+
+  <header class="doc-header">
+    <div class="doc-eyebrow">spoonstack · internal · june 19 2026</div>
+    <h1 class="doc-title">handoff — june 2026</h1>
+    <p class="doc-sub">everything built and deployed in the june 17–19 sprint. what's live on production, what's still open, who the people are, and where everything lives.</p>
+  </header>
+
+  <!-- ═══ PRODUCTION STATUS ═══ -->
+  <section class="section" id="live">
+    <div class="section-eyebrow">what's live on production</div>
+    <h2 class="section-title">spoonstack.app — deployed june 19 2026</h2>
+
+    <div class="status-list">
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Brain-first home screen</strong> — capture bar, smart inbox, quick access tiles, curious card</div>
+          <div class="status-sub">CaptureBar routes brain entries: questions answered inline, widget intents open bottom sheets, saves with "saved ✦" toast. SmartInbox shows recent unresolved entries with per-row dismiss (sessionStorage). PinnedWidgets: 4 quick-access tiles inline as bottom sheets.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Brain router intelligence</strong> — capture bar classifies every input</div>
+          <div class="status-sub">action: answer for any question (what/who/where/when/how/why/do/does/did/can/is/are or ends with ?). action: widget for clear widget intents. action: save for everything else. Brain context searched first; says "i don't have that in your brain yet" if not found.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>6-tab bottom nav</strong> — home, out of sight, people, brain, a minute, stacks</div>
+          <div class="status-sub">Phase2Nav.tsx. Fixed label: "stacks" (was "shelf"). Nav aria-label="main navigation". All 6 routes wired and tested.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Onboarding — 4 screens</strong></div>
+          <div class="status-sub">Screen 1: who's in your world (people + kids). Screen 2: what's coming up (schedule). Screen 3: what's on your mind (general dump). Screen 4: "your brain is ready." dark moment → /display. Sets onboarding_complete = true.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>/pending — auto-polls every 5s, redirects on approval</strong></div>
+          <div class="status-sub">useEffect polls profiles.is_approved every 5 seconds. clearInterval + router.push('/display') on true. Copy: "we'll take you in automatically when you're approved. no need to refresh."</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Stripe webhook — auto-approves paid users, sends approval email</strong></div>
+          <div class="status-sub">/api/stripe/webhook: checkout.session.completed sets is_paid = true AND is_approved = true in one update. Fires sendApprovalEmail via Resend. Paid users approved in seconds, no manual step.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Admin approve endpoint</strong> — POST /api/admin/approve</div>
+          <div class="status-sub">Brittany-only (user ID check → 403 for anyone else). Sets is_approved = true. Looks up email from Supabase auth. Fires sendApprovalEmail. Used for beta users; same email as paid flow.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Auth — cookie-based middleware, 307 redirect for protected routes</strong></div>
+          <div class="status-sub">middleware.ts: "/" always rewrites to landing.html (no auth check). Public paths pass through. Protected paths (/display, /brain, /people, /onboarding) check sb-xyxdcwtcfhhczucddhhj-auth-token cookie. No Supabase client on edge. Bundle: 83kB → 27kB. curl https://spoonstack.app/display returns 307 /sign-in.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>Landing page</strong> — Wallace family demo, 29 widgets, Stripe CTAs</div>
+          <div class="status-sub">public/landing.html. Story copy updated. Widget library emoji removed (mobile Safari fix). Demo names: Diane/Andre/Simone/Noah/Lily (not Brittany/jackson). All 3 "get early access" links → Stripe with target="_blank". Footer: "built by brittany may."</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">live</span></span>
+        <div>
+          <div class="status-text"><strong>82/82 Playwright tests passing</strong></div>
+          <div class="status-sub">tests/qa-full/full-qa.spec.ts. 13 groups: landing (unauthenticated), auth, home, capture bar intelligence, all 8 stacks, content audit (no stale copy), brain tab. Runs against production. Auth: qa-test@spoonstack.app / QAtest2026!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STACKS + WIDGETS ═══ -->
+  <section class="section" id="stacks">
+    <div class="section-eyebrow">stacks + widgets</div>
+    <h2 class="section-title">29 widgets across 8 stacks</h2>
+
+    <div class="stack-grid">
+      <div class="stack-card" style="color:#7B2D8B;">
+        <div class="stack-name">just me</div>
+        <div class="stack-widgets">my ideas · what went well today · things I know for sure · my patterns</div>
+      </div>
+      <div class="stack-card" style="color:#9A7A00;">
+        <div class="stack-name">my day</div>
+        <div class="stack-widgets">order of operations · dinner decider · one hard thing · partner briefing · tomorrow preview · scan + log</div>
+      </div>
+      <div class="stack-card" style="color:#5A7A00;">
+        <div class="stack-name">this week</div>
+        <div class="stack-widgets">week at a glance · meal plan + grocery</div>
+      </div>
+      <div class="stack-card" style="color:#D85A30;">
+        <div class="stack-name">we can do hard things</div>
+        <div class="stack-widgets">regulator · right now in my body · where did the time go · who haven't I talked to</div>
+      </div>
+      <div class="stack-card" style="color:#1D9E75;">
+        <div class="stack-name">my family</div>
+        <div class="stack-widgets">teacher email draft · kid behavior · iep prep · delegate to partner</div>
+      </div>
+      <div class="stack-card" style="color:#2A7A8C;">
+        <div class="stack-name">out of sight</div>
+        <div class="stack-widgets">ask the vault · where did it go · what was I doing · safe foods by person · medical notes</div>
+      </div>
+      <div class="stack-card" style="color:#E8399A;">
+        <div class="stack-name">people</div>
+        <div class="stack-widgets">texts + messages · this text thread · who haven't I talked to</div>
+      </div>
+      <div class="stack-card" style="color:#5C4FC7;">
+        <div class="stack-name">while you have a minute</div>
+        <div class="stack-widgets">work with me · where did the time go · what needs doing · side quests</div>
+      </div>
+    </div>
+
+    <div class="highlight-box gold" style="margin-top:20px;">
+      <div class="hb-label">quick access (pinned on home screen)</div>
+      <p>partner briefing · regulator · ask the vault · where did I put it — open inline as bottom sheets directly from /display. No stack navigation needed.</p>
+    </div>
+  </section>
+
+  <!-- ═══ AUTH + MIDDLEWARE ═══ -->
+  <section class="section" id="auth">
+    <div class="section-eyebrow">auth + middleware</div>
+    <h2 class="section-title">cookie check — no Supabase on edge</h2>
+
+    <div class="card">
+      <div class="card-title">middleware.ts — final architecture</div>
+      <div class="card-body">
+        <p><strong>"/"</strong> — always rewrites to <code>public/landing.html</code>. No auth check. Logged-in users see the landing page, not /display.</p>
+        <p><strong>Public paths</strong> — /sign-in, /sign-up, /forgot-password, /reset-password, /pending, /upgrade, /api, /landing.html — all pass through with <code>NextResponse.next()</code>.</p>
+        <p><strong>Protected paths</strong> — /display, /brain, /people, /onboarding — check for cookie <code>sb-xyxdcwtcfhhczucddhhj-auth-token</code>. Missing cookie → 307 to /sign-in. Cookie present → pass through. App handles session validation after that.</p>
+        <p style="margin-top:8px;">No <code>createServerClient</code>, no <code>updateSession</code>, no edge crypto. Bundle size dropped from 83kB to 27kB.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="c"># smoke test — should return 307</span>
+curl -s -o /dev/null -w "%{http_code} %{redirect_url}" https://spoonstack.app/display
+<span class="c"># → 307 https://spoonstack.app/sign-in</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Supabase project</div>
+      <div class="card-body">
+        <p>Project ID: <code>xyxdcwtcfhhczucddhhj</code></p>
+        <p>Auth cookie name: <code>sb-xyxdcwtcfhhczucddhhj-auth-token</code></p>
+        <p>Service role key: in <code>.env.local</code> as <code>SUPABASE_SERVICE_ROLE_KEY</code> — never client-side.</p>
+        <p>Browser client: <code>getSupabaseClient()</code> · Server-only: <code>getSupabaseServiceClient()</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PAYMENTS ═══ -->
+  <section class="section" id="payments">
+    <div class="section-eyebrow">payments + approval flow</div>
+    <h2 class="section-title">Stripe → auto-approve → email → /pending → /display</h2>
+
+    <div class="status-list">
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">step 1</span></span>
+        <div>
+          <div class="status-text"><strong>Stripe checkout</strong></div>
+          <div class="status-sub">URL: https://buy.stripe.com/cNicN54Vo8hSbox2Ok3ZK00 · $79/year · target="_blank" on all landing page CTAs</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">step 2</span></span>
+        <div>
+          <div class="status-text"><strong>Webhook fires</strong> — <code>POST /api/stripe/webhook</code></div>
+          <div class="status-sub">Event: checkout.session.completed. Sets is_paid = true AND is_approved = true in profiles. Fires sendApprovalEmail (lib/email.ts via Resend). Idempotent.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">step 3</span></span>
+        <div>
+          <div class="status-text"><strong>/pending polls</strong> every 5 seconds</div>
+          <div class="status-sub">Checks profiles.is_approved. When true: clearInterval + router.push('/display'). No refresh needed.</div>
+        </div>
+      </div>
+      <div class="status-row done">
+        <span class="status-dot"><span class="chip chip-done">beta</span></span>
+        <div>
+          <div class="status-text"><strong>Manual approve</strong> — <code>POST /api/admin/approve</code></div>
+          <div class="status-sub">Body: <code>{"userId": "..."}</code> · Authorization: Bearer &lt;brittany-token&gt; · 403 for non-Brittany callers. Same approval email fires.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box red" style="margin-top:20px;">
+      <div class="hb-label">critical open gap</div>
+      <p>If she pays before creating a Supabase account, <code>client_reference_id</code> is null. Webhook can't find the profile to update. She's in limbo. Fix: pre-registration email capture before Stripe, or a <code>stripe_purchases</code> lookup table that matches paid emails on sign-up.</p>
+    </div>
+  </section>
+
+  <!-- ═══ TEST SUITE ═══ -->
+  <section class="section" id="tests">
+    <div class="section-eyebrow">playwright test suite</div>
+    <h2 class="section-title">82/82 passing · spoonstack.app · june 19 2026</h2>
+
+    <div class="card">
+      <div class="card-title">running the suite</div>
+      <div class="card-body">
+        <p>File: <code>tests/qa-full/full-qa.spec.ts</code> · Config: <code>playwright.config.ts</code></p>
+        <p>Auth: <code>qa-test@spoonstack.app</code> / <code>QAtest2026!</code> · Saved to <code>tests/qa-full/.auth/user.json</code></p>
+        <p>Device: Chromium, iPhone 14 viewport (390×844). Hits live production.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+npx playwright test tests/qa-full/full-qa.spec.ts --reporter=list
+    </div>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-label">test groups</div><div class="divider-line"></div></div>
+
+    <div class="status-list">
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G0</span></span><div><div class="status-text"><strong>Landing page</strong> (10 tests, unauthenticated)</div><div class="status-sub">200 status, hero h1, story text, 3 cards, 5 demo tabs, no stale names, 29 widgets, $79/year, footer, CTA href</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G1</span></span><div><div class="status-text"><strong>Auth</strong> (4 tests)</div><div class="status-sub">/display → /sign-in redirect, /brain → /sign-in redirect, sign-in success, /pending loads</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G2</span></span><div><div class="status-text"><strong>Home screen</strong> (12 tests)</div><div class="status-sub">Page loads, capture bar save, all 5 nav tabs, placeholder, quick access before inbox in DOM, inbox visible, 6-label nav</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G2B</span></span><div><div class="status-text"><strong>Capture bar intelligence</strong> (3 tests)</div><div class="status-sub">Question → inline answer, task list → routes to widget page, memory note → saved toast</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G3</span></span><div><div class="status-text"><strong>Just Me stack</strong> (4 tests)</div><div class="status-sub">my ideas add, what went well, things I know for sure, my patterns analyze</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G4</span></span><div><div class="status-text"><strong>My Day stack</strong> (6 tests)</div><div class="status-sub">order of operations, dinner decider, one hard thing, partner briefing, tomorrow preview, scan + log</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G5</span></span><div><div class="status-text"><strong>This Week stack</strong> (2 tests)</div><div class="status-sub">week at a glance, meal plan + grocery</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G6</span></span><div><div class="status-text"><strong>We Can Do Hard Things</strong> (3 tests)</div><div class="status-sub">regulator, right now in my body, where did the time go</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G7</span></span><div><div class="status-text"><strong>My Family stack</strong> (4 tests)</div><div class="status-sub">teacher email, kid behavior decoder, IEP prep, delegate to partner</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G8</span></span><div><div class="status-text"><strong>Out of Sight stack</strong> (5 tests)</div><div class="status-sub">ask the vault, where did it go, what was I doing, safe foods by person, medical notes</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G9</span></span><div><div class="status-text"><strong>People stack</strong> (4 tests)</div><div class="status-sub">rolodex loads, texts + messages, this text thread, who haven't I talked to</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G10</span></span><div><div class="status-text"><strong>While You Have a Minute</strong> (4 tests)</div><div class="status-sub">page loads, what needs doing, side quests, where did the time go</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G11</span></span><div><div class="status-text"><strong>Brain tab</strong> (3 tests)</div><div class="status-sub">entries load, search, filter by category</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G12</span></span><div><div class="status-text"><strong>Content audit</strong> (12 tests)</div><div class="status-sub">No stale copy on 10 routes. No "shelf" nav label. "spoonstack" always lowercase in nav/header.</div></div></div>
+      <div class="status-row done"><span class="status-dot"><span class="chip chip-info">G13</span></span><div><div class="status-text"><strong>Brain tab expanded</strong> (5 tests)</div><div class="status-sub">light background, search input, filter pills, 5+ entries visible, search "jackson" works</div></div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">hard-won patterns</div>
+      <div class="card-body">
+        <p><code>waitForFunction</code> arg order: <code>fn, undefined, {'{'} timeout {'}'}</code> — NOT <code>fn, {'{'} timeout {'}'}</code> (passes options as arg, defaults to 30s timeout)</p>
+        <p>BottomSheet detection: <code>[style*="z-index: 100"]</code> catches all widget types including those without inputs.</p>
+        <p>React controlled inputs: <code>.fill()</code> then <code>toBeEnabled()</code> before clicking — never <code>force:true</code> before React state updates.</p>
+        <p>Submit buttons in BottomSheet always need <code>{'{'} force: true {'}'}</code> (overlapping divs intercept pointer events).</p>
+        <p>Content audit: "bella"/"jackson" on /display are intentional FAMILY_SCHEDULE placeholders → <code>skipPages: ["/display"]</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STILL OPEN ═══ -->
+  <section class="section" id="open">
+    <div class="section-eyebrow">still open</div>
+    <h2 class="section-title">not yet fixed / not yet verified</h2>
+
+    <div class="status-list">
+      <div class="status-row critical">
+        <span class="status-dot"><span class="chip chip-critical">critical</span></span>
+        <div>
+          <div class="status-text"><strong>Payment before account creation</strong></div>
+          <div class="status-sub">User pays on Stripe before signing up. client_reference_id is null. Webhook can't find profile. User is in limbo. Fix: pre-reg email capture before Stripe, or stripe_purchases lookup table.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">verify</span></span>
+        <div>
+          <div class="status-text"><strong>Widget library emoji on mobile Safari</strong></div>
+          <div class="status-sub">Emoji removed from widget card headers in landing.html — fix deployed. Needs re-verify on a real iPhone Safari session to confirm ? marks are gone.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">verify</span></span>
+        <div>
+          <div class="status-text"><strong>Quick access tiles inline behavior</strong></div>
+          <div class="status-sub">PinnedWidgets → bottom sheet flow just deployed. Needs verification on phone (partner briefing, regulator, ask the vault, where did I put it all open correctly).</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">manual QA</span></span>
+        <div>
+          <div class="status-text"><strong>Stacks not manually QA'd on phone</strong></div>
+          <div class="status-sub">Playwright covers all 8 stacks in Chromium. Manual QA on iOS Safari only through landing + auth + home screen. just-me, my-day, this-week, hard-things, my-family, out-of-sight, people, while-you-have-a-minute need phone walkthrough.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">not built</span></span>
+        <div>
+          <div class="status-text"><strong>Wiki / brain visualization</strong></div>
+          <div class="status-sub">BrainGraph component exists in /brain/map. Full wiki feature not yet built.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">needs improvement</span></span>
+        <div>
+          <div class="status-text"><strong>People rolodex card design</strong></div>
+          <div class="status-sub">Built but looks too CRM-like. Needs redesign to feel warmer and more personal.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">high</span></span>
+        <div>
+          <div class="status-text"><strong>No first-time guidance on /display</strong></div>
+          <div class="status-sub">New users land with no "start here" nudge. Highlight capture bar, brief tooltip: "start by typing anything."</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">high</span></span>
+        <div>
+          <div class="status-text"><strong>No carry-forward context between sessions</strong></div>
+          <div class="status-sub">Day 2+ should surface: "you left these unresolved yesterday." SmartInbox ranks by recency, not urgency.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">high</span></span>
+        <div>
+          <div class="status-text"><strong>No proactive time-sensitive surfacing</strong></div>
+          <div class="status-sub">Entries with dates near today should float to home screen automatically. IEP Thursday should appear Wednesday.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">medium</span></span>
+        <div>
+          <div class="status-text"><strong>Onboarding screen 4 not personalized</strong></div>
+          <div class="status-sub">"your brain is ready" copy is identical for everyone. Should say her name and kid names.</div>
+        </div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">medium</span></span>
+        <div>
+          <div class="status-text"><strong>No in-app feedback for beta users</strong></div>
+          <div class="status-sub">"useful? yes / kind of / no" after every AI response. One tap, logged.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHASE 2 ═══ -->
+  <section class="section" id="phase2">
+    <div class="section-eyebrow">phase 2</div>
+    <h2 class="section-title">not yet started</h2>
+    <div class="status-list">
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">phase 2</span></span>
+        <div><div class="status-text"><strong>Human design / cosmic blueprint feature</strong></div><div class="status-sub">Planned but scoped to phase 2. No code yet.</div></div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">phase 2</span></span>
+        <div><div class="status-text"><strong>Voice input for capture bar</strong></div><div class="status-sub">Web Speech API or native mobile voice. High-value for low-spoon days.</div></div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">phase 2</span></span>
+        <div><div class="status-text"><strong>Multi-entry parsing</strong></div><div class="status-sub">One dump → detect multiple items → offer to split. "I see 3 things in there — want me to split them up?"</div></div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">phase 2</span></span>
+        <div><div class="status-text"><strong>Magic link login</strong></div><div class="status-sub">Email entry → link sent. No password on first use. Removes the "I paid but can't log in" confusion.</div></div>
+      </div>
+      <div class="status-row open">
+        <span class="status-dot"><span class="chip chip-open">phase 2</span></span>
+        <div><div class="status-text"><strong>Global "ask the brain" search</strong></div><div class="status-sub">"what do you want to remember about ___?" across all entries. Conversational answer, not a list.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ REAL FAMILY ═══ -->
+  <section class="section" id="family">
+    <div class="section-eyebrow">real family — never in the demo</div>
+    <h2 class="section-title">Brittany's family</h2>
+
+    <div class="people-grid">
+      <div class="person-card" style="border-top: 3px solid var(--plum);">
+        <div class="person-name">Brittany May</div>
+        <div class="person-note">AuDHD, diagnosed at 37. Builder + founder. Atlanta, GA.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--teal);">
+        <div class="person-name">Branden</div>
+        <div class="person-note">Partner. ADHD.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--gold);">
+        <div class="person-name">Bella</div>
+        <div class="person-note">13. Cheer: Tuesday + Friday 4pm.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--green);">
+        <div class="person-name">Ruby</div>
+        <div class="person-note">10. Dyslexia + language IEP.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--red);">
+        <div class="person-name">Jackson</div>
+        <div class="person-note">10. Autistic. Safe foods: cheez-its, goldfish, bacon, olives, green beans, peas, protein yogurt, red grapes.</div>
+      </div>
+    </div>
+
+    <div class="highlight-box gold" style="margin-top:20px;">
+      <div class="hb-label">important</div>
+      <p>Bella, Ruby, Jackson are the real kids. Their names, conditions, and safe foods appear in Brittany's brain and in QA test seeds — but never in the landing page demo. Demo uses: Diane, Andre, Simone, Noah, Lily.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DEMO FAMILY ═══ -->
+  <section class="section" id="demo">
+    <div class="section-eyebrow">demo family — landing page only</div>
+    <h2 class="section-title">Wallace family</h2>
+
+    <div class="people-grid">
+      <div class="person-card" style="border-top: 3px solid var(--plum);">
+        <div class="person-name">Diane</div>
+        <div class="person-note">AuDHD. The user in every demo scenario. (Was "Brittany" — renamed june 19.)</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--teal);">
+        <div class="person-name">Andre</div>
+        <div class="person-note">Partner. ADHD. Photographer. Receives the partner briefing.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--gold);">
+        <div class="person-name">Simone</div>
+        <div class="person-note">13. Cheer. Mirrors Bella.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--red);">
+        <div class="person-name">Noah</div>
+        <div class="person-note">10. Autistic. Jackson's safe foods. (Was "jackson" — renamed june 19.) Safe foods: cheez-its, goldfish, bacon, olives, green beans, peas, protein yogurt, red grapes.</div>
+      </div>
+      <div class="person-card" style="border-top: 3px solid var(--green);">
+        <div class="person-name">Lily</div>
+        <div class="person-note">10. Noah's twin. Dyslexia + language IEP. Mirrors Ruby.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TECH ═══ -->
+  <section class="section" id="tech">
+    <div class="section-eyebrow">tech stack + repo</div>
+    <h2 class="section-title">where everything lives</h2>
+
+    <div class="card">
+      <div class="card-title">stack</div>
+      <div class="card-body">
+        <p>Next.js 14 App Router · TypeScript · Tailwind (used sparingly — most styling is inline style={}) · Supabase (Postgres + Auth) · Anthropic Claude API · Vercel</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">repos + local</div>
+      <div class="card-body">
+        <p>App repo: <code>alittleagency/spoonstack-os</code> (private) · Branch: <code>claude/spoonstack-design-system</code></p>
+        <p>Local: <code>~/Downloads/spoonstack-os</code></p>
+        <p>Playbook: <code>alittleagency/spoonstack-playbook</code> · GitHub Pages at <code>alittleagency.github.io/spoonstack-playbook</code></p>
+        <p>Vercel project: <code>prj_yIJDiCHhJBKtz8zwv3fr93HXqamN</code> · org: <code>team_Dn3eizhD7nQ9iKmmqSCef3BR</code></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">env vars</div>
+      <div class="card-body">
+        <p><code>NEXT_PUBLIC_SUPABASE_URL</code> · <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code></p>
+        <p><code>SUPABASE_SERVICE_ROLE_KEY</code> — server-only, never client-side</p>
+        <p><code>ANTHROPIC_API_KEY</code> · Stripe keys in Vercel dashboard</p>
+        <p>All in <code>.env.local</code> locally. After adding to Vercel, redeploy — restart dev server is not enough.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Stripe</div>
+      <div class="card-body">
+        <p>Checkout URL: <code>https://buy.stripe.com/cNicN54Vo8hSbox2Ok3ZK00</code></p>
+        <p>Price: $79/year · early access · locked in forever</p>
+        <p>Webhook: <code>/api/stripe/webhook</code> → <code>checkout.session.completed</code></p>
+        <p>Success redirect: <code>/api/stripe/success?session_id=…</code></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">key files to know</div>
+      <div class="card-body">
+        <p><code>middleware.ts</code> — cookie-based auth. "/" → landing.html. Protected paths → /sign-in.</p>
+        <p><code>public/landing.html</code> — entire landing page as static HTML. Do not touch accidentally.</p>
+        <p><code>app/display/page.tsx</code> — home screen. Do not touch without understanding the full component tree.</p>
+        <p><code>app/api/ai/widget/route.ts</code> — all AI widget calls go through here. SYSTEM_PROMPTS map.</p>
+        <p><code>app/api/brain/route/route.ts</code> — capture bar classification: save / widget / answer routing.</p>
+        <p><code>components/shared/Phase2Nav.tsx</code> — bottom nav (6 tabs). Label order matters for tests.</p>
+        <p><code>lib/email.ts</code> — <code>sendApprovalEmail()</code> — called from webhook and admin/approve endpoint.</p>
+        <p><code>tests/qa-full/full-qa.spec.ts</code> — 82-test Playwright suite. Run before every deploy.</p>
+      </div>
+    </div>
+
+    <div class="highlight-box gold" style="margin-top:20px;">
+      <div class="hb-label">deploy command</div>
+      <p style="font-family: var(--mono); font-size: 12px;">vercel --prod</p>
+      <p style="margin-top:8px;">Always deploy from the repo root. Stash uncommitted changes first if you only want to ship committed code. Build takes ~25–30s.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

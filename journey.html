@@ -1446,12 +1446,27 @@ sign in at spoonstack.app/sign-in and your brain is waiting.
           <td><span class="chip chip-partial">medium</span></td>
           <td>Multi-entry parsing: detect multiple items in one dump, offer to split</td>
         </tr>
+        <tr style="opacity:.7">
+          <td>Middleware used Supabase createServerClient on the edge — unreliable, large bundle, broke landing page for logged-in users</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Replaced with direct cookie check — no Supabase client, no edge crypto. "/" always serves landing.html. Protected paths check sb-*-auth-token cookie. Middleware bundle dropped 83kB → 27kB.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>No automated test coverage — regressions caught only by manual QA</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. 82 Playwright tests covering all 13 groups: landing page (unauthenticated), auth, home screen, capture bar intelligence, all 8 stacks, content audit, brain tab. 82/82 passing against production.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Landing page CTAs linked to /sign-up — Stripe checkout unreachable for landing visitors</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. All 3 early access links (nav, hero, bottom CTA) point to Stripe URL with target="_blank". Widget library emoji removed (mobile Safari rendered ? marks). Demo copy updated: jackson→noah, brittany→diane.</td>
+        </tr>
       </tbody>
     </table>
 
     <div style="margin-top: 40px; padding: 20px 24px; background: var(--gold-tint); border-radius: 14px; border: .5px solid rgba(218,175,46,.2);">
       <div style="font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 10px;">the one-sentence verdict</div>
-      <p style="font-size: 14px; color: var(--dark); line-height: 1.7;">The product works. The magic is real. June 18–19 fixed the full onboarding seam — paid users go from Stripe to approved to inbox in seconds, /pending auto-redirects, and the landing page now sends buyers straight to Stripe. The capture bar now answers questions inline; no separate UI needed. The last critical gap is payment-before-account-creation: a user who pays before signing up has no profile to update. Fix that and the paid user journey is end-to-end solid.</p>
+      <p style="font-size: 14px; color: var(--dark); line-height: 1.7;">The product works. The magic is real. June 18–19 fixed the full onboarding seam — paid users go from Stripe to approved to inbox in seconds, /pending auto-redirects, and the landing page now sends buyers straight to Stripe. The capture bar answers questions inline. Auth is now a direct cookie check — no edge Supabase client, no race conditions, 83kB lighter. 82 Playwright tests cover the full app and are running green. The last critical gap is payment-before-account-creation: a user who pays before signing up has no profile to update. Fix that and the paid user journey is end-to-end solid.</p>
     </div>
 
   </div>
