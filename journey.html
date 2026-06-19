@@ -530,7 +530,7 @@
 <div class="main">
 
   <header class="doc-header">
-    <div class="doc-eyebrow">spoonstack · internal · last updated june 18 2026</div>
+    <div class="doc-eyebrow">spoonstack · internal · last updated june 19 2026</div>
     <h1 class="doc-title">customer journey</h1>
     <p class="doc-sub">three complete user paths — what they see, what happens in the system, what's broken, and what's missing. written against the live codebase.</p>
   </header>
@@ -1361,6 +1361,26 @@ sign in at spoonstack.app/sign-in and your brain is waiting.
           <td><span class="chip chip-resolved">✓ built</span></td>
           <td>Exists. who's in your world → what's coming up → what's on your mind → your brain is ready.</td>
         </tr>
+        <tr style="opacity:.7">
+          <td>Landing page CTAs went to /sign-up — users paying couldn't reach Stripe</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. All 3 "get early access" links (nav, hero, bottom CTA) now go directly to Stripe checkout. target="_blank". Zero /sign-up hrefs remain in landing.html.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Questions typed into capture bar were saved as entries, not answered</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Brain router system prompt updated: any input starting with what/who/where/when/how/why/do/does/did/can/is/are or ending with ? always returns action: answer. Searches brain context first; if not found, says so. No separate UI needed.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>SmartInbox had no way to dismiss irrelevant entries for the session</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. X dismiss button per row. Dismissed IDs stored in sessionStorage (no DB write). Entries reappear on next session.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>What Was I Doing widget showed a general brain dump, not task-switch history</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Now fetches only category='activity' or general entries starting with activity phrases. Relative timestamps ("this morning", "yesterday", "3d ago"). Expand/collapse per entry. "+ log what I was doing" inline logger saves with category='activity'. Trains itself over time.</td>
+        </tr>
         <tr>
           <td>Payment before account creation — no way to reconcile Stripe payment to future Supabase user</td>
           <td><span class="chip chip-missing">critical</span></td>
@@ -1396,10 +1416,10 @@ sign in at spoonstack.app/sign-in and your brain is waiting.
           <td><span class="chip chip-partial">high</span></td>
           <td>Day 2+ greeting variant: "you left these unresolved yesterday. want to handle one?"</td>
         </tr>
-        <tr>
-          <td>/pending doesn't poll — user must refresh manually after approval</td>
-          <td><span class="chip chip-partial">medium</span></td>
-          <td>Poll every 30 seconds, auto-redirect to /onboarding when both flags flip true</td>
+        <tr style="opacity:.7">
+          <td>/pending auto-polls every 5 seconds, redirects to /display on approval</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. useEffect polls profiles.is_approved every 5s. clearInterval + router.push('/display') on true. Copy updated: "we'll take you in automatically."</td>
         </tr>
         <tr>
           <td>No in-app feedback mechanism for beta users</td>
@@ -1431,7 +1451,7 @@ sign in at spoonstack.app/sign-in and your brain is waiting.
 
     <div style="margin-top: 40px; padding: 20px 24px; background: var(--gold-tint); border-radius: 14px; border: .5px solid rgba(218,175,46,.2);">
       <div style="font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 10px;">the one-sentence verdict</div>
-      <p style="font-size: 14px; color: var(--dark); line-height: 1.7;">The product works. The magic is real. June 18 fixed the three biggest seams — paid users now go from payment to approved to email in seconds. The last critical gap is payment-before-account-creation: a user who pays before signing up has no profile to update. Fix that and the paid user journey is end-to-end solid.</p>
+      <p style="font-size: 14px; color: var(--dark); line-height: 1.7;">The product works. The magic is real. June 18–19 fixed the full onboarding seam — paid users go from Stripe to approved to inbox in seconds, /pending auto-redirects, and the landing page now sends buyers straight to Stripe. The capture bar now answers questions inline; no separate UI needed. The last critical gap is payment-before-account-creation: a user who pays before signing up has no profile to update. Fix that and the paid user journey is end-to-end solid.</p>
     </div>
 
   </div>
