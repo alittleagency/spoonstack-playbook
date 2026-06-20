@@ -205,7 +205,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
     <h1 class="page-title">the brain-first rebuild</h1>
     <p class="page-sub">everything decided in june 2026 — architecture, design, ND principles, and build priorities. read this before touching the codebase.</p>
     <div class="meta-row">
-      <span class="meta-chip">june 17 2026</span>
+      <span class="meta-chip">june 20 2026</span>
       <span class="meta-chip">Next.js 14 · Supabase · Claude API</span>
       <span class="meta-chip">live: spoonstack.app</span>
       <span class="meta-chip">repo: alittleagency/spoonstack-os</span>
@@ -223,21 +223,24 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="prompt-label">copy + paste into new conversation</div>
       <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
 
-CURRENT STATE — june 17 2026:
+CURRENT STATE — june 20 2026:
 ✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
-✓ 29 widgets across 7 stacks
-✓ Brain seeded with 352 entries
+✓ 29 widgets across 7 stacks · brain seeded with 352 entries
 ✓ Payment gate + manual approval live
-✓ Home screen rebuild committed (branch: claude/home-brain-first) — CaptureBar, PinnedWidgets, NeedsAttention, SmartInbox, /api/ai/inbox-process
-✓ brain_inbox migration complete (new cols: raw_text, brain_text, brain_sub, category, urgency, specific_day)
+✓ Home screen live and deployed — CaptureBar (smart routing: save/widget/answer with brain context), PinnedWidgets (4 tiles open inline bottom sheets), SmartInbox ("while you have a minute" + sort-it-out AI sheet), OooBottomSheet (timeline + 2-turn refine + time labels), GreetingCard (family schedule with event times)
+✓ Bottom nav: 4 tabs (home · people · brain · stacks)
+✓ Regulator: 6 path pills on open (shame, can't name it, want to reply, never send, replaying, something happened)
+✓ Partner briefing: 3 refinement pills after generation (make it shorter, make it funnier, change the tone)
+✓ CaptureBar: ambiguity detection, inline answer display, brain context fetch for questions
+✓ 82/82 Playwright tests passing · branch: claude/spoonstack-design-system
 
-STILL BROKEN (P0):
-✗ OOO widget still shows structured form instead of textarea
-✗ People circles on home go to wrong route
-✗ Save to Brain has no visual confirmation toast
-✗ Pinned tile tap goes to stack page not widget directly
+NOT YET BUILT:
+✗ Brain tab — stream + wiki + galaxy (designed, not built — spec in playbook)
+✗ Semantic search — current search is lexical only
+✗ New user onboarding — no "start here" moment on first login
+✗ Beta users not yet admitted (20 from Threads waiting)
 
-ARCHITECTURE (locked june 15 epiphany):
+ARCHITECTURE (locked june 15):
 The brain is the front door. Widgets are background agents triggered from brain dumps, not navigated to directly. Capture → inbox (AI processes, auto-sorts) → brain (permanent, searchable). Home screen leads with capture bar. Brain tab has three views: stream (mobile default), wiki (desktop default), galaxy (visual mind map, 12 vision-board category nodes).
 
 FAMILY (never change):
@@ -253,11 +256,10 @@ LOCKED NAMES (never change):
 SKILLS TO USE: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
 
 NEXT ACTIONS (in order):
-1. Fix P0 bugs — OOO textarea, people routing, save-to-brain toast, pinned tile direct widget open
-2. Merge claude/home-brain-first to main and deploy
-3. Build brain tab — mobile stream view + desktop wiki view (spec in playbook)
-4. Build galaxy view — 12 nodes (ideas, questions, home, family, friends, work, fun, rest, active projects, wealth, health, faith)
-5. Let first 5-8 beta users in (20 from Threads waiting)</div>
+1. Build brain tab — mobile stream view + desktop wiki view (spec in playbook)
+2. Build galaxy view — 12 nodes (ideas, questions, home, family, friends, work, fun, rest, active projects, wealth, health, faith)
+3. Let first 5-8 beta users in (20 from Threads waiting)
+4. Semantic search — embed entries on save, vector search on query</div>
     </div>
   </section>
 
@@ -696,17 +698,16 @@ NEXT ACTIONS (in order):
       <div class="prompt-label">opening prompt · copy + paste</div>
       <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
 
-CURRENT STATE — june 17 2026:
+CURRENT STATE — june 20 2026:
 ✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
-✓ 29 widgets across 7 stacks · brain seeded with 352 entries
-✓ Home screen rebuild committed (branch: claude/home-brain-first)
-✓ brain_inbox migration complete
+✓ 29 widgets · 7 stacks · 352 brain entries · payment gate live
+✓ Home screen live — CaptureBar (smart routing: save/widget/answer), PinnedWidgets (4 tiles → bottom sheets), SmartInbox ("while you have a minute" + sort-it-out sheet), OooBottomSheet (timeline + refine), 4-tab nav (home · people · brain · stacks)
+✓ Regulator: 6 path pills · Partner briefing: 3 refinement pills
+✓ 82/82 Playwright tests passing · deployed: spoonstack.app
 
-STILL BROKEN (P0):
-✗ OOO widget shows form not textarea
-✗ People circles wrong route
-✗ Save to brain no toast
-✗ Pinned tile opens stack page not widget
+NOT YET BUILT:
+✗ Brain tab (stream + wiki + galaxy) — designed, not built
+✗ Semantic search · New user onboarding · Beta users not yet admitted (20 waiting)
 
 ARCHITECTURE (locked):
 Brain is front door. Capture → inbox (AI processes) → brain. Home leads with capture bar. Brain tab: stream (mobile) + wiki (desktop) + galaxy (12 vision-board nodes). Galaxy nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith (peach).
@@ -717,7 +718,7 @@ LOCKED NAMES: spoonstack lowercase always · "out of sight, not out of mind" · 
 
 SKILLS: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
 
-NEXT: 1. Fix P0 bugs 2. Merge + deploy home screen 3. Build brain tab stream+wiki 4. Build galaxy view 5. Let first 5-8 beta users in</div>
+NEXT: 1. Brain tab stream+wiki 2. Galaxy view 3. Let beta users in 4. Semantic search</div>
     </div>
   </section>
 
