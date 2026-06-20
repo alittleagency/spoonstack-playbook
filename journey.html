@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>spoonstack — customer journey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --gold: #DAAF2E;
+    --gold-tint: #FDF6DC;
+    --gold-text: #6B4C00;
+    --cream: #FFFDF7;
+    --page-bg: #FAFAF7;
+    --dark: #2C2820;
+    --mid: #6B6254;
+    --muted: #8A8070;
+    --faint: #B5AA97;
+    --ink-light: rgba(44,40,32,.08);
+    --plum: #7B2D8B;
+    --plum-tint: #F3EAF7;
+    --green: #1D9E75;
+    --green-tint: #E1F5EE;
+    --red: #D85A30;
+    --red-tint: #FAECE7;
+    --pink: #C4427A;
+    --pink-tint: #FBEAF0;
+    --teal: #2A7A8C;
+    --teal-tint: #E0F2F7;
+    --purple: #5C4FC7;
+    --purple-tint: #ECEAFA;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--page-bg);
+    color: var(--dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 80px;
+  }
+
+  /* ── Layout ── */
+
+  .toc-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--cream);
+    border-right: .5px solid var(--ink-light);
+    overflow-y: auto;
+    padding: 28px 0 40px;
+    z-index: 10;
+  }
+
+  .toc-logo {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 20px 20px;
+    border-bottom: .5px solid var(--ink-light);
+    margin-bottom: 16px;
+  }
+
+  .toc-section {
+    padding: 6px 20px 2px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 10px;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 5px 20px;
+    font-size: 11px;
+    color: var(--mid);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color .12s, background .12s;
+  }
+
+  .toc-link:hover {
+    color: var(--dark);
+    background: var(--page-bg);
+  }
+
+  .main {
+    margin-left: 220px;
+    max-width: 860px;
+    padding: 0 48px 0 48px;
+  }
+
+  /* ── Header ── */
+
+  .doc-header {
+    padding: 52px 0 40px;
+    border-bottom: .5px solid var(--ink-light);
+    margin-bottom: 48px;
+  }
+
+  .doc-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .doc-title {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+
+  .doc-sub {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  /* ── Journey block ── */
+
+  .journey {
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: .5px solid var(--ink-light);
+  }
+
+  .journey:last-child { border-bottom: none; }
+
+  .journey-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .journey-badge {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+  }
+
+  .journey-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .journey-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  /* ── Steps ── */
+
+  .step {
+    margin-bottom: 28px;
+    padding: 22px 24px;
+    background: var(--cream);
+    border-radius: 16px;
+    border: .5px solid var(--ink-light);
+    scroll-margin-top: 24px;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .step-number {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .step-body {
+    padding-left: 32px;
+  }
+
+  .step-what {
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  .step-what p + p { margin-top: 8px; }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .tag-wrong {
+    background: var(--red-tint);
+    color: var(--red);
+    border: .5px solid rgba(216,90,48,.2);
+  }
+
+  .tag-missing {
+    background: var(--gold-tint);
+    color: var(--gold-text);
+    border: .5px solid rgba(218,175,46,.2);
+  }
+
+  .tag-better {
+    background: var(--green-tint);
+    color: var(--green);
+    border: .5px solid rgba(29,158,117,.2);
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .note-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .note-wrong {
+    background: var(--red-tint);
+    border: .5px solid rgba(216,90,48,.15);
+  }
+
+  .note-wrong .note-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .note-wrong p { color: #7a2800; }
+
+  .note-missing {
+    background: var(--gold-tint);
+    border: .5px solid rgba(218,175,46,.15);
+  }
+
+  .note-missing .note-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .note-missing p { color: #5a3c00; }
+
+  .note-better {
+    background: var(--green-tint);
+    border: .5px solid rgba(29,158,117,.15);
+  }
+
+  .note-better .note-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--green);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .note-better p { color: #0d4d30; }
+
+  /* ── Quote / screen mockup ── */
+
+  .screen-quote {
+    background: var(--page-bg);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .email-block {
+    background: #fff;
+    border: .5px solid var(--ink-light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.75;
+  }
+
+  .email-header {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: .5px solid var(--ink-light);
+  }
+
+  .email-field { margin-bottom: 2px; }
+  .email-field span { color: var(--muted); }
+
+  .email-body { margin-top: 12px; white-space: pre-line; }
+
+  /* ── Divider ── */
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 32px;
+  }
+
+  .section-divider-line {
+    flex: 1;
+    height: .5px;
+    background: var(--ink-light);
+  }
+
+  .section-divider-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ── Accent colors per journey ── */
+
+  .journey-1 .journey-badge { background: var(--gold-tint); color: var(--gold-text); }
+  .journey-1 .step { border-left: 3px solid var(--gold); }
+  .journey-1 .step-number { color: var(--gold); }
+
+  .journey-2 .journey-badge { background: var(--plum-tint); color: var(--plum); }
+  .journey-2 .step { border-left: 3px solid var(--plum); }
+  .journey-2 .step-number { color: var(--plum); }
+
+  .journey-3 .journey-badge { background: var(--teal-tint); color: var(--teal); }
+  .journey-3 .step { border-left: 3px solid var(--teal); }
+  .journey-3 .step-number { color: var(--teal); }
+
+  /* ── Inline code ── */
+
+  code {
+    font-family: var(--mono);
+    font-size: .85em;
+    background: var(--page-bg);
+    border: .5px solid var(--ink-light);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--mid);
+  }
+
+  /* ── Status chips ── */
+
+  .chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .chip-exists { background: var(--green-tint); color: var(--green); }
+  .chip-partial { background: var(--gold-tint); color: var(--gold-text); }
+  .chip-missing { background: var(--red-tint); color: var(--red); }
+  .chip-resolved { background: var(--green-tint); color: var(--green); border: 1px solid rgba(29,158,117,.3); }
+
+  /* ── Summary table ── */
+
+  .gap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 32px;
+    font-size: 12.5px;
+  }
+
+  .gap-table th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ink-light);
+    background: var(--page-bg);
+  }
+
+  .gap-table td {
+    padding: 10px 12px;
+    border-bottom: .5px solid var(--ink-light);
+    vertical-align: top;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .gap-table td:first-child { color: var(--dark); font-weight: 500; }
+
+  .gap-table tr:last-child td { border-bottom: none; }
+
+  @media (max-width: 800px) {
+    .toc-sidebar { display: none; }
+    .main { margin-left: 0; padding: 0 20px; }
+    .notes-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ToC ── -->
+<nav class="toc-sidebar">
+  <div class="toc-logo">spoonstack<br>customer journey</div>
+
+  <div class="toc-section">Journey 1</div>
+  <span class="toc-link" style="color:var(--gold-text);font-weight:600;pointer-events:none">new paid user</span>
+  <a class="toc-link" href="#j1-s1">1. landing page</a>
+  <a class="toc-link" href="#j1-s2">2. stripe checkout</a>
+  <a class="toc-link" href="#j1-s3">3. payment confirmed</a>
+  <a class="toc-link" href="#j1-s4">4. /pending</a>
+  <a class="toc-link" href="#j1-s5">5. approval</a>
+  <a class="toc-link" href="#j1-s6">6. welcome email</a>
+  <a class="toc-link" href="#j1-s7">7. first login</a>
+  <a class="toc-link" href="#j1-s8">8. onboarding</a>
+  <a class="toc-link" href="#j1-s9">9. brain is ready</a>
+  <a class="toc-link" href="#j1-s10">10. /display</a>
+  <a class="toc-link" href="#j1-s11">11. first capture</a>
+  <a class="toc-link" href="#j1-s12">12. first widget</a>
+  <a class="toc-link" href="#j1-s13">13. day 2</a>
+
+  <div class="toc-section">Journey 2</div>
+  <span class="toc-link" style="color:var(--plum);font-weight:600;pointer-events:none">free beta user</span>
+  <a class="toc-link" href="#j2-s1">1. dm from brittany</a>
+  <a class="toc-link" href="#j2-s2">2. signup</a>
+  <a class="toc-link" href="#j2-s3">3. manual approval</a>
+  <a class="toc-link" href="#j2-s4">4. onboarding</a>
+  <a class="toc-link" href="#j2-s5">5. first use</a>
+
+  <div class="toc-section">Journey 3</div>
+  <span class="toc-link" style="color:var(--teal);font-weight:600;pointer-events:none">returning user</span>
+  <a class="toc-link" href="#j3-s1">1. opens app</a>
+  <a class="toc-link" href="#j3-s2">2. smart inbox</a>
+  <a class="toc-link" href="#j3-s3">3. capture bar</a>
+  <a class="toc-link" href="#j3-s4">4. brain tab</a>
+  <a class="toc-link" href="#j3-s5">5. surfacing vs finding</a>
+
+  <div class="toc-section">Summary</div>
+  <a class="toc-link" href="#gap-summary">gap summary</a>
+</nav>
+
+<!-- ── Main ── -->
+<div class="main">
+
+  <header class="doc-header">
+    <div class="doc-eyebrow">spoonstack · internal · last updated june 19 2026</div>
+    <h1 class="doc-title">customer journey</h1>
+    <p class="doc-sub">three complete user paths — what they see, what happens in the system, what's broken, and what's missing. written against the live codebase.</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       JOURNEY 1 — NEW PAID USER
+  ════════════════════════════════════════════════ -->
+
+  <section class="journey journey-1" id="journey-1">
+
+    <div class="journey-header">
+      <div class="journey-badge">J1</div>
+      <div>
+        <div class="journey-title">new paid user</div>
+        <div class="journey-desc">finds spoonstack.app → pays $79 → waits for approval → gets welcome email → onboards → uses the app for the first time</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step" id="j1-s1">
+      <div class="step-header">
+        <div class="step-number">Step 01</div>
+        <div class="step-title">lands on spoonstack.app <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She found it somehow — probably a link from someone who told her about it. The root <code>/</code> route rewrites to <code>public/landing.html</code>, a single-file landing page served as static HTML.</p>
+          <p>She sees: a bold headline about the app, a brief description about it being built for neurodivergent moms, and a "get early access" CTA button. There's a demo section showing some widget previews. The page uses the same gold + cream design language as the app.</p>
+        </div>
+        <div class="screen-quote">"an AI second brain for neurodivergent moms who are holding everything together."</div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She might not understand what a "stack" or "widget" is. The concept is novel and the language is product-specific. She may not know what she's paying for.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No real testimonials. No "here's what happens after you sign up" flow. No FAQ. No visible price before the CTA. No mobile-optimized screenshots of the actual app.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Show the capture bar and inbox in action. One paragraph that explains the approval process upfront so she doesn't feel blindsided by /pending. Show the $79 price on the landing page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" id="j1-s2">
+      <div class="step-header">
+        <div class="step-number">Step 02</div>
+        <div class="step-title">clicks "get early access" → stripe checkout <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>The CTA links directly to a Stripe checkout URL (pre-configured). She enters name, email, and payment details. Stripe handles everything — she never creates an account before paying.</p>
+          <p>Stripe checkout is hosted on stripe.com. She's leaving the spoonstack domain entirely. The product name and price ($79) appear in the Stripe UI. After payment Stripe redirects her to <code>/api/stripe/success?session_id=…</code>.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She abandons at the price. She doesn't recognize "alittle.agency" on the Stripe merchant name. She's paying before ever creating an account, which feels backward — no account = no confirmation email from the app.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No Stripe-branded order confirmation email from spoonstack (Stripe sends its own generic receipt). No "what happens next" copy at checkout. No account creation before payment.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Create the account first (sign up → pay → onboard). Or at minimum set a custom Stripe receipt email with spoonstack branding and a clear "you'll hear from brittany within 24 hours" message.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step" id="j1-s3">
+      <div class="step-header">
+        <div class="step-number">Step 03</div>
+        <div class="step-title">payment confirmed — stripe webhook fires <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>Two things happen simultaneously after successful payment:</p>
+          <p><strong>1. The browser redirect.</strong> Stripe sends the browser to <code>/api/stripe/success</code> with <code>?session_id=</code>. The success route fetches the Stripe session, reads the <code>client_reference_id</code> (user ID) and <code>customer.email</code>, updates <code>profiles.is_paid = true</code> in Supabase, and sets a <code>ss-paid=1</code> cookie so middleware immediately passes <code>/onboarding</code> and <code>/display</code>. Then it redirects to <code>/onboarding</code>.</p>
+          <p><strong>2. The Stripe webhook.</strong> <code>/api/stripe/webhook</code> receives <code>checkout.session.completed</code> asynchronously, also sets <code>is_paid = true</code> (idempotent safety net), and sends the welcome email via Resend.</p>
+          <p><strong>Problem:</strong> She hasn't created a Supabase account yet. The <code>client_reference_id</code> would be null because there's no user session. The success route can't update <code>profiles.is_paid</code> without a user ID. The webhook tries <code>customer.email</code> as a fallback, but if the profile doesn't exist yet, there's nothing to update.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>If she pays before creating an account, <code>client_reference_id</code> is null. The webhook can't mark her as paid. She signs up later and starts the free flow instead of the paid flow. This is the biggest gap in the system.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>The flow assumes she already has a Supabase account when she pays. There's no reconciliation if she doesn't. No way to match a Stripe payment to a future signup by email unless the webhook stores the paid email in a separate lookup table.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Pre-registration flow: email entry before Stripe → create a placeholder profile → pass user ID as client_reference_id → then pay. Or: store paid emails in a <code>stripe_purchases</code> table and check it on account creation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step" id="j1-s4">
+      <div class="step-header">
+        <div class="step-number">Step 04</div>
+        <div class="step-title">lands on /pending <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>After paying, she lands here. The page is sparse and honest:</p>
+        </div>
+        <div class="screen-quote">
+          ✦<br><br>
+          <strong>you're in. almost.</strong><br><br>
+          your account is being set up. brittany will send you a welcome email within 24 hours and you'll have full access.<br><br>
+          <em>sit tight — it's worth it.</em>
+        </div>
+        <div class="step-what">
+          <p>There's a gold accent dot, a gold tint callout, and a monospace note to check her spam folder. The page doesn't require authentication — it's purely informational.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She doesn't know if the payment actually worked. There's no "payment confirmed for $79" confirmation on this page. She may think something went wrong and try to pay again.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No payment receipt summary. No estimated wait time. No way to check her status. No "add this email to your contacts" prompt. No social proof that others are waiting too. No option to submit her email if she arrived here without paying.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>"Payment of $79 received. ✓" confirmation at the top. "Brittany approves accounts manually — usually same day on weekdays." A small "what to expect" timeline so she knows the approval isn't instant.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step" id="j1-s5">
+      <div class="step-header">
+        <div class="step-number">Step 05</div>
+        <div class="step-title">approval — automatic for paid users <span class="chip chip-resolved">✓ shipped june 18</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p><strong>Fixed june 18 2026.</strong> The Stripe webhook (<code>/api/stripe/webhook</code>) now sets both <code>is_paid = true</code> and <code>is_approved = true</code> in a single update. Paid users are approved the moment the webhook fires — no manual intervention by Brittany, no waiting period.</p>
+          <p>Before this fix, the webhook only set <code>is_paid = true</code>. Brittany had to manually run SQL in Supabase to set <code>is_approved = true</code>. She was the bottleneck for every paid signup.</p>
+          <p>Beta users (no Stripe) are still manually approved via <code>POST /api/admin/approve</code> — see Journey 2.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could still go wrong</span>
+            <p>If <code>client_reference_id</code> is null (user paid before creating a Supabase account), the webhook can't find the profile to update. This is the remaining critical gap — see step 3.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">still missing</span>
+            <p>No way for the user to see that she's been approved in real time. /pending doesn't poll. She has to refresh manually or wait for the welcome email to arrive and click the link.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>/pending polling every 30 seconds that auto-redirects to /onboarding when both flags are true. Would close the loop without requiring any action from the user.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step" id="j1-s6">
+      <div class="step-header">
+        <div class="step-number">Step 06</div>
+        <div class="step-title">approval email <span class="chip chip-resolved">✓ shipped june 18</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p><strong>Updated june 18 2026.</strong> The Stripe webhook sends an approval email via Resend after setting <code>is_paid = true</code> and <code>is_approved = true</code>. Because approval is now instant for paid users, the email fires within seconds of payment — not hours later. The old email copy was too long and marketing-heavy. New copy is short and functional:</p>
+        </div>
+        <div class="email-block">
+          <div class="email-header">
+            <div class="email-field"><span>from:</span> Brittany at SpoonStack &lt;brittany@alittle.agency&gt;</div>
+            <div class="email-field"><span>subject:</span> you're in. welcome to spoonstack.</div>
+          </div>
+          <div class="email-body">your account is approved and ready.
+
+sign in at spoonstack.app/sign-in and your brain is waiting.
+
+— brittany</div>
+        </div>
+        <div class="step-what">
+          <p>The same <code>sendApprovalEmail</code> function in <code>lib/email.ts</code> is also called by <code>POST /api/admin/approve</code> when Brittany manually approves a beta user — same email, same copy, single source of truth.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">remaining risk</span>
+            <p>The email fires on <code>checkout.session.completed</code> only. If she doesn't have a Supabase account yet (paid before signing up), the webhook can't find her profile — no profile update, no email. She's in limbo.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">still missing</span>
+            <p>The email links to /sign-in but she may not have a password yet (if she paid before signing up). No explicit "you'll need to create an account first" guidance. No HTML email template — plain text only.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Add one line: "if you haven't created your account yet, start at spoonstack.app/sign-up." Removes the confusion for the pay-first, signup-second edge case.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step" id="j1-s7">
+      <div class="step-header">
+        <div class="step-number">Step 07</div>
+        <div class="step-title">first login — /sign-in <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She clicks the sign-in link from the welcome email. <code>/sign-in</code> is a Supabase Auth email+password form. If this is her first time, she has to sign up first — the sign-in page links to <code>/sign-up</code>.</p>
+          <p>After authenticating, the middleware reads her profile. If <code>onboarding_complete</code> is false, she's redirected to <code>/onboarding</code>. If complete but not approved, she lands on <code>/pending</code>. If both approved and onboarding-complete, she goes to <code>/display</code>.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She clicks sign-in but hasn't created an account yet. The sign-in form fails with "invalid credentials." She doesn't notice the sign-up link. She may think her account should have been created automatically when she paid.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No magic link login. No "first time? create your account here" explanation in the welcome email. No SSO. No password reset link prominently placed. The sign-up and sign-in are separate pages — a new user may not realize they need to create a separate account after paying.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Magic link login: "enter your email and we'll send you a link." No password needed on first use. The welcome email should say explicitly: "you'll need to create a password at sign-up — this is a separate step from payment."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step" id="j1-s8">
+      <div class="step-header">
+        <div class="step-number">Step 08</div>
+        <div class="step-title">onboarding — 3 input screens <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>Three sequential screens, each seeding the brain. Progress dots at the top (1 of 3, 2 of 3, 3 of 3). Every screen has a skip option. All entries save as <code>brain_entries</code> rows.</p>
+          <p><strong>Screen 1 — who's in your world?</strong><br>
+          "spoonstack works better when it knows your people." Partner name + "one thing to know: ___". Up to 4 kids, each with name + note. Up to N close friends with name + note. Button: "looks good →" / skip: "I'll add this later →"<br>
+          Saves to <code>brain_entries</code> with category <code>family</code> or <code>people</code>.</p>
+
+          <p><strong>Screen 2 — what's coming up?</strong><br>
+          "anything on your plate this week I should know about." Large textarea. Placeholder: "monday: dentist 2pm. simone has cheer tuesday at 4. permission slip due friday. need to call insurance." Button: "got it →" / skip: "nothing yet →"<br>
+          Saves as category <code>schedule</code>.</p>
+
+          <p><strong>Screen 3 — what's been on your mind?</strong><br>
+          "tasks, things to remember, stuff you've been meaning to do." Large textarea. Placeholder: "call the insurance company, noah's meds need a refill, haven't texted robin back in 3 weeks, need to figure out camp for the kids" Button: "saving it →" / skip: "nothing yet →"<br>
+          Saves as category <code>general</code>. On save, sets <code>profiles.onboarding_complete = true</code>.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She skips all three screens. Her brain is empty. /display shows nothing relevant. She has no idea what the app does. She churns in 48 hours because there was nothing there.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No onboarding for what the app actually does. Screens 1-3 seed data but never explain how it's used. She doesn't know what a "brain entry" is, what widgets do, or where to go first. The onboarding is pure input, no output preview.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>After screen 2, show a single example: "here's what spoonstack did with what you just told it." A sample widget response using her real data. Make the value tangible before she even reaches /display.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step" id="j1-s9">
+      <div class="step-header">
+        <div class="step-number">Step 09</div>
+        <div class="step-title">"your brain is ready." — screen 4 <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>After screen 3 saves, the app transitions to a full-bleed dark screen (background <code>#1A1714</code>) — the only dark moment in the entire app. A gold ✦ symbol, then:</p>
+        </div>
+        <div class="screen-quote" style="background:#1A1714;color:rgba(255,255,255,.7);border-left-color:var(--gold)">
+          <strong style="color:#FFFDF7;font-size:18px">your brain is ready.</strong><br><br>
+          spoonstack knows your family now.<br>
+          it'll get smarter every time you use it.
+        </div>
+        <div class="step-what">
+          <p>A gold "go →" button advances to <code>/display</code>. This screen is the emotional payoff — the product promise made real. <code>onboarding_complete</code> was already set to true before this screen renders. The "go →" button calls <code>refreshProfile()</code> then routes to <code>/display</code>.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She skipped all three screens. The message "spoonstack knows your family now" feels false — her brain is empty and the app knows nothing. The emotional payoff lands hollow.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No personalization here. It could say her first name, reference something she added ("we've got Bella, Jackson, and Ruby in there"), or show a preview of what she told it. It's the same copy for everyone.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>"your brain is ready, [first name]." + "we've got [kid names] and [this week's schedule] in there. spoonstack will surface what matters." Personalized with actual data she just entered.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 10 -->
+    <div class="step" id="j1-s10">
+      <div class="step-header">
+        <div class="step-number">Step 10</div>
+        <div class="step-title">first landing on /display <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She lands on the home screen. She sees, top to bottom:</p>
+          <p><strong>HomeHeader</strong> — current time (large), today's date, weather (Atlanta, fetched from wttr.in), and a moon phase SVG with next new/full moon dates.</p>
+          <p><strong>GreetingCard</strong> — "good morning." greeting, today's family schedule events (pulled from brain_entries with time patterns), tomorrow preview.</p>
+          <p><strong>CaptureBar</strong> — "what's on your mind?" input. The central interaction point.</p>
+          <p><strong>SmartInbox</strong> — recent unprocessed brain entries waiting for attention.</p>
+          <p><strong>PinnedWidgets</strong> — 4 quick-access tiles (partner briefing, regulator, ask the vault, out of sight). Customizable.</p>
+          <p><strong>CuriousCard</strong> — spoonstack surfaces a question or connection from her brain entries.</p>
+          <p><strong>Phase2Nav</strong> — bottom nav: home, out of sight, people, brain, a minute, shelf.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>Weather fails silently (she's not in Atlanta). SmartInbox is empty on day 1 because entries from onboarding haven't been "processed" yet. PinnedWidgets shows generic defaults she doesn't recognize. She has no idea what to do first.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "start here" nudge for new users. No first-time tooltip or highlighted CTA. No indication that the capture bar is the primary action. The GreetingCard may show no family events if onboarding was skipped. The CuriousCard may be empty or generic on day 1.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>First-visit overlay or highlighted capture bar with copy: "start here — type anything." Show an example entry being processed. On day 1, the SmartInbox should show her onboarding entries as a preview of what's possible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 11 -->
+    <div class="step" id="j1-s11">
+      <div class="step-header">
+        <div class="step-number">Step 11</div>
+        <div class="step-title">first capture — capture bar <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She types something in the capture bar — "need to call the pediatrician about noah's refill" — and hits enter or the send button.</p>
+          <p>The app calls <code>/api/brain/extract</code> or <code>/api/brain/route</code> to classify the entry. An AI prompt categorizes it (likely <code>logistics</code> or <code>hard-thing</code>), extracts a clean title, and saves it to <code>brain_entries</code>. A "saved ✦" toast appears.</p>
+          <p>The SmartInbox updates to show the new entry. The entry may appear in the "what needs doing" widget on the "a minute" stack if categorized correctly.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The AI classification fails or times out. The entry saves with category "general" instead of something actionable. She doesn't know the entry was saved or what happened to it. No feedback beyond the toast.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No visible "filed under [category]" confirmation after saving. No way to see where the entry went immediately after capture. No undo. The save is silent beyond the toast — she doesn't know if it'll resurface or disappear.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>After capture: brief "filed as logistics — will resurface in what needs doing" chip. Makes the system legible. She learns the model by using it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 12 -->
+    <div class="step" id="j1-s12">
+      <div class="step-header">
+        <div class="step-number">Step 12</div>
+        <div class="step-title">first widget use <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She taps one of the pinned widgets — most likely the "regulator" (red, familiar RSD/overwhelm framing) or "partner briefing" (gold, practical utility). She lands on the stack page for that widget.</p>
+          <p>On the stack page she sees the widget tile grid. She taps the widget, a bottom sheet slides up. She types something, taps the submit button, and waits 1-3 seconds for the AI response.</p>
+          <p>The response appears with a left accent border. She sees two action pills: "that helps" and "save to brain." She either acts on the response or closes the sheet.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The AI response is generic or misses her context entirely (her brain entries weren't used as context). The 15-second timeout fires and she sees an error. She doesn't know what "save to brain" does. The response doesn't feel personalized enough to justify $79.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No indicator that her brain context is being used. No way to see what context was sent. No history of past widget interactions. No "try this next" prompt. Widgets are one-shot — there's no conversation thread.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Small "✦ using your brain" badge when brain context is present. After a good response: "save to brain" should feel rewarding — maybe animate a small ✦ flying toward the brain nav icon. Show that the memory grew.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 13 -->
+    <div class="step" id="j1-s13">
+      <div class="step-header">
+        <div class="step-number">Step 13</div>
+        <div class="step-title">comes back the next day <span class="chip chip-partial">partial</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She opens the app the next morning. She's already logged in (Supabase session persists). She lands directly on <code>/display</code>.</p>
+          <p>What's different: the time and greeting update. Her SmartInbox shows yesterday's entries that haven't been resolved. The GreetingCard may show today's schedule events if she captured anything with times. The CuriousCard may surface something from her brain.</p>
+          <p>What she probably does: checks the inbox, captures something new, maybe taps a widget.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>Everything looks the same as day 1. The inbox feels like clutter she didn't process. CuriousCard shows a generic question. She doesn't feel like the app "remembers" her from yesterday. The momentum stalls.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "good morning, here's what you had going yesterday" summary. No "you saved 3 things yesterday" recap. No proactive surfacing of yesterday's unresolved entries. The app looks identical on day 2 as day 1 unless she actively uses the brain tab.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Day 2 greeting variant: "you left 2 things unresolved yesterday — the pediatrician call and the permission slip. want to handle one now?" Spoonstack should feel like it held her place overnight.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       JOURNEY 2 — FREE BETA USER
+  ════════════════════════════════════════════════ -->
+
+  <section class="journey journey-2" id="journey-2">
+
+    <div class="journey-header">
+      <div class="journey-badge">J2</div>
+      <div>
+        <div class="journey-title">free beta user</div>
+        <div class="journey-desc">gets a dm from brittany → signs up free → manually approved → same onboarding experience as paid user</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step" id="j2-s1">
+      <div class="step-header">
+        <div class="step-number">Step 01</div>
+        <div class="step-title">DM from brittany — the invite <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>Brittany messages her directly (Instagram, iMessage, or wherever they're connected). She says something like: "hey, I built something for brains like ours — want to try it? it's free for you." Includes a direct link to <code>/sign-up</code>.</p>
+          <p>This is a warm, personal invite. The user trusts the source implicitly. There's no landing page friction — she goes straight to sign-up because she already wants to try it.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She doesn't know what she signed up for beyond "something for our kind of brain." There's no product context before sign-up. She may set expectations too high or too different from reality.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No beta-specific landing page or invite token system. If Brittany shares the link publicly by mistake, anyone could sign up for free. No way to distinguish "Brittany's person" from a random stranger.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Unique invite link per person with a token (<code>/sign-up?invite=xyz</code>). Hitting the link stores the token, which gets associated with the signup. Makes tracking easier and prevents unintended free signups.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" id="j2-s2">
+      <div class="step-header">
+        <div class="step-number">Step 02</div>
+        <div class="step-title">signs up — no stripe <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She hits <code>/sign-up</code>, enters email + password. Supabase creates the user account. The profile row is inserted. A trigger fires <code>/api/notify-signup</code> (or this is called client-side on sign-up success) which emails Brittany with the new user's info and the SQL to approve her.</p>
+          <p><code>is_paid = false</code> and <code>is_approved = false</code> by default. Middleware sends her to <code>/pending</code> after signup until Brittany flips both flags.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The notify-signup API call fails silently. Brittany never gets the notification. The user sits on /pending forever without knowing Brittany didn't get the email.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No confirmation that the signup notification was received. No ETA on the /pending page specific to beta users. No way for Brittany to see all pending users without going to Supabase.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Brittany should have a simple admin page at <code>/admin</code> showing pending users with one-click approve. Better than running SQL in the Supabase console every time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step" id="j2-s3">
+      <div class="step-header">
+        <div class="step-number">Step 03</div>
+        <div class="step-title">approval via API — no more supabase SQL <span class="chip chip-resolved">✓ shipped june 18</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p><strong>Updated june 18 2026.</strong> Brittany no longer needs to open the Supabase dashboard. She can approve a beta user with a single <code>curl</code> or fetch call from her terminal or a simple script:</p>
+        </div>
+        <div class="email-block" style="font-family:var(--mono);font-size:11px;line-height:1.9">
+          POST /api/admin/approve<br>
+          Authorization: Bearer &lt;brittany-access-token&gt;<br>
+          { "userId": "&lt;user-id-from-notify-email&gt;" }
+        </div>
+        <div class="step-what">
+          <p>The endpoint verifies the caller is Brittany's user ID (<code>4f29c0a6-…</code>), sets <code>is_approved = true</code> on the profile, looks up the user's email from Supabase auth, and sends the same approval email that paid users receive. Returns 403 for anyone else.</p>
+          <p>Beta users still need both <code>is_paid</code> and <code>is_approved</code> set to true. The notify-signup email Brittany receives already includes the userId — she copies it into the fetch call. The user ID comes from <code>/api/notify-signup</code> which fires on sign-up.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>Brittany's access token expires between seeing the email and running the approval. She'd need to sign in again to get a fresh token. Still manual — just less friction than SQL.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">still missing</span>
+            <p>No /pending polling for the user — she still doesn't know she's been approved until she refreshes. No admin UI. Still needs <code>is_paid</code> to also be set for beta users (separate SQL or a second param on the endpoint).</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Add <code>is_paid</code> as an optional param on the approve endpoint so beta approval is truly one call. And /pending polling so the user auto-redirects the moment approval fires.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step" id="j2-s4">
+      <div class="step-header">
+        <div class="step-number">Step 04</div>
+        <div class="step-title">onboarding — identical to paid user <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>Once both flags are true, the next time she signs in (or refreshes), the middleware routes her to <code>/onboarding</code>. She goes through the exact same 4-screen onboarding flow as a paid user.</p>
+          <p>Screen 1: her people. Screen 2: what's coming up. Screen 3: what's on her mind. Screen 4: "your brain is ready." → <code>/display</code>.</p>
+          <p>There's no distinction in the onboarding between a beta user and a paid user. Same copy, same screens, same brain seeding.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She skips everything because Brittany told her what to do via DM and she thought "I'll just use the app." She arrives at /display with an empty brain and no guidance.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "Brittany invited you" personal touch. No beta-specific messaging. The onboarding feels identical to a cold commercial experience when it could feel warm and direct: "hey, it's brittany — let me show you around."</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>If an invite token is passed at signup, show beta-specific onboarding copy: "since you're a founding beta user, here's what we really want to know from you — what's hardest about your week right now?"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step" id="j2-s5">
+      <div class="step-header">
+        <div class="step-number">Step 05</div>
+        <div class="step-title">first use and feedback loop <span class="chip chip-partial">informal</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>The beta user's first use is identical to a paid user. But there's a crucial difference: Brittany has a relationship with this person. She's a direct feedback channel.</p>
+          <p>Right now there's no in-app feedback mechanism. No "tell brittany what you think" button. No rating prompt after a widget interaction. No way for the beta user to flag issues without going back to the DM thread.</p>
+          <p>Feedback happens organically over text or DM. This is intimate and valuable but doesn't scale and creates no structured data about what's working.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>Beta user has a great insight at 11pm and doesn't text Brittany because it feels weird. The insight is lost. Or she has a bug and can't reproduce it by the time she remembers to mention it.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No in-app feedback. No structured way to capture "this widget helped" vs "this did nothing." No bug report mechanism. No NPS or sentiment pulse.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>After every AI response: tiny "useful? [yes] [kind of] [no]" — one tap, logged. After a week: "you've used spoonstack 8 times — what's one thing that's helped most? reply in app." Captures insight before it evaporates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       JOURNEY 3 — RETURNING USER (DAY 3+)
+  ════════════════════════════════════════════════ -->
+
+  <section class="journey journey-3" id="journey-3">
+
+    <div class="journey-header">
+      <div class="journey-badge">J3</div>
+      <div>
+        <div class="journey-title">returning user — day 3+</div>
+        <div class="journey-desc">already logged in, already onboarded. opens the app with context from previous days. what does she find, what does she have to hunt for?</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step" id="j3-s1">
+      <div class="step-header">
+        <div class="step-number">Step 01</div>
+        <div class="step-title">opens app — lands on /display <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She opens the app (browser bookmark or home screen shortcut). She's still logged in — Supabase session is persistent. She lands directly on <code>/display</code>, no sign-in screen.</p>
+          <p>The HomeHeader immediately shows the correct time and weather. The GreetingCard says "good morning" (or afternoon/evening based on hour). If she entered family schedule entries during onboarding or since, they may appear as "today's events" in the greeting card — the app scans brain entries for time patterns.</p>
+          <p>The spoon budget bar (crisis / low / okay / high) is at the top of the page — she sets her energy level before anything else. This controls which widgets are visible and how the AI responds.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>Spoon budget resets to "okay" on every page load (it's not persisted — intentionally resets daily). She forgets to set it and widgets respond as if she has full energy when she doesn't. The GreetingCard family events may not show because entries weren't captured with explicit times.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "how are you doing today?" prompt on open. The spoon budget picker is present but not highlighted — a returning user who forgot about it may skip it. No carry-forward context from yesterday's session (what was she working on? what did she leave unresolved?).</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>On open, if it's been more than 8 hours: "quick — where are you today?" with spoon budget options front and center before anything else loads. Or: detect time of day and prefill a reasonable default ("it's 8am on a Tuesday — probably okay?").</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" id="j3-s2">
+      <div class="step-header">
+        <div class="step-number">Step 02</div>
+        <div class="step-title">smart inbox — entries from yesterday <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>Below the capture bar, the SmartInbox shows recent unprocessed brain entries. These are entries that have been captured but haven't been "acted on" — they've been saved but not filed, not marked done, not addressed by a widget.</p>
+          <p>The inbox shows entries in reverse chronological order. Each entry has a title (AI-extracted from the raw capture text) and a small category chip. On day 3+ she'll see entries she captured but forgot about: "call the pediatrician" from two days ago, "permission slip due friday" from yesterday.</p>
+          <p>From the inbox she can: read the entry, tap to expand, or use action pills. The inbox is limited to <code>inboxMax</code> items (3 on low spoons, 5 on okay).</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The inbox fills up with everything she's ever captured. On day 7 it shows 5 items but she has 20 unresolved entries. She feels overwhelmed rather than helped. Old entries "done" in her head still show in the inbox because she never marked them resolved in the app.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "swipe to dismiss" or "snooze" on individual inbox items. No visual indication of how old an entry is (age matters — "3 days ago" is very different from "this morning"). No way to bulk-clear the inbox. No surfacing of which entries are time-sensitive vs just lingering.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Surface the most time-sensitive first, not just most recent. Age chips: "3 days ago." Swipe left to dismiss, swipe right to send to a widget. "quick resolve" tap that files it as done without opening a widget. The inbox should feel like a triage queue, not a history log.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step" id="j3-s3">
+      <div class="step-header">
+        <div class="step-number">Step 03</div>
+        <div class="step-title">uses the capture bar again <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She types something new — "ruby's baseball game saturday 10am" or "need to schedule dentist for all three kids" — and submits. The entry is AI-categorized and saved. A toast confirms. It appears in the inbox.</p>
+          <p>After a few days, the capture bar becomes habitual. She thinks of it as her external brain dump — the place where thoughts go so she doesn't have to hold them. This is the core retention behavior: daily capture = daily return.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>She types something complex ("need to prep for IEP meeting thursday, get noah's evaluations together, also email the teacher about the behavior chart") and the AI categorizes it as one entry when it should be three. The nuance is lost.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No multi-entry parsing (one dump → multiple categorized entries). No voice input for capture. No photo capture. No reminder to capture things later (e.g., end-of-day capture prompt). The capture bar is great but only works if she remembers to open the app.</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>Multi-entry parsing: "I see 3 things in there — want me to split them up?" Voice capture. A daily evening push notification: "anything on your mind before tomorrow?" Keeps the brain fed without requiring intentional opens.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step" id="j3-s4">
+      <div class="step-header">
+        <div class="step-number">Step 04</div>
+        <div class="step-title">checks the brain tab <span class="chip chip-exists">exists</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>She taps "brain" in the bottom nav. This is the <code>/brain</code> route. On day 3+ she has a few dozen entries across different domains. The brain shows entries grouped by domain: just-me, my-kids, people, work, projects-hobbies, dont-lose-this.</p>
+          <p>She can browse by domain (filter tabs at the top), search across entries, look at patterns (the patterns tab), check the journal, and see what's on the map (BrainGraph visualization).</p>
+          <p>She might tap into "my-kids" to check what's there about each kid, or search for "dentist" to find the entry she captured. The "inbox" tab shows unprocessed captures waiting.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The brain feels overwhelming after 30+ entries with no clear hierarchy. Everything is flat. "just-me" has 18 entries and she can't find the one she wants. The map view (BrainGraph) is beautiful but not actionable — it shows connections but not what to do next.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>No "ask the brain" free-form search that returns a conversational answer (only exists in the out-of-sight-vault widget, not across all entries). No "stale entries" filter to find things captured weeks ago and never resolved. No summary of "here's what you know about this topic."</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>A global "ask the brain" prompt at the top: "what do you want to remember about ___?" Returns a synthesized answer from all relevant entries. Like asking a very smart assistant who has read all her notes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step" id="j3-s5">
+      <div class="step-header">
+        <div class="step-number">Step 05</div>
+        <div class="step-title">what spoonstack surfaces vs what she has to find <span class="chip chip-partial">mixed</span></div>
+      </div>
+      <div class="step-body">
+        <div class="step-what">
+          <p>This is the core UX question: how much does spoonstack work for her vs how much does she have to work the app? On day 3+, here's the honest split:</p>
+        </div>
+
+        <div class="section-divider" style="margin:16px 0">
+          <div class="section-divider-line"></div>
+          <div class="section-divider-label">surfaces automatically</div>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="step-what">
+          <p>✦ <strong>SmartInbox</strong> — recent unresolved captures surfaced by default on home screen.</p>
+          <p>✦ <strong>GreetingCard</strong> — today's family events parsed from brain entries with time patterns.</p>
+          <p>✦ <strong>CuriousCard</strong> — spoonstack picks a question or connection to surface. (Quality depends on brain size and AI context.)</p>
+          <p>✦ <strong>What Needs Doing</strong> (<code>/display/while-you-have-a-minute</code>) — pulls actionable entries from logistics/schedule/hard-thing categories and presents them as gentle nudges.</p>
+          <p>✦ <strong>Side Quests</strong> — pulls ideas/personal/fun entries and presents them as low-pressure options.</p>
+          <p>✦ <strong>NeedsAttention</strong> component — alerts for things that seem to need follow-up based on brain entry patterns.</p>
+        </div>
+
+        <div class="section-divider" style="margin:16px 0">
+          <div class="section-divider-line"></div>
+          <div class="section-divider-label">she has to find</div>
+          <div class="section-divider-line"></div>
+        </div>
+
+        <div class="step-what">
+          <p>⚠ <strong>Most of the brain</strong> — domain views, patterns, journal, map. She has to navigate there intentionally.</p>
+          <p>⚠ <strong>Specific entries</strong> — search exists but requires knowing what to search for.</p>
+          <p>⚠ <strong>Stack-specific widgets</strong> — she has to know which stack to visit. PinnedWidgets helps but only shows 4 tiles. The shelf has everything but is discovery-heavy.</p>
+          <p>⚠ <strong>Old resolved entries</strong> — there's no "history" view or "done" queue. Once an entry is resolved, it disappears from view.</p>
+          <p>⚠ <strong>Cross-entry patterns</strong> — the patterns tab exists but is AI-generated on demand, not persistent. She may not know to check it.</p>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card note-wrong">
+            <span class="note-label">could go wrong</span>
+            <p>The surface-to-hunt ratio tips toward hunt. After a week, the brain has 40+ entries. SmartInbox only shows 5. CuriousCard picks one thing. Most of what she captured is sitting in the brain, unsurfaced, unavailable unless she searches.</p>
+          </div>
+          <div class="note-card note-missing">
+            <span class="note-label">missing right now</span>
+            <p>Proactive push ("you mentioned the IEP meeting is Thursday — it's Tuesday. want to prep?"). Time-sensitive surfacing (entries with dates near today should float to the top automatically). A daily digest: "here's what your brain knows about today."</p>
+          </div>
+          <div class="note-card note-better">
+            <span class="note-label">would make it better</span>
+            <p>The SmartInbox should rank by time-sensitivity, not recency. CuriousCard should be tied to her calendar or schedule entries. The app should earn trust by surfacing things before she has to think to look for them. That's the magic — and it's mostly missing right now.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       GAP SUMMARY
+  ════════════════════════════════════════════════ -->
+
+  <div id="gap-summary" style="padding-bottom: 80px;">
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">gap summary — all three journeys</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th>gap</th>
+          <th>severity</th>
+          <th>status / fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="opacity:.7">
+          <td>Paid users auto-approved — webhook sets is_paid + is_approved in one call</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. No more manual SQL for paid users.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Approval email to user — fires immediately on payment or manual approve</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. sendApprovalEmail in lib/email.ts, called from webhook + admin/approve.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Admin approve endpoint — POST /api/admin/approve replaces Supabase SQL</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. Brittany-only, sends approval email automatically, returns 403 to anyone else.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Onboarding flow — 4 screens seeding the brain, onboarding_complete flag</td>
+          <td><span class="chip chip-resolved">✓ built</span></td>
+          <td>Exists. who's in your world → what's coming up → what's on your mind → your brain is ready.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Landing page CTAs went to /sign-up — users paying couldn't reach Stripe</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. All 3 "get early access" links (nav, hero, bottom CTA) now go directly to Stripe checkout. target="_blank". Zero /sign-up hrefs remain in landing.html.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Questions typed into capture bar were saved as entries, not answered</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Brain router system prompt updated: any input starting with what/who/where/when/how/why/do/does/did/can/is/are or ending with ? always returns action: answer. Searches brain context first; if not found, says so. No separate UI needed.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>SmartInbox had no way to dismiss irrelevant entries for the session</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. X dismiss button per row. Dismissed IDs stored in sessionStorage (no DB write). Entries reappear on next session.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>What Was I Doing widget showed a general brain dump, not task-switch history</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Now fetches only category='activity' or general entries starting with activity phrases. Relative timestamps ("this morning", "yesterday", "3d ago"). Expand/collapse per entry. "+ log what I was doing" inline logger saves with category='activity'. Trains itself over time.</td>
+        </tr>
+        <tr>
+          <td>Payment before account creation — no way to reconcile Stripe payment to future Supabase user</td>
+          <td><span class="chip chip-missing">critical</span></td>
+          <td>Pre-registration email capture before Stripe, or a stripe_purchases lookup table matching paid emails on sign-up</td>
+        </tr>
+        <tr>
+          <td>Approval email fires before sign-in link is usable — if she hasn't created an account yet, the link goes nowhere</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>Add "if you haven't signed up yet, start at spoonstack.app/sign-up" to email body. Timing gap is much smaller now (seconds not hours) but the edge case remains.</td>
+        </tr>
+        <tr>
+          <td>Screen 4 "your brain is ready" is not personalized — same copy for everyone</td>
+          <td><span class="chip chip-partial">medium</span></td>
+          <td>Use her first name and kid names: "we've got [names] in there now."</td>
+        </tr>
+        <tr>
+          <td>No first-time guidance on /display — she lands with no "start here"</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>Highlight capture bar on first visit. Brief tooltip: "start by typing anything"</td>
+        </tr>
+        <tr>
+          <td>No "filed as [category]" feedback after capture</td>
+          <td><span class="chip chip-partial">medium</span></td>
+          <td>Show 2-second chip: "filed as logistics → surfaces in what needs doing"</td>
+        </tr>
+        <tr>
+          <td>SmartInbox ranks by recency, not urgency or time-sensitivity</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>Score entries: entries with dates near today float up; oldest unresolved entries float up</td>
+        </tr>
+        <tr>
+          <td>No carry-forward context between sessions</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>Day 2+ greeting variant: "you left these unresolved yesterday. want to handle one?"</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>/pending auto-polls every 5 seconds, redirects to /display on approval</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 18 2026. useEffect polls profiles.is_approved every 5s. clearInterval + router.push('/display') on true. Copy updated: "we'll take you in automatically."</td>
+        </tr>
+        <tr>
+          <td>No in-app feedback mechanism for beta users</td>
+          <td><span class="chip chip-partial">medium</span></td>
+          <td>"useful? yes / kind of / no" after every AI response. One tap, logged to brain</td>
+        </tr>
+        <tr>
+          <td>No proactive time-sensitive surfacing (IEP Thursday, game Saturday)</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>Scan schedule/logistics entries for near-future dates. Surface on home screen 1-2 days before</td>
+        </tr>
+        <tr>
+          <td>Onboarding has no preview of what the app does — pure input, no output</td>
+          <td><span class="chip chip-partial">high</span></td>
+          <td>After screen 2, show a sample widget response using her real data</td>
+        </tr>
+        <tr>
+          <td>No voice input for capture</td>
+          <td><span class="chip chip-exists">low</span></td>
+          <td>Web Speech API or native voice input on mobile</td>
+        </tr>
+        <tr>
+          <td>Single capture = single entry — complex dumps lose nuance</td>
+          <td><span class="chip chip-partial">medium</span></td>
+          <td>Multi-entry parsing: detect multiple items in one dump, offer to split</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Middleware used Supabase createServerClient on the edge — unreliable, large bundle, broke landing page for logged-in users</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. Replaced with direct cookie check — no Supabase client, no edge crypto. "/" always serves landing.html. Protected paths check sb-*-auth-token cookie. Middleware bundle dropped 83kB → 27kB.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>No automated test coverage — regressions caught only by manual QA</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. 82 Playwright tests covering all 13 groups: landing page (unauthenticated), auth, home screen, capture bar intelligence, all 8 stacks, content audit, brain tab. 82/82 passing against production.</td>
+        </tr>
+        <tr style="opacity:.7">
+          <td>Landing page CTAs linked to /sign-up — Stripe checkout unreachable for landing visitors</td>
+          <td><span class="chip chip-resolved">✓ resolved</span></td>
+          <td>Shipped june 19 2026. All 3 early access links (nav, hero, bottom CTA) point to Stripe URL with target="_blank". Widget library emoji removed (mobile Safari rendered ? marks). Demo copy updated: jackson→noah, brittany→diane.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 40px; padding: 20px 24px; background: var(--gold-tint); border-radius: 14px; border: .5px solid rgba(218,175,46,.2);">
+      <div style="font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 10px;">the one-sentence verdict</div>
+      <p style="font-size: 14px; color: var(--dark); line-height: 1.7;">The product works. The magic is real. June 18–19 fixed the full onboarding seam — paid users go from Stripe to approved to inbox in seconds, /pending auto-redirects, and the landing page now sends buyers straight to Stripe. The capture bar answers questions inline. Auth is now a direct cookie check — no edge Supabase client, no race conditions, 83kB lighter. 82 Playwright tests cover the full app and are running green. The last critical gap is payment-before-account-creation: a user who pays before signing up has no profile to update. Fix that and the paid user journey is end-to-end solid.</p>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
