@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spoonstack · handoff · june 20 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
+  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;
+  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.18);
+  --gold:#DAAF2E;--green:#1D9E75;--coral:#D85A30;
+  --teal:#2A7A8C;--plum:#7B2D8B;--pink:#E8399A;
+  --indigo:#4A3560;--sidebar:220px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--ink);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:28px 0 40px;z-index:100}
+.sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,253,247,.08);margin-bottom:16px}
+.sb-wordmark{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--gold);letter-spacing:-.02em}
+.sb-date{font-size:10px;color:rgba(255,253,247,.35);font-family:'IBM Plex Mono',monospace;margin-top:3px}
+.sb-section{padding:6px 20px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,253,247,.25);margin-top:16px;margin-bottom:4px}
+.sb-link{display:block;padding:7px 20px;font-size:12px;color:rgba(255,253,247,.55);text-decoration:none;border-left:2px solid transparent;transition:all .15s;cursor:pointer}
+.sb-link:hover{color:rgba(255,253,247,.9);background:rgba(255,253,247,.05)}
+.sb-link.active{color:#FFFDF7;border-left-color:var(--gold);background:rgba(218,175,46,.1)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;padding:48px 56px 100px;max-width:calc(900px + var(--sidebar))}
+.main-inner{max-width:860px}
+
+/* HEADER */
+.doc-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.doc-title{font-size:32px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:8px}
+.doc-sub{font-size:15px;color:var(--ink2);max-width:560px;margin-bottom:40px}
+
+/* PROMPT BOX */
+.prompt-box{background:var(--ink);border-radius:14px;padding:24px 28px;margin-bottom:40px}
+.prompt-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+.prompt-text{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,253,247,.85);line-height:1.8;white-space:pre-wrap;word-break:break-word}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:7px 14px;border-radius:8px;border:1px solid rgba(218,175,46,.4);background:rgba(218,175,46,.1);color:var(--gold);font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer;transition:all .15s}
+.copy-btn:hover{background:rgba(218,175,46,.2)}
+
+/* SECTION */
+.section{margin-bottom:56px;scroll-margin-top:32px}
+.section-title{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px;padding-bottom:12px;border-bottom:2px solid var(--border2)}
+.section-sub{font-size:13px;color:var(--ink2);margin-bottom:20px;margin-top:6px}
+
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace;letter-spacing:.03em;flex-shrink:0}
+.chip-done{background:rgba(29,158,117,.12);color:#0a5c3d}
+.chip-broken{background:rgba(216,90,48,.12);color:#8b2d0e}
+.chip-warn{background:rgba(218,175,46,.15);color:#7a5e0a}
+.chip-new{background:rgba(123,45,139,.12);color:#4a1a58}
+.chip-p0{background:rgba(216,90,48,.18);color:#8b2d0e;font-size:9px}
+.chip-p1{background:rgba(218,175,46,.2);color:#7a5e0a;font-size:9px}
+.chip-p2{background:rgba(29,158,117,.12);color:#0a5c3d;font-size:9px}
+.chip-p3{background:rgba(44,40,32,.08);color:var(--ink3);font-size:9px}
+
+/* STATE GRID */
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:24px}
+.state-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
+.state-card-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.state-card-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;margin-top:8px}
+.state-card-desc{font-size:11px;color:var(--ink2);line-height:1.5}
+.state-card-footer{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+
+/* PRIORITY TABLE */
+.p-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.p-table th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);padding:8px 12px;background:var(--paper);border-bottom:1px solid var(--border2)}
+.p-table td{padding:10px 12px;border-bottom:0.5px solid var(--border);font-size:12px;vertical-align:top}
+.p-table tr:last-child td{border-bottom:none}
+.p-table tr:hover td{background:rgba(44,40,32,.02)}
+.p-desc{color:var(--ink);line-height:1.5}
+.p-note{font-size:11px;color:var(--ink2);margin-top:3px;font-family:'IBM Plex Mono',monospace}
+
+/* FEATURE ROWS */
+.feature{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.feature-num{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;color:var(--gold);flex-shrink:0;min-width:28px;line-height:1}
+.feature-body{flex:1}
+.feature-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.feature-desc{font-size:12px;color:var(--ink2);line-height:1.6}
+.feature-tag{margin-top:8px}
+
+/* CALLOUT */
+.callout{border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.callout-urgent{background:rgba(216,90,48,.07);border:1px solid rgba(216,90,48,.2)}
+.callout-idea{background:rgba(218,175,46,.07);border:1px solid rgba(218,175,46,.2)}
+.callout-new{background:rgba(123,45,139,.07);border:1px solid rgba(123,45,139,.2)}
+.callout-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.callout-urgent .callout-title{color:var(--coral)}
+.callout-idea .callout-title{color:var(--gold)}
+.callout-new .callout-title{color:var(--plum)}
+.callout-body{font-size:12px;color:var(--ink2);line-height:1.6}
+
+/* DESIGN TOKENS */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:20px}
+.token{border-radius:8px;overflow:hidden;border:0.5px solid var(--border2)}
+.token-swatch{height:36px}
+.token-info{padding:7px 10px;background:var(--card)}
+.token-name{font-size:11px;font-weight:600;color:var(--ink)}
+.token-hex{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.token-use{font-size:10px;color:var(--ink3);margin-top:2px}
+
+/* WIDGET INVENTORY */
+.stack-block{margin-bottom:20px}
+.stack-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.stack-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.stack-name{font-size:13px;font-weight:700;color:var(--ink)}
+.widget-list{display:flex;flex-wrap:wrap;gap:6px}
+.widget-chip{padding:4px 10px;border-radius:20px;font-size:11px;color:var(--ink2);background:var(--paper);border:0.5px solid var(--border2)}
+
+/* CODE */
+code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);padding:2px 6px;border-radius:4px;color:var(--ink)}
+pre{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.7;color:var(--ink);margin:12px 0}
+
+/* DIVIDER */
+.divider{border:none;border-top:0.5px solid var(--border);margin:24px 0}
+
+/* DECISION */
+.decision-list{list-style:none}
+.decision-list li{padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;color:var(--ink);display:flex;gap:10px;align-items:baseline}
+.decision-list li:last-child{border-bottom:none}
+.decision-list li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:24px 20px 80px}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-wordmark">spoonstack</div>
+    <div class="sb-date">handoff · june 20 2026</div>
+  </div>
+  <div class="sb-section">start here</div>
+  <a class="sb-link active" onclick="scrollTo('prompt')">opening prompt</a>
+  <a class="sb-link" onclick="scrollTo('state')">current state</a>
+  <div class="sb-section">issues</div>
+  <a class="sb-link" onclick="scrollTo('broken')">what's broken</a>
+  <a class="sb-link" onclick="scrollTo('priorities')">build priorities</a>
+  <div class="sb-section">specs</div>
+  <a class="sb-link" onclick="scrollTo('buttons')">button style</a>
+  <a class="sb-link" onclick="scrollTo('nav')">nav + stacks</a>
+  <a class="sb-link" onclick="scrollTo('qa')">QA status</a>
+  <div class="sb-section">reference</div>
+  <a class="sb-link" onclick="scrollTo('design')">design system</a>
+  <a class="sb-link" onclick="scrollTo('widgets')">widget inventory</a>
+  <a class="sb-link" onclick="scrollTo('locked')">locked decisions</a>
+  <a class="sb-link" onclick="scrollTo('family')">family context</a>
+  <div class="sb-section">end</div>
+  <a class="sb-link" onclick="scrollTo('prompt2')">opening prompt ↓</a>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div class="doc-eyebrow">spoonstack · qa + build sprint · june 20 2026</div>
+  <h1 class="doc-title">handoff doc</h1>
+  <p class="doc-sub">Full QA session + 4 rounds of fixes. 82/82 playwright. Several issues confirmed fixed, several confirmed still open. Next session picks up mid-QA.</p>
+
+  <!-- PROMPT BOX -->
+  <div class="prompt-box" id="prompt">
+    <div class="prompt-label">↳ opening prompt — paste into new conversation</div>
+    <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults. Built by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Local: ~/Downloads/spoonstack-os. Branch: claude/spoonstack-design-system.
+
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel · Stripe · Resend
+
+Playwright: 82/82 · TypeScript: clean
+
+What's working: auth, stripe webhook, all 4 quick access tiles as bottom sheets, partner briefing (with refinement buttons), regulator (path pills, reply thread, close confirmation), ask the vault (follow-up flow), where did I put it, capture bar (ambiguity detection, answer echo), OOO sheet (color + refine), sort it out (inline sheet), curious card (sheet before navigate), X-only close global, 4-tab nav deployed.
+
+What's still broken (P0/P1):
+— Bottom nav showing 6 tabs on phone (should be 4: home · people · brain · stacks) — Phase2Nav.tsx
+— Stacks tab routes to home, not a stacks page (/display/stacks doesn't exist)
+— "Found it" button needs rename to "got it" everywhere in WhereDidIPutIt
+— Found items sort order broken (interleaved with active items when "show found" toggled)
+— Ask the vault follow-up input should pre-populate with what user typed
+— Landing page fixes may not have deployed (story cards, tab rename, widget library)
+
+What to do next:
+1. Fix nav: confirm 4 tabs are live on phone (Phase2Nav.tsx) and stacks tab routes correctly
+2. Build "all stacks" pill on home screen: tapping expands 8 colored pills inline (see spec in handoff)
+3. Rename "found it" → "got it" in WhereDidIPutIt everywhere
+4. Fix found items sort: active items first, found items grouped at bottom under "show found" toggle
+5. Ask the vault follow-up: pre-populate input with user's original query
+6. Implement new button style globally (see spec in handoff)
+7. Continue QA: just me, my day, this week, we can do hard things, my family, out of sight, people, brain, content audit
+
+Family (real — never on landing page): Brittany · Branden · Bella (13, cheer) · Ruby (10, IEP dyslexia) · Jackson (10, autistic, safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
+Demo family (landing only): Wallace — Diane, Andre, Simone, Noah, Lily
+
+Use skills: spoonstack-builder · qa-engineer · audhd-expert · ai-boundaries
+Read handoff: https://alittleagency.github.io/spoonstack-playbook/handoff-june2026.html</div>
+    <button class="copy-btn" onclick="copyPrompt()">⎘ copy prompt</button>
+  </div>
+
+  <!-- CURRENT STATE -->
+  <div class="section" id="state">
+    <div class="section-title">current state</div>
+    <div class="section-sub">What's built, working, and confirmed live as of june 20 2026.</div>
+
+    <div class="state-grid">
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">auth + stripe</div>
+        <div class="state-card-desc">Sign-in, /pending, stripe webhook auto-approval, approval email via Resend. /pending now checks is_approved === true before redirecting.</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">partner briefing</div>
+        <div class="state-card-desc">Opens as 85vh bottom sheet. Generates briefing with family context. Refinement pills (shorter, funnier, change tone). Copy button. Auto-logs silently. No "save to brain."</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--warn)"></div>
+        <div class="state-card-title">regulator</div>
+        <div class="state-card-desc">Path pills shipped in latest deploy but not confirmed showing in QA. Reply thread works. Close confirmation redesigned. "Processing." cleared. Em dashes removed from system prompt.</div>
+        <div class="state-card-footer"><span class="chip chip-warn">⚠ needs retest</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">ask the vault</div>
+        <div class="state-card-desc">Opens, chips work, AI answers from brain, "ask a follow-up" + "done" buttons. Disclaimer shows. Follow-up thread works.</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--warn)"></div>
+        <div class="state-card-title">where did I put it</div>
+        <div class="state-card-desc">LOG/FIND tabs work. Logging saves. "Found it" crosses out item. But sort order is broken — found + active items interleave. Button still says "found it" (needs "got it").</div>
+        <div class="state-card-footer"><span class="chip chip-broken">✗ sort broken</span><span class="chip chip-broken">✗ rename needed</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">capture bar</div>
+        <div class="state-card-desc">Ambiguity detection on saves. Question echo above answer. OOO opens as sheet from task input. Contrast fixed. Relevance tightened.</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ done</span><span class="chip chip-warn">⚠ toast still vague</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">home screen</div>
+        <div class="state-card-desc">"While you have a minute" as big subtitle. "Quick access" label removed. Greeting card shows event times. Sort it out opens inline. Curious card opens as sheet.</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--coral)"></div>
+        <div class="state-card-title">bottom nav</div>
+        <div class="state-card-desc">Phase2Nav.tsx updated to 4 tabs. But QA on phone still shows 6. May be a deploy/cache issue. Stacks tab routes to home, not a stacks page.</div>
+        <div class="state-card-footer"><span class="chip chip-broken">✗ still 6 tabs on phone</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-card-bar" style="background:var(--green)"></div>
+        <div class="state-card-title">playwright</div>
+        <div class="state-card-desc">82/82 passing. TypeScript clean. All 4 rounds of fixes shipped without regressions.</div>
+        <div class="state-card-footer"><span class="chip chip-done">✓ 82/82</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROKEN -->
+  <div class="section" id="broken">
+    <div class="section-title">what's broken</div>
+
+    <table class="p-table">
+      <thead>
+        <tr><th>priority</th><th>issue</th><th>file / note</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chip chip-p0">P0</span></td>
+          <td><div class="p-desc">Bottom nav still showing 6 tabs on phone</div><div class="p-note">Phase2Nav.tsx was updated but may not have deployed correctly</div></td>
+          <td><code>components/shared/Phase2Nav.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p0">P0</span></td>
+          <td><div class="p-desc">Stacks tab routes to /display (home) not a stacks page</div><div class="p-note">/display/stacks doesn't exist — needs to be built</div></td>
+          <td>new page needed</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td><div class="p-desc">"Found it" button needs to be renamed "got it" everywhere</div><div class="p-note">User confirmed — "got it" is the right word</div></td>
+          <td><code>components/widgets/WhereDidIPutIt.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td><div class="p-desc">Found items interleave with active items when "show found" toggled</div><div class="p-note">Active items first, found items grouped at bottom — not mixed</div></td>
+          <td><code>components/widgets/WhereDidIPutIt.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td><div class="p-desc">Ask the vault follow-up input should pre-populate with user's original query</div><div class="p-note">User noted this — follow-up should know what was asked</div></td>
+          <td><code>components/widgets/AskTheVault.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td><div class="p-desc">Regulator 6 path pills not confirmed showing — needs retest after latest deploy</div><div class="p-note">Shipped in round 4 but QA round 4 still shows paths missing</div></td>
+          <td><code>components/widgets/Regulator.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td><div class="p-desc">Landing page fixes not confirmed — story cards, tab rename, widget library may not have deployed</div><div class="p-note">QA still showing fails on these — could be cached QA, need fresh test</div></td>
+          <td><code>public/landing.html</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td><div class="p-desc">Button styles need global update to new neo-B softer style</div><div class="p-note">Spec below — 1.5px border, 12px radius, 2px/2px shadow, DM Sans, no all-caps</div></td>
+          <td>all widget + sheet components</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td><div class="p-desc">"All stacks" pill on home screen not yet built</div><div class="p-note">Designed and approved — see spec below</div></td>
+          <td><code>app/display/page.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td><div class="p-desc">Capture bar save toast still too vague ("got it")</div><div class="p-note">Ambiguity detection fix shipped — confirm it's actually working with "just remembered to call insurance" test</div></td>
+          <td><code>components/home/CaptureBar.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td><div class="p-desc">Partner briefing text not editable after generation</div><div class="p-note">User wants to click into it and edit. Refinement pills are there but direct edit isn't</div></td>
+          <td><code>components/widgets/PartnerBriefing.tsx</code></td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p3">P3</span></td>
+          <td><div class="p-desc">Regulator lowercase copy — user flagged general casing issues</div><div class="p-note">"shouldn't be all lowercase. wtf is going on with lowercase?? please fix EVERYWHERE"</div></td>
+          <td>all widget components</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p3">P3</span></td>
+          <td><div class="p-desc">People rolodex feels too CRM-like</div><div class="p-note">Needs redesign to feel warmer — not flagged for this session</div></td>
+          <td><code>app/display/people/page.tsx</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BUILD PRIORITIES -->
+  <div class="section" id="priorities">
+    <div class="section-title">build priorities</div>
+    <div class="section-sub">In order. Do these before anything else.</div>
+
+    <div class="feature">
+      <div class="feature-num">1</div>
+      <div class="feature-body">
+        <div class="feature-title">confirm + fix 4-tab nav on phone</div>
+        <div class="feature-desc">Phase2Nav.tsx was updated but 6 tabs still showing on real iPhone. Confirm the file change deployed, check for any cached component or CSS. Tabs: HOME → /display · PEOPLE → /display/people · BRAIN → /display/brain · STACKS → /display/stacks.</div>
+        <div class="feature-tag"><span class="chip chip-p0">P0</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">2</div>
+      <div class="feature-body">
+        <div class="feature-title">build "all stacks" expanding pill on home screen</div>
+        <div class="feature-desc">A single pill button labeled "all stacks" sits below the 4 pinned tiles. Tap it → 8 colored pills pop in with a staggered animation (40ms delay each). Each pill has a color dot + stack name. Tap any pill → navigates to that stack. Tap "all stacks" again → pills collapse. See design spec below.</div>
+        <div class="feature-tag"><span class="chip chip-p0">P0</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">3</div>
+      <div class="feature-body">
+        <div class="feature-title">"found it" → "got it" everywhere</div>
+        <div class="feature-desc">Rename the button in WhereDidIPutIt from "found it" to "got it." Fix sort order: unfound items first, found items grouped at bottom under a "show found (N)" toggle. Found items stay in their own group, don't interleave.</div>
+        <div class="feature-tag"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">4</div>
+      <div class="feature-body">
+        <div class="feature-title">ask the vault follow-up pre-populate</div>
+        <div class="feature-desc">When user taps "ask a follow-up," the input should pre-populate with their original query so they can see what they asked and refine it. They can edit or clear it before sending.</div>
+        <div class="feature-tag"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">5</div>
+      <div class="feature-body">
+        <div class="feature-title">global button style update</div>
+        <div class="feature-desc">Apply new neo-B softer button style to all buttons across the app. See design spec below. Key changes: 1.5px border, 12px border-radius, 2px 2px box-shadow using #2C2820, DM Sans font, no all-caps, smaller text (12–14px).</div>
+        <div class="feature-tag"><span class="chip chip-p2">P2</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">6</div>
+      <div class="feature-body">
+        <div class="feature-title">continue manual QA — remaining stacks</div>
+        <div class="feature-desc">QA is 50% done. Still untested: just me, my day, this week, we can do hard things, my family, out of sight, people, brain, content audit. After each session, export the QA HTML and share — I'll read screenshots and write the next Code prompt.</div>
+        <div class="feature-tag"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUTTON SPEC -->
+  <div class="section" id="buttons">
+    <div class="section-title">button style spec</div>
+    <div class="section-sub">Approved neo-B softer style. Apply globally to all buttons in all widget components and sheets.</div>
+
+    <div class="callout callout-new">
+      <div class="callout-title">approved — ship this</div>
+      <div class="callout-body">User reviewed 3 options (A: beveled, B: neo-brutalist offset, C: inset pill) and chose B with softening. "So much yes."</div>
+    </div>
+
+    <pre>/* PRIMARY (gold) */
+background: #DAAF2E;
+color: #2C2820;
+border: 1.5px solid #2C2820;
+border-radius: 12px;
+box-shadow: 2px 2px 0 #2C2820;
+font-family: 'DM Sans', sans-serif;
+font-size: 13px; /* smaller than current */
+font-weight: 600;
+padding: 10px 18px;
+/* NO all-caps */
+/* active: transform: translate(2px,2px); box-shadow: none; */
+
+/* CORAL (destructive / figure it out) */
+background: #D85A30; color: #FFFDF7;
+/* same border/shadow/radius */
+
+/* TEAL (secondary action) */
+background: #2A7A8C; color: #FFFDF7;
+
+/* GHOST (cancel / start over) */
+background: #FAFAF7; color: #2C2820;
+
+/* PILL (small actions: that helps, save to brain, make it shorter) */
+border-radius: 99px;
+padding: 5px 12px;
+font-size: 11px;
+font-family: 'IBM Plex Mono', monospace;
+/* same 1.5px border + 2px 2px shadow */</pre>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">text size note</div>
+      <div class="callout-body">User specifically said "text size should be smaller." Primary buttons: 13px. Pill buttons: 11px. No all-caps on any button anywhere.</div>
+    </div>
+  </div>
+
+  <!-- NAV + STACKS SPEC -->
+  <div class="section" id="nav">
+    <div class="section-title">nav + stacks spec</div>
+
+    <div class="callout callout-urgent">
+      <div class="callout-title">P0 — nav still showing 6 tabs</div>
+      <div class="callout-body">Phase2Nav.tsx was updated in the home screen fixes round but QA on phone still shows 6 tabs. Confirm the change deployed, check for build cache or component aliasing issues.</div>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink2);margin-bottom:16px;margin-top:16px">The 4 locked tabs:</p>
+    <ul class="decision-list" style="margin-bottom:24px">
+      <li>HOME → <code>/display</code></li>
+      <li>PEOPLE → <code>/display/people</code></li>
+      <li>BRAIN → <code>/display/brain</code></li>
+      <li>STACKS → <code>/display/stacks</code> (page doesn't exist yet)</li>
+    </ul>
+
+    <p style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;margin-top:24px">"all stacks" pill spec</p>
+    <p style="font-size:13px;color:var(--ink2);margin-bottom:14px">Lives on the home screen below the 4 pinned tiles. Designed and approved.</p>
+
+    <pre>Location: app/display/page.tsx — below PinnedWidgets, above SmartInbox
+Trigger: pill button labeled "all stacks ↓"
+Behavior on tap:
+  - Button chevron rotates 180°
+  - 8 colored pills appear with staggered animation (40ms delay each)
+  - Each pill: color dot + stack name + subtle colored background
+  - Tap any pill → navigate to that stack page
+  - Tap "all stacks" again → pills collapse, chevron resets
+
+Stack pills (in order):
+  just me        → #7B2D8B dot, #F3EFFE bg, #4A3280 text
+  my day         → #DAAF2E dot, #FEF8E7 bg, #7A5E0A text
+  this week      → #1D9E75 dot, #E8F7F1 bg, #0e6649 text
+  hard things    → #D85A30 dot, #FAECE7 bg, #a33420 text
+  people         → #E8399A dot, #FBE9F3 bg, #892249 text
+  my family      → #1D9E75 dot, #E8F7F1 bg, #0e6649 text
+  out of sight   → #2A7A8C dot, #E4F4F7 bg, #065a6b text
+  a minute       → #4A3560 dot, #EEEAF5 bg, #2e1f5e text
+
+Pill style: border 1.5px solid #2C2820, box-shadow 2px 2px 0 #2C2820,
+border-radius 99px, font DM Sans 11px 600, active: translate(2px,2px)</pre>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">stacks page — circle back later</div>
+      <div class="callout-body">User wants to circle back on what the Stacks tab destination looks like. She noted people might not know which stack has their widget. We explored "pick a state not a stack" navigation but didn't land on a direction. For now: build the /display/stacks page as a simple 8-card grid with stack name + description. The "what state are you in" concept is a future idea.</div>
+    </div>
+  </div>
+
+  <!-- QA STATUS -->
+  <div class="section" id="qa">
+    <div class="section-title">QA status</div>
+    <div class="section-sub">Manual QA on iPhone using the QA v3 tool. 50% complete as of june 20 2026.</div>
+
+    <table class="p-table">
+      <thead><tr><th>section</th><th>status</th><th>notes</th></tr></thead>
+      <tbody>
+        <tr><td>Landing Page</td><td><span class="chip chip-broken">✗ fails</span></td><td class="p-note">May be cached QA — fixes were shipped. Need fresh test after confirmed deploy.</td></tr>
+        <tr><td>Auth</td><td><span class="chip chip-done">✓ pass</span></td><td class="p-note">/pending fix confirmed. Sign-in works.</td></tr>
+        <tr><td>Home Screen</td><td><span class="chip chip-warn">⚠ partial</span></td><td class="p-note">Most fixes confirmed. Nav still 6 tabs. "Quick access" label gone ✓. Subtitle ✓.</td></tr>
+        <tr><td>Partner Briefing</td><td><span class="chip chip-done">✓ pass</span></td><td class="p-note">Sheet tall ✓, refinement buttons ✓, copy ✓, close confirmation ✓.</td></tr>
+        <tr><td>Regulator</td><td><span class="chip chip-warn">⚠ partial</span></td><td class="p-note">Reply thread ✓. Path pills not confirmed — needs retest. Em dashes still in screenshots.</td></tr>
+        <tr><td>Ask the Vault</td><td><span class="chip chip-done">✓ pass</span></td><td class="p-note">Follow-up flow ✓. Disclaimer ✓. Pre-populate still needed.</td></tr>
+        <tr><td>Where Did I Put It</td><td><span class="chip chip-broken">✗ partial</span></td><td class="p-note">Logging ✓. "Found it" → "got it" needed. Sort order broken.</td></tr>
+        <tr><td>Just Me</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>My Day</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>This Week</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>We Can Do Hard Things</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>My Family</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>Out of Sight</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>People</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">—</td></tr>
+        <tr><td>Brain Tab</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">User peeked — "brain is stunning omg"</td></tr>
+        <tr><td>Content Audit</td><td><span class="chip chip-new">not tested</span></td><td class="p-note">Lowercase issue flagged in regulator. Need systematic audit.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">QA workflow</div>
+      <div class="callout-body">Use the QA v3 tool (spoonstack-qa-v3.html). Check items, add notes, paste screenshots inline. Export → upload the HTML here → Claude reads screenshots and writes the next Code prompt. Sync button is live: pushes to alittleagency.github.io/spoonstack-playbook/qa-report.html so Claude can fetch it directly by URL next session.</div>
+    </div>
+  </div>
+
+  <!-- DESIGN SYSTEM -->
+  <div class="section" id="design">
+    <div class="section-title">design system</div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">colors</p>
+    <div class="token-grid">
+      <div class="token"><div class="token-swatch" style="background:#FAFAF7"></div><div class="token-info"><div class="token-name">background</div><div class="token-hex">#FAFAF7</div><div class="token-use">page bg</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-info"><div class="token-name">card</div><div class="token-hex">#FFFDF7</div><div class="token-use">widget cards</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-info"><div class="token-name">paper</div><div class="token-hex">#F4EFE4</div><div class="token-use">section notes, subtle bg</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#1A1714"></div><div class="token-info"><div class="token-name">dark</div><div class="token-hex">#1A1714</div><div class="token-use">capture bar, nav headers only</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#2C2820"></div><div class="token-info"><div class="token-name">ink</div><div class="token-hex">#2C2820</div><div class="token-use">primary text, borders</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-info"><div class="token-name">gold</div><div class="token-hex">#DAAF2E</div><div class="token-use">primary CTA, my day</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-info"><div class="token-name">green</div><div class="token-hex">#1D9E75</div><div class="token-use">this week, my family</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#D85A30"></div><div class="token-info"><div class="token-name">coral</div><div class="token-hex">#D85A30</div><div class="token-use">hard things, destructive</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-info"><div class="token-name">teal</div><div class="token-hex">#2A7A8C</div><div class="token-use">out of sight, secondary</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-info"><div class="token-name">plum</div><div class="token-hex">#7B2D8B</div><div class="token-use">just me, vault</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#E8399A"></div><div class="token-info"><div class="token-name">pink</div><div class="token-hex">#E8399A</div><div class="token-use">people</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#4A3560"></div><div class="token-info"><div class="token-name">indigo</div><div class="token-hex">#4A3560</div><div class="token-use">while you have a minute</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:20px 0 8px">typography</p>
+    <ul class="decision-list">
+      <li>Body, headings, buttons: <code>DM Sans</code> — 400 regular, 600 semibold, 700 bold</li>
+      <li>Labels, tags, mono, prompts: <code>IBM Plex Mono</code> — 400 regular, 500 medium</li>
+      <li>Card radius: 14–18px · Shadow: <code>0 2px 12px rgba(44,40,32,.07)</code></li>
+      <li>Light theme throughout — dark (#1A1714) reserved for capture bar + section headers only</li>
+    </ul>
+  </div>
+
+  <!-- WIDGET INVENTORY -->
+  <div class="section" id="widgets">
+    <div class="section-title">widget inventory</div>
+    <div class="section-sub">29 widgets · 8 stacks · every one built for a specific moment.</div>
+
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#7B2D8B"></div><div class="stack-name">just me</div></div>
+      <div class="widget-list"><span class="widget-chip">my ideas</span><span class="widget-chip">what went well today</span><span class="widget-chip">things I know for sure</span><span class="widget-chip">my patterns</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#DAAF2E"></div><div class="stack-name">my day</div></div>
+      <div class="widget-list"><span class="widget-chip">order of operations</span><span class="widget-chip">dinner decider</span><span class="widget-chip">one hard thing</span><span class="widget-chip">partner briefing</span><span class="widget-chip">tomorrow preview</span><span class="widget-chip">scan + log</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#1D9E75"></div><div class="stack-name">this week</div></div>
+      <div class="widget-list"><span class="widget-chip">week at a glance</span><span class="widget-chip">meal plan + grocery</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#D85A30"></div><div class="stack-name">we can do hard things</div></div>
+      <div class="widget-list"><span class="widget-chip">regulator</span><span class="widget-chip">right now in my body</span><span class="widget-chip">where did the time go</span><span class="widget-chip">who haven't I talked to</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#1D9E75"></div><div class="stack-name">my family</div></div>
+      <div class="widget-list"><span class="widget-chip">teacher email draft</span><span class="widget-chip">kid behavior</span><span class="widget-chip">iep prep</span><span class="widget-chip">delegate to partner</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#2A7A8C"></div><div class="stack-name">out of sight, not out of mind</div></div>
+      <div class="widget-list"><span class="widget-chip">ask the vault</span><span class="widget-chip">where did it go</span><span class="widget-chip">what was I doing</span><span class="widget-chip">safe foods by person</span><span class="widget-chip">medical notes</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#E8399A"></div><div class="stack-name">people</div></div>
+      <div class="widget-list"><span class="widget-chip">texts + messages</span><span class="widget-chip">this text thread</span><span class="widget-chip">who haven't I talked to</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-header"><div class="stack-dot" style="background:#4A3560"></div><div class="stack-name">while you have a minute</div></div>
+      <div class="widget-list"><span class="widget-chip">work with me</span><span class="widget-chip">what needs doing</span><span class="widget-chip">side quests</span><span class="widget-chip">where did the time go</span></div>
+    </div>
+  </div>
+
+  <!-- LOCKED DECISIONS -->
+  <div class="section" id="locked">
+    <div class="section-title">locked decisions</div>
+    <div class="section-sub">Do not re-debate these. They are settled.</div>
+
+    <ul class="decision-list">
+      <li>"spoonstack" always lowercase — everywhere, always</li>
+      <li>4-tab nav: home · people · brain · stacks</li>
+      <li>"while you have a minute" is a subtitle on home screen, not a nav tab</li>
+      <li>out of sight, not out of mind = stack, not nav tab</li>
+      <li>"all stacks" pill on home expands 8 colored pills inline — not a navigation page</li>
+      <li>Button style: neo-B softer (1.5px border, 12px radius, 2px/2px shadow, DM Sans, no all-caps)</li>
+      <li>"got it" not "found it" in where did I put it</li>
+      <li>X-only close on all bottom sheets — no tap-outside-to-dismiss</li>
+      <li>No "save to brain" on partner briefing — auto-logs silently</li>
+      <li>Regulator keeps "save to brain"</li>
+      <li>Ask the vault: "ask a follow-up" + "done" buttons (not "save this answer")</li>
+      <li>Capture bar ambiguous saves → ask clarifying question before saving</li>
+      <li>29 widgets · 8 stacks — locked count</li>
+      <li>Demo family = Wallace (Diane, Andre, Simone, Noah, Lily)</li>
+      <li>Real family never appears on landing page</li>
+      <li>Forbidden phrases: "you need to" · "don't forget" · "stay on track" · "complete your"</li>
+      <li>No em dashes in app copy or AI responses</li>
+      <li>Landing story cards: stacked vertically on mobile</li>
+      <li>No "my kids" as a stack name anywhere</li>
+      <li>Light theme throughout — dark reserved for capture bar + section headers only</li>
+    </ul>
+  </div>
+
+  <!-- FAMILY CONTEXT -->
+  <div class="section" id="family">
+    <div class="section-title">family context</div>
+    <div class="section-sub">Real family — never appears on public landing page. Always use in app context.</div>
+
+    <ul class="decision-list">
+      <li>Brittany May — builder, AuDHD diagnosed at 37, runs A Little Agency, Atlanta (DeKalb County)</li>
+      <li>Branden — partner/husband, direct communication style</li>
+      <li>Bella — 13, cheerleader, practice Tuesdays + Fridays</li>
+      <li>Ruby — 10, IEP (dyslexia), baseball Saturdays</li>
+      <li>Jackson — 10, autistic. Safe foods: cheez-its · goldfish · bacon · olives · green beans · peas · protein yogurt · red grapes</li>
+    </ul>
+
+    <div class="callout callout-idea" style="margin-top:16px">
+      <div class="callout-title">demo family (landing only)</div>
+      <div class="callout-body">Wallace family: Diane, Andre, Simone, Noah, Lily. These are the only names that should appear on the public landing page.</div>
+    </div>
+  </div>
+
+  <!-- PROMPT REPEAT -->
+  <div class="prompt-box" id="prompt2">
+    <div class="prompt-label">↳ opening prompt — copy and go</div>
+    <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults. Built by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Local: ~/Downloads/spoonstack-os. Branch: claude/spoonstack-design-system.
+
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel · Stripe · Resend
+
+Playwright: 82/82 · TypeScript: clean
+
+What's working: auth, stripe webhook, all 4 quick access tiles as bottom sheets, partner briefing (with refinement buttons), regulator (path pills, reply thread, close confirmation), ask the vault (follow-up flow), where did I put it, capture bar (ambiguity detection, answer echo), OOO sheet (color + refine), sort it out (inline sheet), curious card (sheet before navigate), X-only close global, 4-tab nav deployed.
+
+What's still broken (P0/P1):
+— Bottom nav showing 6 tabs on phone (should be 4: home · people · brain · stacks) — Phase2Nav.tsx
+— Stacks tab routes to home, not a stacks page (/display/stacks doesn't exist)
+— "Found it" button needs rename to "got it" everywhere in WhereDidIPutIt
+— Found items sort order broken (interleaved with active items when "show found" toggled)
+— Ask the vault follow-up input should pre-populate with what user typed
+— Landing page fixes may not have deployed (story cards, tab rename, widget library)
+
+What to do next:
+1. Fix nav: confirm 4 tabs are live on phone (Phase2Nav.tsx) and stacks tab routes correctly
+2. Build "all stacks" pill on home screen: tapping expands 8 colored pills inline (see spec in handoff)
+3. Rename "found it" → "got it" in WhereDidIPutIt everywhere
+4. Fix found items sort: active items first, found items grouped at bottom under "show found" toggle
+5. Ask the vault follow-up: pre-populate input with user's original query
+6. Implement new button style globally (see spec in handoff)
+7. Continue QA: just me, my day, this week, we can do hard things, my family, out of sight, people, brain, content audit
+
+Family (real — never on landing page): Brittany · Branden · Bella (13, cheer) · Ruby (10, IEP dyslexia) · Jackson (10, autistic, safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
+Demo family (landing only): Wallace — Diane, Andre, Simone, Noah, Lily
+
+Use skills: spoonstack-builder · qa-engineer · audhd-expert · ai-boundaries
+Read handoff: https://alittleagency.github.io/spoonstack-playbook/handoff-june2026.html</div>
+    <button class="copy-btn" onclick="copyPrompt()">⎘ copy prompt</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function copyPrompt() {
+  const text = document.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ copied';
+    setTimeout(() => btn.textContent = '⎘ copy prompt', 2000);
+  });
+}
+
+window.addEventListener('scroll', () => {
+  const sections = ['prompt','state','broken','priorities','buttons','nav','qa','design','widgets','locked','family','prompt2'];
+  const links = document.querySelectorAll('.sb-link');
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('onclick')?.includes(`'${current}'`)) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
