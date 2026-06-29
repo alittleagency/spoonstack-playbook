@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spoonstack · handoff doc · june 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
+  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;--ink4:#B5AA97;
+  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.18);
+  --gold:#DAAF2E;--gold-l:#FDF4D0;--gold-d:#6B4C00;
+  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#085041;
+  --coral:#D85A30;--coral-l:#FAECE7;--coral-d:#993C1D;
+  --teal:#2A7A8C;--teal-l:#E0F2F7;--teal-d:#1A4D57;
+  --plum:#7B2D8B;--plum-l:#EDE5F5;--plum-d:#3D1646;
+  --pink:#E8399A;--dark:#1A1714;
+  --sidebar:220px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--dark);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:28px 0 40px;z-index:100;scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px}
+.sb-wordmark{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--gold);letter-spacing:-.02em}
+.sb-date{font-size:10px;color:rgba(255,255,255,.35);font-family:'IBM Plex Mono',monospace;margin-top:3px}
+.sb-section{padding:6px 20px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-top:16px;margin-bottom:4px}
+.sb-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .15s;cursor:pointer;font-weight:500}
+.sb-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05)}
+.sb-link.active{color:var(--gold);background:rgba(218,175,46,.08)}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;padding:48px 56px 100px;max-width:calc(920px + var(--sidebar))}
+.main-inner{max-width:860px}
+
+/* HEADER */
+.doc-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.doc-title{font-size:36px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:8px;letter-spacing:-.03em}
+.doc-sub{font-size:15px;color:var(--ink2);max-width:600px;margin-bottom:40px;line-height:1.65}
+
+/* PROMPT BOX */
+.prompt-box{background:var(--dark);border-radius:14px;padding:28px 32px;margin-bottom:16px;position:relative}
+.prompt-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.prompt-text{font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.82);line-height:1.85;white-space:pre-wrap;word-break:break-word}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;margin-top:18px;padding:8px 16px;border-radius:8px;border:1px solid rgba(218,175,46,.4);background:rgba(218,175,46,.1);color:var(--gold);font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer;transition:all .15s}
+.copy-btn:hover{background:rgba(218,175,46,.2)}
+
+/* SECTIONS */
+.section{margin-bottom:56px;scroll-margin-top:32px}
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:16px;padding-bottom:14px;border-bottom:1.5px solid var(--border2)}
+
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace;letter-spacing:.03em;flex-shrink:0}
+.chip-done{background:var(--green-l);color:var(--green-d)}
+.chip-broken{background:var(--coral-l);color:var(--coral-d)}
+.chip-warn{background:var(--gold-l);color:var(--gold-d)}
+.chip-stub{background:var(--plum-l);color:var(--plum-d)}
+.chip-p0{background:rgba(216,90,48,.18);color:var(--coral-d);font-size:9px}
+.chip-p1{background:var(--gold-l);color:var(--gold-d);font-size:9px}
+.chip-p2{background:var(--green-l);color:var(--green-d);font-size:9px}
+
+/* STATE GRID */
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:24px}
+.state-card{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.state-bar{position:absolute;top:0;left:0;right:0;height:3px}
+.state-title{font-size:13px;font-weight:700;color:var(--ink);margin:10px 0 4px}
+.state-desc{font-size:11px;color:var(--ink2);line-height:1.5}
+.state-foot{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+
+/* PRIORITY TABLE */
+.p-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.p-table th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);padding:8px 14px;background:var(--paper);border-bottom:1px solid var(--border2);font-family:'IBM Plex Mono',monospace}
+.p-table td{padding:12px 14px;border-bottom:0.5px solid var(--border);font-size:13px;vertical-align:top;line-height:1.5}
+.p-table tr:last-child td{border-bottom:none}
+.p-desc{color:var(--ink);font-weight:500}
+.p-note{font-size:11px;color:var(--ink2);margin-top:4px;font-family:'IBM Plex Mono',monospace;line-height:1.5}
+
+/* FEATURE ROWS */
+.feature{background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start}
+.feature-num{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--gold);flex-shrink:0;min-width:28px;line-height:1.1}
+.feature-body{flex:1}
+.feature-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.feature-desc{font-size:13px;color:var(--ink2);line-height:1.6}
+.feature-foot{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* CALLOUT */
+.callout{border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.callout-gold{background:var(--gold-l);border:1px solid rgba(218,175,46,.3)}
+.callout-coral{background:var(--coral-l);border:1px solid rgba(216,90,48,.2)}
+.callout-plum{background:var(--plum-l);border:1px solid rgba(123,45,139,.15)}
+.callout-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'IBM Plex Mono',monospace;margin-bottom:6px}
+.callout-gold .callout-label{color:var(--gold-d)}
+.callout-coral .callout-label{color:var(--coral-d)}
+.callout-plum .callout-label{color:var(--plum-d)}
+.callout-body{font-size:13px;color:var(--ink2);line-height:1.65}
+
+/* DESIGN TOKEN GRID */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:20px}
+.token{border-radius:8px;overflow:hidden;border:0.5px solid var(--border2)}
+.token-swatch{height:32px}
+.token-info{padding:8px 10px;background:var(--card)}
+.token-hex{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink);font-weight:600}
+.token-use{font-size:10px;color:var(--ink3);margin-top:2px}
+
+/* STACK BLOCKS */
+.stack-block{margin-bottom:18px}
+.stack-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.stack-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.stack-name{font-size:13px;font-weight:700;color:var(--ink)}
+.stack-route{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);margin-left:4px}
+.widget-list{display:flex;flex-wrap:wrap;gap:6px}
+.w-chip{padding:4px 11px;border-radius:20px;font-size:11px;color:var(--ink2);background:var(--paper);border:0.5px solid var(--border2)}
+
+/* FAMILY */
+.family-row{display:flex;gap:14px;padding:12px 0;border-bottom:0.5px solid var(--border);align-items:flex-start}
+.family-row:last-child{border-bottom:none}
+.family-name{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--ink);min-width:120px;flex-shrink:0}
+.family-detail{font-size:13px;color:var(--ink2);line-height:1.6}
+
+/* DECISION LIST */
+.decision-list{list-style:none}
+.decision-list li{padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px;color:var(--ink2);display:flex;gap:10px;align-items:baseline;line-height:1.5}
+.decision-list li:last-child{border-bottom:none}
+.decision-list li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:28px 20px 80px}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-wordmark">spoonstack</div>
+    <div class="sb-date">handoff doc · june 2026</div>
+  </div>
+
+  <div class="sb-section">start here</div>
+  <a class="sb-link active" onclick="goTo('prompt')"><span class="sb-dot" style="background:var(--gold)"></span>opening prompt</a>
+  <a class="sb-link" onclick="goTo('state')"><span class="sb-dot" style="background:var(--green)"></span>current state</a>
+
+  <div class="sb-section">issues</div>
+  <a class="sb-link" onclick="goTo('broken')"><span class="sb-dot" style="background:var(--coral)"></span>what's broken</a>
+  <a class="sb-link" onclick="goTo('priorities')"><span class="sb-dot" style="background:var(--gold)"></span>build priorities</a>
+
+  <div class="sb-section">reference</div>
+  <a class="sb-link" onclick="goTo('tokens')"><span class="sb-dot" style="background:var(--gold)"></span>design tokens</a>
+  <a class="sb-link" onclick="goTo('family')"><span class="sb-dot" style="background:var(--green)"></span>family context</a>
+  <a class="sb-link" onclick="goTo('widgets')"><span class="sb-dot" style="background:var(--teal)"></span>widget catalog</a>
+  <a class="sb-link" onclick="goTo('locked')"><span class="sb-dot" style="background:var(--plum)"></span>locked decisions</a>
+
+  <div class="sb-section">playbook</div>
+  <a class="sb-link" href="index.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>playbook home</a>
+  <a class="sb-link" href="style-guide-phase1.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>style guide · phase 1</a>
+  <a class="sb-link" href="style-guide-phase2.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>style guide · phase 2</a>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div class="doc-eyebrow">spoonstack · handoff doc</div>
+  <h1 class="doc-title">handoff doc</h1>
+  <p class="doc-sub">Paste the opening prompt into any new session to get full context instantly. Everything a new session needs to know — what works, what's broken, what's next.</p>
+
+  <!-- OPENING PROMPT -->
+  <div class="section" id="prompt">
+    <div class="section-label">START HERE</div>
+    <div class="section-title">opening prompt</div>
+
+    <div class="prompt-box">
+      <div class="prompt-label">↳ copy + paste into new conversation</div>
+      <div class="prompt-text" id="main-prompt">I'm continuing work on spoonstack — an AI second brain app for neurodivergent moms. "AI built for your brain, not everyone else's."
+
+Live: spoonstack.app
+Repo: github.com/alittleagency/spoonstack-os (private)
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel
+
+WORKING:
+- Home screen: cream bg, black capture bar, 4 widget cards with emojis + color bars, moon/weather/time header, "while you have a minute" section
+- Partner Briefing: auto-sequence (pending items → spinner → message), gold highlights, 3 pills (make it shorter · make it funnier · add more info), copy button, Send to Branden button, iMessage overlay
+- Meal Decider: full flow (suggestions → recipe view → get cooking mode with dot nav)
+- Regulator: live with 6 path pills
+- Ask the Vault: live with follow-up flow
+- Where Did I Put It: live with got it / log tabs
+- Brain tab: river model, left nav, filter pills, report stub pages deployed
+- Settings page: /settings with logout + delete account (coral, confirm required)
+- Admin page: /admin (Brittany only, manual approval)
+- Supabase auth, Stripe payments ($79/year), approval flow
+- PINNED_STORAGE_KEY = "spoonstack_pinned_v4"
+
+BROKEN (fix these first):
+- [P0] Dinner Decider opens /display/my-day instead of sheet — needs to open HomeWidgetSheet
+- [P0] Check-in mood not propagating to widget AI calls
+- [P1] Partner briefing pills wrong — should only be: make it shorter · make it funnier · add more info
+- [P1] "make it shorter" inconsistent — sometimes doesn't swap message
+- [P1] No session state between widgets
+
+WHAT TO DO THIS SESSION:
+[describe your task here]
+
+Use the spoonstack-builder skill for all product decisions.
+Always use the wallace family for demo content (not real user names).
+spoonstack always lowercase.</div>
+      <button class="copy-btn" onclick="copyPrompt('main-prompt', this)">⎘ copy prompt</button>
+    </div>
+  </div>
+
+  <!-- CURRENT STATE -->
+  <div class="section" id="state">
+    <div class="section-label">STATUS · JUNE 28 2026</div>
+    <div class="section-title">current state</div>
+
+    <div class="state-grid">
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--green)"></div>
+        <div class="state-title">home screen redesign</div>
+        <div class="state-desc">cream bg, black capture bar, 4 locked widget cards, moon/weather/time header built</div>
+        <div class="state-foot"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--gold)"></div>
+        <div class="state-title">partner briefing</div>
+        <div class="state-desc">auto-sequence flow and iMessage overlay done — pills still broken</div>
+        <div class="state-foot"><span class="chip chip-warn">⚠ pills broken</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--green)"></div>
+        <div class="state-title">meal decider</div>
+        <div class="state-desc">full flow: input → suggestions → recipe view → get cooking mode</div>
+        <div class="state-foot"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--green)"></div>
+        <div class="state-title">brain tab</div>
+        <div class="state-desc">river model, left nav, filter pills live — weekly summary + connection map are stubs</div>
+        <div class="state-foot"><span class="chip chip-done">✓ done</span><span class="chip chip-stub">reports = stubs</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--green)"></div>
+        <div class="state-title">settings + auth</div>
+        <div class="state-desc">/settings with logout + delete account · /admin Brittany only</div>
+        <div class="state-foot"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--coral)"></div>
+        <div class="state-title">dinner decider sheet</div>
+        <div class="state-desc">opens /display/my-day instead of HomeWidgetSheet — P0</div>
+        <div class="state-foot"><span class="chip chip-broken">✗ broken</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--green)"></div>
+        <div class="state-title">"while you have a minute"</div>
+        <div class="state-desc">90-day filter + actionable entries only, hides when empty</div>
+        <div class="state-foot"><span class="chip chip-done">✓ done</span></div>
+      </div>
+      <div class="state-card">
+        <div class="state-bar" style="background:var(--gold)"></div>
+        <div class="state-title">nudge responses</div>
+        <div class="state-desc">question hash in localStorage, responses save to brain_entries</div>
+        <div class="state-foot"><span class="chip chip-warn">⚠ in progress</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT'S BROKEN -->
+  <div class="section" id="broken">
+    <div class="section-label">BUGS</div>
+    <div class="section-title">what's broken</div>
+
+    <table class="p-table">
+      <thead>
+        <tr><th>priority</th><th>issue</th><th>notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="chip chip-p0">P0</span></td>
+          <td>
+            <div class="p-desc">Check-in mood pills not propagating to widget AI calls</div>
+            <div class="p-note">mood selected at check-in never reaches AI context in partner briefing, regulator, etc.</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">thread mood context from check-in through to all AI endpoints</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p0">P0</span></td>
+          <td>
+            <div class="p-desc">Dinner Decider opens /display/my-day instead of HomeWidgetSheet</div>
+            <div class="p-note">tapping the Meal Decider card navigates to stack page instead of opening sheet inline</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">fix in progress — should open HomeWidgetSheet</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td>
+            <div class="p-desc">Partner briefing pills wrong</div>
+            <div class="p-note">should be exactly 3: make it shorter · make it funnier · add more info — remove any others</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">apply to both pill display and AI handler</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td>
+            <div class="p-desc">"make it shorter" inconsistent</div>
+            <div class="p-note">sometimes swaps message, sometimes doesn't. needs to reliably replace the displayed text</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">verify AI call and state update</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td>
+            <div class="p-desc">No session state between widgets</div>
+            <div class="p-note">each widget AI call starts cold — no shared mood, context, or check-in data</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">shared React context or Supabase session row</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p1">P1</span></td>
+          <td>
+            <div class="p-desc">CRISIS triage missing explicit deferral permission language</div>
+            <div class="p-note">regulator CRISIS path needs "you don't have to deal with this right now" framing</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">update system prompt for CRISIS path</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td>
+            <div class="p-desc">Week-at-a-glance missing auto-flags</div>
+            <div class="p-note">no automatic flagging of overdue or conflicting calendar items</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">backlog — build after P0/P1 fixes</td>
+        </tr>
+        <tr>
+          <td><span class="chip chip-p2">P2</span></td>
+          <td>
+            <div class="p-desc">People widget brain context only works with seeded data</div>
+            <div class="p-note">fails gracefully but doesn't use real brain entries for people context queries</div>
+          </td>
+          <td style="font-size:12px;color:var(--ink3)">backlog — build people brain context endpoint</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BUILD PRIORITIES -->
+  <div class="section" id="priorities">
+    <div class="section-label">NEXT UP · IN ORDER</div>
+    <div class="section-title">build priorities</div>
+
+    <div class="feature">
+      <div class="feature-num">1</div>
+      <div class="feature-body">
+        <div class="feature-title">fix Dinner Decider sheet opening</div>
+        <div class="feature-desc">Currently tapping the Meal Decider card navigates to /display/my-day. It should open HomeWidgetSheet inline, the same way all 4 home widget cards work. P0 — breaks the locked home widget interaction model.</div>
+        <div class="feature-foot"><span class="chip chip-p0">P0</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">2</div>
+      <div class="feature-body">
+        <div class="feature-title">fix partner briefing pills</div>
+        <div class="feature-desc">Pills must be exactly 3: make it shorter · make it funnier · add more info. Remove any others. Fix "make it shorter" to reliably swap the displayed message. Apply to both the pill render and the AI handler route.</div>
+        <div class="feature-foot"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">3</div>
+      <div class="feature-body">
+        <div class="feature-title">fix session state between widgets (mood propagation)</div>
+        <div class="feature-desc">Check-in mood must reach all widget AI calls. Implement shared session context — React context or a lightweight Supabase session row — that holds mood, check-in time, and any active context. Propagate to all /api/ai/* endpoints.</div>
+        <div class="feature-foot"><span class="chip chip-p0">P0</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">4</div>
+      <div class="feature-body">
+        <div class="feature-title">build weekly summary report (brain)</div>
+        <div class="feature-desc">Brain tab has a stub page for the weekly summary. Pull brain_entries from the past 7 days, cluster by domain, surface 3-5 patterns in the brain's voice. Output is gentle observation — never productivity tracking. Sentence case, no em dashes, no exclamation marks.</div>
+        <div class="feature-foot"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">5</div>
+      <div class="feature-body">
+        <div class="feature-title">partner briefing "make it funnier" — verify it's functional</div>
+        <div class="feature-desc">After fixing pills, confirm "make it funnier" reliably produces a visibly different (funnier) version of the briefing. Check the system prompt and AI handler for this specific tone shift.</div>
+        <div class="feature-foot"><span class="chip chip-p1">P1</span></div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-num">6</div>
+      <div class="feature-body">
+        <div class="feature-title">memory moment on capture</div>
+        <div class="feature-desc">When a brain dump is saved and the AI detects a match with an existing entry, surface a brief "the brain remembers..." moment before the confirmation toast. One instance only. Never intrusive. This is the signature spoonstack moment — the thing that makes it feel different from Apple Notes.</div>
+        <div class="feature-foot"><span class="chip chip-p1">high priority UX</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESIGN TOKENS -->
+  <div class="section" id="tokens">
+    <div class="section-label">DESIGN SYSTEM</div>
+    <div class="section-title">design tokens reference</div>
+
+    <div class="callout callout-gold">
+      <div class="callout-label">full style guide</div>
+      <div class="callout-body">Full component specs, typography details, and Phase 2 vision in the <a href="style-guide-phase1.html" style="color:var(--teal)">Phase 1 style guide</a>. This section has the quick-reference tokens only.</div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:16px 0 10px">background surfaces</p>
+    <div class="token-grid">
+      <div class="token"><div class="token-swatch" style="background:#FAFAF7"></div><div class="token-info"><div class="token-hex">#FAFAF7</div><div class="token-use">page background</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-info"><div class="token-hex">#FFFDF7</div><div class="token-use">card background</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-info"><div class="token-hex">#F4EFE4</div><div class="token-use">paper / input bg</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#1A1714"></div><div class="token-info"><div class="token-hex">#1A1714</div><div class="token-use">capture bar only</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:16px 0 10px">ink (text)</p>
+    <div class="token-grid">
+      <div class="token"><div class="token-swatch" style="background:#2C2820"></div><div class="token-info"><div class="token-hex">#2C2820</div><div class="token-use">primary text</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#6B6254"></div><div class="token-info"><div class="token-hex">#6B6254</div><div class="token-use">secondary text</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#8A8070"></div><div class="token-info"><div class="token-hex">#8A8070</div><div class="token-use">muted / faint</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#B5AA97"></div><div class="token-info"><div class="token-hex">#B5AA97</div><div class="token-use">ghost text</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:16px 0 10px">accent colors</p>
+    <div class="token-grid">
+      <div class="token"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-info"><div class="token-hex">#DAAF2E</div><div class="token-use">gold · active, send</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#D85A30"></div><div class="token-info"><div class="token-hex">#D85A30</div><div class="token-use">coral · cancel, danger</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-info"><div class="token-hex">#1D9E75</div><div class="token-use">green · confirm</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-info"><div class="token-hex">#2A7A8C</div><div class="token-use">teal · vault</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-info"><div class="token-hex">#7B2D8B</div><div class="token-use">plum · brain, ideas</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#C4427A"></div><div class="token-info"><div class="token-hex">#C4427A</div><div class="token-use">pink · dumpster fire</div></div></div>
+      <div class="token"><div class="token-swatch" style="background:#C47B00"></div><div class="token-info"><div class="token-hex">#C47B00</div><div class="token-use">amber · meal chips</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:16px 0 8px">typography</p>
+    <ul class="decision-list">
+      <li>Body, headings, UI: <strong>DM Sans</strong> — weights 400 / 500 / 700</li>
+      <li>Labels, tags, mono, timestamps: <strong>IBM Plex Mono</strong> — weights 400 / 500</li>
+      <li>AI responses: sentence case · no em dashes · no exclamation marks · under ~150 words</li>
+      <li>Widget headers: lowercase always</li>
+    </ul>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:20px 0 8px">component quick ref</p>
+    <ul class="decision-list">
+      <li>Cards: #FFFDF7 bg · 0.5px rgba(44,40,32,.09) border · 13–18px radius · 2.5px color accent bar</li>
+      <li>Buttons: cancel = coral solid pill · confirm = green solid pill · primary = ink pill with gold text</li>
+      <li>Cancel + done buttons: identical shape and weight — never one looks stronger</li>
+      <li>Bottom nav: gold stroke + label + 4px gold dot (active) · ink at 35% opacity (inactive)</li>
+      <li>Capture bar: #1A1714 bg · 14px radius · send = #DAAF2E 26px square 8px radius</li>
+    </ul>
+  </div>
+
+  <!-- FAMILY CONTEXT -->
+  <div class="section" id="family">
+    <div class="section-label">REAL FAMILY</div>
+    <div class="section-title">family context</div>
+
+    <div class="callout callout-coral">
+      <div class="callout-label">never in demos or landing pages</div>
+      <div class="callout-body">Real family names never appear in demos, landing pages, or any public-facing content. Use the Wallace family for all demos. Real names only in app context when using real accounts.</div>
+    </div>
+
+    <div class="family-row">
+      <div class="family-name">Brittany May</div>
+      <div class="family-detail">AuDHD, diagnosed 33, Atlanta. Builder of spoonstack. Runs A Little Agency.</div>
+    </div>
+    <div class="family-row">
+      <div class="family-name">Branden</div>
+      <div class="family-detail">Husband. Photographer. Direct communication style.</div>
+    </div>
+    <div class="family-row">
+      <div class="family-name">Bella</div>
+      <div class="family-detail">13. Cheerleader. Practice Tuesdays + Fridays.</div>
+    </div>
+    <div class="family-row">
+      <div class="family-name">Ruby</div>
+      <div class="family-detail">10. Dyslexia + language IEP. Baseball Saturdays.</div>
+    </div>
+    <div class="family-row">
+      <div class="family-name">Jackson</div>
+      <div class="family-detail">10 (Ruby's twin). Autistic. OT Wednesdays. Safe foods: cheez-its · goldfish · bacon · olives · green beans · peas · protein yogurt · red grapes</div>
+    </div>
+
+    <div class="callout callout-gold" style="margin-top:20px">
+      <div class="callout-label">demo family — Wallace</div>
+      <div class="callout-body">Diane, Andre, Simone, Noah, Lily. These names appear on landing pages, demos, and any public content. Never real names publicly.</div>
+    </div>
+  </div>
+
+  <!-- WIDGET CATALOG -->
+  <div class="section" id="widgets">
+    <div class="section-label">FULL INVENTORY</div>
+    <div class="section-title">stack + widget catalog</div>
+
+    <div class="callout callout-plum">
+      <div class="callout-label">home widgets — locked 4</div>
+      <div class="callout-body">💬 partner briefing · 🌊 regulator · 💛 ask the vault · 📍 where did i put it. These 4 are pinned and locked. PINNED_STORAGE_KEY = "spoonstack_pinned_v4". No others on home screen.</div>
+    </div>
+
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#7B2D8B"></div><div class="stack-name">just me</div><div class="stack-route">· /display/just-me</div></div>
+      <div class="widget-list"><span class="w-chip">my ideas</span><span class="w-chip">what went well today</span><span class="w-chip">things I know for sure</span><span class="w-chip">my patterns</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#DAAF2E"></div><div class="stack-name">my day</div><div class="stack-route">· /display/my-day</div></div>
+      <div class="widget-list"><span class="w-chip">order of operations</span><span class="w-chip">meal decider <em style="font-size:10px;color:var(--ink3)">(ID: dinner-decider)</em></span><span class="w-chip">one hard thing</span><span class="w-chip">partner briefing</span><span class="w-chip">tomorrow preview</span><span class="w-chip">scan + log</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#1D9E75"></div><div class="stack-name">this week</div><div class="stack-route">· /display/this-week</div></div>
+      <div class="widget-list"><span class="w-chip">week at a glance</span><span class="w-chip">meal plan + grocery</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#D85A30"></div><div class="stack-name">we can do hard things</div><div class="stack-route">· /display/right-now</div></div>
+      <div class="widget-list"><span class="w-chip">regulator</span><span class="w-chip">right now in my body</span><span class="w-chip">where did the time go</span><span class="w-chip">who haven't I talked to</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#1D9E75"></div><div class="stack-name">my family</div><div class="stack-route">· /display/my-family</div></div>
+      <div class="widget-list"><span class="w-chip">teacher email draft</span><span class="w-chip">kid behavior</span><span class="w-chip">iep prep</span><span class="w-chip">delegate to partner</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#2A7A8C"></div><div class="stack-name">out of sight, not out of mind</div><div class="stack-route">· /display/out-of-sight</div></div>
+      <div class="widget-list"><span class="w-chip">ask the vault</span><span class="w-chip">where did it go</span><span class="w-chip">what was I doing</span><span class="w-chip">safe foods by person</span><span class="w-chip">medical notes</span></div>
+    </div>
+    <div class="stack-block">
+      <div class="stack-head"><div class="stack-dot" style="background:#E8399A"></div><div class="stack-name">people</div><div class="stack-route">· /display/people</div></div>
+      <div class="widget-list"><span class="w-chip">texts + messages</span><span class="w-chip">this text thread</span><span class="w-chip">who haven't I talked to</span></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin:24px 0 10px">deployed pages</p>
+    <ul class="decision-list">
+      <li>/display — home screen</li>
+      <li>/display/brain — brain tab (river model built, report stubs)</li>
+      <li>/display/people — people tab</li>
+      <li>/display/stacks — stacks tab destination</li>
+      <li>/settings — settings page (protected route)</li>
+      <li>/admin — admin page (Brittany only)</li>
+      <li>/sign-in — auth page</li>
+      <li>/pending — post-signup pending approval page</li>
+    </ul>
+  </div>
+
+  <!-- LOCKED DECISIONS -->
+  <div class="section" id="locked">
+    <div class="section-label">LOCKED · DO NOT RE-DEBATE</div>
+    <div class="section-title">locked decisions</div>
+
+    <ul class="decision-list">
+      <li>"spoonstack" always lowercase — everywhere, always, no exceptions</li>
+      <li>4-tab nav: home · people · brain · stacks — locked, no other tabs</li>
+      <li>Home widgets locked: 💬 partner briefing · 🌊 regulator · 💛 ask the vault · 📍 where did i put it</li>
+      <li>PINNED_STORAGE_KEY = "spoonstack_pinned_v4"</li>
+      <li>Contact circles permanently removed from home screen</li>
+      <li>"Meal Decider" display label everywhere — widget ID stays dinner-decider in code</li>
+      <li>Partner briefing pills exactly 3: make it shorter · make it funnier · add more info</li>
+      <li>No em dashes anywhere — in copy, AI responses, system prompts — never</li>
+      <li>No exclamation marks in AI output</li>
+      <li>Sentence case for all AI output</li>
+      <li>No clinical language in UI copy</li>
+      <li>Widget headers lowercase</li>
+      <li>Demo family is Wallace only — real family names never in public content</li>
+      <li>Manual approval for paid users — Stripe sets is_paid, Brittany approves via /admin</li>
+      <li>Approval email fires ONLY via POST /api/admin/approve</li>
+      <li>is_paid and is_approved are SEPARATE fields — both required for app access</li>
+      <li>Settings page "delete account" uses coral button with confirm dialog</li>
+      <li>Light theme throughout — dark (#1A1714) reserved for capture bar only</li>
+      <li>Cancel + done buttons: identical shape and weight, never one looks stronger</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<script>
+function goTo(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+}
+
+function copyPrompt(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ copied';
+    setTimeout(() => btn.textContent = '⎘ copy prompt', 2000);
+  });
+}
+
+window.addEventListener('scroll', () => {
+  const ids = ['prompt','state','broken','priorities','tokens','family','widgets','locked'];
+  const links = document.querySelectorAll('.sb-link');
+  let current = '';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 140) current = id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    const fn = l.getAttribute('onclick') || '';
+    if (fn.includes(`'${current}'`)) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

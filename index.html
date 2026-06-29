@@ -103,6 +103,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 .callout-coral .callout-label { color: var(--coral-d); }
 .callout-plum { background: var(--plum-l); border: 1px solid rgba(123,45,139,.15); }
 .callout-plum .callout-label { color: var(--plum-d); }
+.callout-teal { background: var(--teal-l); border: 1px solid rgba(42,122,140,.2); }
+.callout-teal .callout-label { color: var(--teal-d); }
 .callout-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 500; margin-bottom: 8px; }
 .callout p { font-size: 14px; line-height: 1.7; color: var(--ink); }
 .callout strong { color: var(--plum); }
@@ -131,6 +133,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 .tag-next { background: var(--gold-l); color: var(--gold-d); }
 .tag-soon { background: var(--green-l); color: var(--green-d); }
 .tag-open { background: var(--plum-l); color: var(--plum-d); }
+.tag-done { background: var(--green-l); color: var(--green-d); }
+.tag-broken { background: var(--coral-l); color: var(--coral-d); }
 
 /* OPENING PROMPT */
 .prompt-box { background: var(--dark); border-radius: 14px; padding: 28px 32px; margin-bottom: 14px; }
@@ -180,8 +184,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   <div class="nav-label">architecture</div>
   <a class="nav-item" href="#brain-first"><span class="nav-dot" style="background:var(--plum)"></span>brain-first direction</a>
   <a class="nav-item" href="#home-screen"><span class="nav-dot" style="background:var(--teal)"></span>home screen</a>
+  <a class="nav-item" href="#settings"><span class="nav-dot" style="background:var(--ink4)"></span>settings page</a>
   <a class="nav-item" href="#brain-tab"><span class="nav-dot" style="background:var(--pink)"></span>brain tab</a>
   <a class="nav-item" href="#galaxy"><span class="nav-dot" style="background:var(--gold)"></span>galaxy view</a>
+  <a class="nav-item" href="#nudge"><span class="nav-dot" style="background:var(--teal)"></span>nudge + curious</a>
+  <a class="nav-item" href="#auth"><span class="nav-dot" style="background:var(--green)"></span>auth + admin</a>
 
   <div class="nav-label">design</div>
   <a class="nav-item" href="#decisions"><span class="nav-dot" style="background:var(--plum)"></span>locked decisions</a>
@@ -193,8 +200,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   <a class="nav-item" href="#priorities"><span class="nav-dot" style="background:var(--coral)"></span>build priorities</a>
   <a class="nav-item" href="#open-questions"><span class="nav-dot" style="background:var(--ink4)"></span>open questions</a>
 
-  <div class="nav-label">handoffs</div>
-  <a class="nav-item" href="handoff-june2026.html"><span class="nav-dot" style="background:var(--teal)"></span>june 20 2026</a>
+  <div class="nav-label">guides</div>
+  <a class="nav-item" href="handoff.html"><span class="nav-dot" style="background:var(--teal)"></span>handoff doc</a>
+  <a class="nav-item" href="style-guide-phase1.html"><span class="nav-dot" style="background:var(--gold)"></span>style guide · phase 1</a>
+  <a class="nav-item" href="style-guide-phase2.html"><span class="nav-dot" style="background:var(--pink)"></span>style guide · phase 2</a>
+
+  <div class="nav-label">archive</div>
+  <a class="nav-item" href="handoff-june2026.html"><span class="nav-dot" style="background:rgba(255,255,255,.2)"></span>june 20 2026 handoff</a>
+  <a class="nav-item" href="journey.html"><span class="nav-dot" style="background:rgba(255,255,255,.2)"></span>journey map</a>
 </nav>
 
 <!-- MAIN -->
@@ -203,13 +216,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   <div class="page-header">
     <div class="eyebrow">spoonstack · product playbook</div>
     <h1 class="page-title">the brain-first rebuild</h1>
-    <p class="page-sub">everything decided in june 2026 — architecture, design, ND principles, and build priorities. read this before touching the codebase.</p>
+    <p class="page-sub">everything decided june 2026 — architecture, design, ND principles, and build priorities. read this before touching the codebase.</p>
     <div class="meta-row">
-      <span class="meta-chip">june 20 2026</span>
+      <span class="meta-chip">updated june 28 2026</span>
       <span class="meta-chip">Next.js 14 · Supabase · Claude API</span>
       <span class="meta-chip">live: spoonstack.app</span>
       <span class="meta-chip">repo: alittleagency/spoonstack-os</span>
-      <span class="meta-chip">29 widgets · 7 stacks · 352 brain entries</span>
+      <span class="meta-chip">4-tab nav · 4 home widgets · brain tab built</span>
     </div>
   </div>
 
@@ -221,67 +234,67 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
     </div>
     <div class="prompt-box">
       <div class="prompt-label">copy + paste into new conversation</div>
-      <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
+      <div class="prompt-text">I'm continuing work on spoonstack — an AI second brain app for neurodivergent moms. "AI built for your brain, not everyone else's."
 
-CURRENT STATE — june 20 2026:
-✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
-✓ 29 widgets across 7 stacks · brain seeded with 352 entries
-✓ Payment gate + manual approval live
-✓ Home screen live and deployed — CaptureBar (smart routing: save/widget/answer with brain context), PinnedWidgets (4 tiles open inline bottom sheets), SmartInbox ("while you have a minute" + sort-it-out AI sheet), OooBottomSheet (timeline + 2-turn refine + time labels), GreetingCard (family schedule with event times)
-✓ Bottom nav: 4 tabs (home · people · brain · stacks)
-✓ Regulator: 6 path pills on open (shame, can't name it, want to reply, never send, replaying, something happened)
-✓ Partner briefing: 3 refinement pills after generation (make it shorter, make it funnier, change the tone)
-✓ CaptureBar: ambiguity detection, inline answer display, brain context fetch for questions
-✓ 82/82 Playwright tests passing · branch: claude/spoonstack-design-system
+Live: spoonstack.app
+Repo: github.com/alittleagency/spoonstack-os (private)
+Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript · Vercel
 
-NOT YET BUILT:
-✗ Brain tab — stream + wiki + galaxy (designed, not built — spec in playbook)
-✗ Semantic search — current search is lexical only
-✗ New user onboarding — no "start here" moment on first login
-✗ Beta users not yet admitted (20 from Threads waiting)
+WORKING:
+- Home screen: cream bg, black capture bar, 4 widget cards with emojis + color bars, moon/weather/time header, "while you have a minute" section
+- Partner Briefing: auto-sequence flow, iMessage overlay, 3 pills (make it shorter · make it funnier · add more info)
+- Meal Decider: full flow (suggestions → recipe → get cooking)
+- Regulator: live
+- Ask the Vault: live
+- Where Did I Put It: live
+- Brain tab: river model, left nav, filter pills, report stubs
+- Settings page: /settings with logout + delete account
+- Admin page: /admin (Brittany only)
+- Supabase auth, Stripe payments ($79/year), approval flow
 
-ARCHITECTURE (locked june 15):
-The brain is the front door. Widgets are background agents triggered from brain dumps, not navigated to directly. Capture → inbox (AI processes, auto-sorts) → brain (permanent, searchable). Home screen leads with capture bar. Brain tab has three views: stream (mobile default), wiki (desktop default), galaxy (visual mind map, 12 vision-board category nodes).
+BROKEN (fix these first):
+- [P0] Dinner Decider opens /display/my-day instead of sheet — needs to open HomeWidgetSheet
+- [P0] Check-in mood not propagating to widget AI calls
+- [P1] Partner briefing pills wrong — should only be: make it shorter · make it funnier · add more info
+- [P1] "make it shorter" inconsistent — sometimes doesn't swap message
+- [P1] No session state between widgets
 
-FAMILY (never change):
-Brittany · AuDHD · founder · Atlanta GA
-Branden · partner · ADHD · photographer · bikes · PS5
-Bella · 13 · cheer tue+fri · makes art
-Ruby · 10 · Jackson's twin · dyslexia + language IEP · tennis · swimming
-Jackson · 10 · Ruby's twin · autistic · storybots + maroon 5 · safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes
+LOCKED:
+- 4-tab nav: home · people · brain · stacks — no exceptions
+- Home widgets (locked): 💬 partner briefing · 🌊 regulator · 💛 ask the vault · 📍 where did i put it
+- spoonstack always lowercase
+- No em dashes anywhere in the app
+- No exclamation marks in AI output
+- Demo family is Wallace only (never real user names in demos)
 
-LOCKED NAMES (never change):
-"spoonstack" always lowercase · stack "out of sight, not out of mind" · nav "out of sight" · route /display/out-of-sight · stack "my family" route /display/my-family · stack "we can do hard things" route /display/right-now · widget "where did it go"
+WHAT TO DO THIS SESSION:
+[describe your task here]
 
-SKILLS TO USE: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
-
-NEXT ACTIONS (in order):
-1. Build brain tab — mobile stream view + desktop wiki view (spec in playbook)
-2. Build galaxy view — 12 nodes (ideas, questions, home, family, friends, work, fun, rest, active projects, wealth, health, faith)
-3. Let first 5-8 beta users in (20 from Threads waiting)
-4. Semantic search — embed entries on save, vector search on query</div>
+Use the spoonstack-builder skill for all product decisions.
+Always use the wallace family for demo content (not real user names).</div>
     </div>
+    <p style="font-size:13px;color:var(--ink3);margin-top:8px">For the full detailed session prompt, see <a href="handoff.html" style="color:var(--teal)">the handoff doc</a>.</p>
   </section>
 
   <!-- CURRENT STATE -->
   <section class="section" id="current-state">
     <div class="section-header">
       <span class="section-dot" style="background:var(--green)"></span>
-      <div><div class="section-num">STATUS</div><h2 class="section-title">current state</h2></div>
+      <div><div class="section-num">STATUS · JUNE 28 2026</div><h2 class="section-title">current state</h2></div>
     </div>
     <div class="status-grid">
-      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">sign-in + auth</div><div class="sc-body">working. test: brittanyhmay@gmail.com</div></div>
-      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">29 widgets · 7 stacks</div><div class="sc-body">all IDs added, 400 errors fixed</div></div>
-      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">brain · 352 entries</div><div class="sc-body">seeded, light theme, search-first</div></div>
-      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">payment gate</div><div class="sc-body">stripe $79/year + manual approval</div></div>
-      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">bottom sheet</div><div class="sc-body">webkit pointer events bug fixed</div></div>
-      <div class="status-card sc-new"><div class="sc-label">new · committed</div><div class="sc-title">home screen rebuild</div><div class="sc-body">branch: claude/home-brain-first</div></div>
-      <div class="status-card sc-new"><div class="sc-label">new · committed</div><div class="sc-title">inbox AI endpoint</div><div class="sc-body">/api/ai/inbox-process live</div></div>
-      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">OOO widget</div><div class="sc-body">shows form instead of textarea</div></div>
-      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">people circles routing</div><div class="sc-body">navigates to wrong place</div></div>
-      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">save to brain</div><div class="sc-body">no visual confirmation toast</div></div>
-      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">brain tab redesign</div><div class="sc-body">stream + wiki + galaxy designed, not built</div></div>
-      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">beta onboarding</div><div class="sc-body">20 people from threads waiting</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">home screen redesign</div><div class="sc-body">cream bg, black capture bar, 4 locked widget cards, moon/weather header</div></div>
+      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">partner briefing</div><div class="sc-body">auto-sequence flow works, iMessage overlay done — pills still broken</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">meal decider</div><div class="sc-body">full flow: suggestions → recipe view → get cooking mode</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">brain tab</div><div class="sc-body">river model, left nav, filter pills — reports are stubs only</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">settings + auth</div><div class="sc-body">/settings with logout + delete account · /admin for Brittany only</div></div>
+      <div class="status-card sc-broken"><div class="sc-label">broken</div><div class="sc-title">dinner decider sheet</div><div class="sc-body">opens /display/my-day instead of HomeWidgetSheet</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">"while you have a minute"</div><div class="sc-body">90-day filter + actionable entries only + hides if empty</div></div>
+      <div class="status-card sc-prog"><div class="sc-label">in progress</div><div class="sc-title">nudge responses</div><div class="sc-body">question hash in localStorage, saves to brain_entries</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">regulator</div><div class="sc-body">live with all 6 path pills</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">payment gate</div><div class="sc-body">stripe $79/year + manual approval via /admin</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">ask the vault</div><div class="sc-body">follow-up flow, disclaimer, answer display</div></div>
+      <div class="status-card sc-done"><div class="sc-label">done</div><div class="sc-title">where did i put it</div><div class="sc-body">log/find tabs, marking found, sort by recency</div></div>
     </div>
   </section>
 
@@ -289,18 +302,19 @@ NEXT ACTIONS (in order):
   <section class="section" id="bugs">
     <div class="section-header">
       <span class="section-dot" style="background:var(--coral)"></span>
-      <div><div class="section-num">P0 / P1</div><h2 class="section-title">known bugs</h2></div>
+      <div><div class="section-num">P0 / P1 / P2</div><h2 class="section-title">known bugs</h2></div>
     </div>
     <table class="priority-table">
-      <thead><tr><th>priority</th><th>bug</th><th>fix</th></tr></thead>
+      <thead><tr><th>priority</th><th>bug</th><th>notes</th></tr></thead>
       <tbody>
-        <tr><td><span class="p-badge p0">P0</span></td><td>OOO widget shows structured form, not textarea</td><td>grep "what time do you need to leave" — swap form component for single textarea</td></tr>
-        <tr><td><span class="p-badge p0">P0</span></td><td>People circles on home go to wrong route</td><td>add router.push('/display/people?person=${name}') on tap</td></tr>
-        <tr><td><span class="p-badge p0">P0</span></td><td>Save to brain has no visual confirmation</td><td>add "saved to your brain ✦" Sonner toast on success</td></tr>
-        <tr><td><span class="p-badge p0">P0</span></td><td>Pinned tile tap goes to stack page, not widget directly</td><td>open bottom sheet widget directly from home tile tap, not stack page navigation</td></tr>
-        <tr><td><span class="p-badge p1">P1</span></td><td>Full widget test not run with real AI responses</td><td>run full E2E with real Claude API responses, check all 29 widgets</td></tr>
-        <tr><td><span class="p-badge p1">P1</span></td><td>New user onboarding missing</td><td>3 widget cards, one choice, shows on first login only — "start here" moment</td></tr>
-        <tr><td><span class="p-badge p1">P1</span></td><td>Lapsed-contact query fragile</td><td>currently derived from widget_responses — add last_contact field to brain_entries when people gets its own schema</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>Check-in mood pills not propagating to widget AI calls</td><td>mood selected at check-in never reaches the AI context in partner briefing, regulator, etc.</td></tr>
+        <tr><td><span class="p-badge p0">P0</span></td><td>Dinner Decider opens /display/my-day instead of sheet</td><td>should open HomeWidgetSheet — fix in progress</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>No session state between widgets</td><td>each widget AI call starts cold — no shared context</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>Partner briefing pills still wrong</td><td>should be exactly: make it shorter · make it funnier · add more info — no others</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>"make it shorter" inconsistent</td><td>sometimes doesn't swap message, sometimes does</td></tr>
+        <tr><td><span class="p-badge p1">P1</span></td><td>CRISIS triage missing explicit deferral permission language</td><td>needs "you don't have to deal with this right now" language in regulator CRISIS path</td></tr>
+        <tr><td><span class="p-badge p2">P2</span></td><td>Week-at-a-glance missing auto-flags</td><td>no automatic flagging of overdue or conflicting items</td></tr>
+        <tr><td><span class="p-badge p2">P2</span></td><td>People widget brain context only works with seeded data</td><td>fails gracefully but doesn't use real brain entries for people context</td></tr>
       </tbody>
     </table>
   </section>
@@ -323,11 +337,11 @@ NEXT ACTIONS (in order):
     <div class="card-grid">
       <div class="grid-card">
         <div class="gc-title">what changed</div>
-        <div class="gc-body">Home screen default route now leads with capture bar. Bottom nav: home · brain · people · stacks. Stacks still accessible but not the primary entry point.</div>
+        <div class="gc-body">Home screen default route now leads with capture bar. Bottom nav: home · people · brain · stacks. 4 tabs, locked, no exceptions. Stacks still accessible but not the primary entry point.</div>
       </div>
       <div class="grid-card">
         <div class="gc-title">what stayed</div>
-        <div class="gc-body">Stacks exist as infrastructure. 29 widgets still work. Bottom sheet still opens per widget. Routes unchanged. Stacks are the back room, not the front door.</div>
+        <div class="gc-body">Stacks exist as infrastructure. Widgets still work. Bottom sheet still opens per widget. Routes unchanged. Stacks are the back room, not the front door.</div>
       </div>
       <div class="grid-card">
         <div class="gc-title">ambiguity + multi-widget dumps</div>
@@ -344,48 +358,102 @@ NEXT ACTIONS (in order):
   <section class="section" id="home-screen">
     <div class="section-header">
       <span class="section-dot" style="background:var(--teal)"></span>
-      <div><div class="section-num">BUILT · BRANCH: claude/home-brain-first</div><h2 class="section-title">home screen spec</h2></div>
+      <div><div class="section-num">BUILT · BRANCH: claude/spoonstack-design-system</div><h2 class="section-title">home screen spec</h2></div>
+    </div>
+    <div class="callout callout-gold">
+      <div class="callout-label">locked home widgets</div>
+      <p>The 4 home widget cards are locked and cannot be changed. PINNED_STORAGE_KEY = "spoonstack_pinned_v4". Contact circles removed permanently. Widget display label "Meal Decider" (not Dinner Decider) — widget ID stays <code style="font-family:IBM Plex Mono;font-size:12px;background:rgba(218,175,46,.2);padding:2px 6px;border-radius:4px">dinner-decider</code>.</p>
     </div>
     <div class="card">
       <div class="card-title">layout order (top to bottom)</div>
-      <p>Status bar → greeting ("good [morning/afternoon/evening], [first name]" + date/weather) → CaptureBar → PinnedWidgets (2×2 grid, customizable) → NeedsAttention (single card, hidden if nothing urgent) → SmartInbox (task rows) → BottomNav</p>
+      <p>Moon/weather/time header → greeting ("good [morning/afternoon/evening], [first name]" + date) → CaptureBar → 4 locked widget cards (2×2 grid) → "while you have a minute" section → "spoonstack is curious" nudge → BottomNav</p>
     </div>
 
     <div class="feature-row">
       <div class="fr-icon" style="background:var(--dark)">⬛</div>
       <div class="fr-body">
         <div class="fr-title">CaptureBar</div>
-        <div class="fr-desc">Dark rounded bar (#1A1714). Placeholder: "what's on your mind" italic faint. Blinking gold cursor. Attachment button (paperclip) + send button (arrow-up gold). Below it: "ask brain something" dashed row — navigates to /brain with search focused. No suggestion chips.</div>
-        <span class="fr-tag tag-urgent">built</span>
+        <div class="fr-desc">Dark rounded bar (#1A1714). Placeholder: "what's on your mind" italic faint. Blinking gold cursor. Send button (arrow-up gold, 26px square, 8px radius). Below it: "ask brain something" dashed row — navigates to /brain with search focused.</div>
+        <span class="fr-tag tag-done">built</span>
       </div>
     </div>
+
     <div class="feature-row">
       <div class="fr-icon" style="background:var(--paper)">📌</div>
       <div class="fr-body">
-        <div class="fr-title">PinnedWidgets</div>
-        <div class="fr-desc">2×2 grid. Default pinned: regulator (coral), out of sight (teal), dinner decider (green), work with me (plum). "Customize" link opens sheet — user picks up to 4 widgets or stacks. Saved to localStorage "spoonstack_pinned_widgets". Each tile has a 3px color bar at top, widget name, stack name below. No pin icon on tiles.</div>
-        <span class="fr-tag tag-urgent">built</span>
+        <div class="fr-title">4 locked widget cards</div>
+        <div class="fr-desc">💬 partner briefing (gold bar) · 🌊 regulator (coral bar) · 💛 ask the vault (teal bar) · 📍 where did i put it (plum bar). 2×2 grid, gap 7px. Each: emoji (16px) + 2.5px color accent bar at top + widget name (11px 500 ink) + subtitle (9px ink3). PINNED_STORAGE_KEY = "spoonstack_pinned_v4". No contact circles anywhere on home screen.</div>
+        <span class="fr-tag tag-done">built · locked</span>
       </div>
     </div>
+
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--pink)">👁</div>
+      <div class="fr-icon" style="background:var(--gold-l)">💬</div>
       <div class="fr-body">
-        <div class="fr-title">NeedsAttention</div>
-        <div class="fr-desc">Single card only. Queries brain_entries + brain_patterns for: people with no contact >14 days, upcoming deadlines in 48hrs, urgent flags. Brain voice — not "no contact for 21 days" but "robin hasn't heard from you in 3 weeks — she just started that new job." Hidden entirely if nothing urgent.</div>
-        <span class="fr-tag tag-urgent">built</span>
+        <div class="fr-title">Partner Briefing widget</div>
+        <div class="fr-desc">Auto-sequence: pending items → spinner → generated message. Gold highlights on key points. 3 pills after generation: <strong>make it shorter</strong> · <strong>make it funnier</strong> · <strong>add more info</strong>. Copy button. "Send to Branden" button → iMessage overlay with pre-filled message. No other pills.</div>
+        <span class="fr-tag tag-done">built</span>
       </div>
     </div>
+
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--gold-l)">✦</div>
+      <div class="fr-icon" style="background:var(--coral-l)">🌊</div>
       <div class="fr-body">
-        <div class="fr-title">SmartInbox</div>
-        <div class="fr-desc">Task rows: colored dot + text block (brain's restatement + contextual sub line) + time label. No colored pill backgrounds. Dot color: coral=urgent, pink=people, teal=home/objects, green=family/food, gold=admin. Time labels: today (coral) · soon (pink) · this week (teal) · specific day (pink) · whenever (ghost). "✦ sorted N items from your last dump" above rows.</div>
-        <span class="fr-tag tag-urgent">built</span>
+        <div class="fr-title">Regulator widget</div>
+        <div class="fr-desc">6 path pills on open: shame · can't name it · want to reply · never send · replaying · something happened. Full conversation flow. Close confirmation. Em dashes removed from system prompt everywhere.</div>
+        <span class="fr-tag tag-done">built</span>
       </div>
     </div>
+
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--teal-l)">💛</div>
+      <div class="fr-body">
+        <div class="fr-title">Ask the Vault widget</div>
+        <div class="fr-desc">Opens bottom sheet. Chips work. AI answers from brain context. "ask a follow-up" + "done" buttons. Disclaimer shows. Follow-up thread works.</div>
+        <span class="fr-tag tag-done">built</span>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--plum-l)">📍</div>
+      <div class="fr-body">
+        <div class="fr-title">Where Did I Put It widget</div>
+        <div class="fr-desc">LOG/FIND tabs. Logging saves to brain_entries. "got it" marks item found. Active items shown by default, found items grouped below toggle. Sort: recency first.</div>
+        <span class="fr-tag tag-done">built</span>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="fr-icon" style="background:var(--gold-l)">🍽</div>
+      <div class="fr-body">
+        <div class="fr-title">Meal Decider (formerly Dinner Decider)</div>
+        <div class="fr-desc">Display label: "Meal Decider" everywhere. Widget ID stays <code style="font-family:IBM Plex Mono;font-size:11px">dinner-decider</code>. Full flow: input → 7 suggestions → recipe view (emoji photo strip, method chip, ingredients, steps, auto-scroll 7s) → get cooking mode (dot nav, step by step). Currently broken — opens /display/my-day instead of sheet.</div>
+        <span class="fr-tag tag-broken">P0 broken</span>
+      </div>
+    </div>
+
     <div class="callout callout-gold">
       <div class="callout-label">inbox brain voice rule</div>
-      <p>Raw dump → brain restatement. "need to call robin" → "call robin back about the job." "cant find my scissors" → "did you find your good scissors? last time it was ruby who had them." "jackson meds" → "did jackson's meds get refilled? you mentioned this 2 days ago." Always lowercase. Never em dashes. Never exclamation marks.</p>
+      <p>Raw dump → brain restatement. "need to call robin" → "call robin back about the job." "cant find my scissors" → "did you find your good scissors? last time it was ruby who had them." Always lowercase. Never em dashes. Never exclamation marks.</p>
+    </div>
+  </section>
+
+  <!-- SETTINGS PAGE -->
+  <section class="section" id="settings">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--ink4)"></span>
+      <div><div class="section-num">BUILT · /settings</div><h2 class="section-title">settings page</h2></div>
+    </div>
+    <div class="card">
+      <div class="card-title">what lives at /settings</div>
+      <p><strong>email</strong> — shows the user's email address on file.</p>
+      <p><strong>member since</strong> — shows the date the account was created.</p>
+      <p><strong>sign out button</strong> — ink solid pill, logs out and redirects to /sign-in.</p>
+      <p><strong>delete account</strong> — coral button, requires confirm dialog before deletion. Permanently removes account and all data.</p>
+    </div>
+    <div class="callout callout-coral">
+      <div class="callout-label">protected route</div>
+      <p>Settings redirects to /sign-in if unauthenticated. Never shows to logged-out users. The "settings" text link floats above the nav bar, top-right, and is only visible when logged in.</p>
     </div>
   </section>
 
@@ -393,34 +461,35 @@ NEXT ACTIONS (in order):
   <section class="section" id="brain-tab">
     <div class="section-header">
       <span class="section-dot" style="background:var(--pink)"></span>
-      <div><div class="section-num">DESIGNED · NOT YET BUILT</div><h2 class="section-title">brain tab spec</h2></div>
+      <div><div class="section-num">BUILT · REPORTS ARE STUBS</div><h2 class="section-title">brain tab</h2></div>
     </div>
     <div class="callout callout-plum">
-      <div class="callout-label">the core insight from research</div>
-      <p>The real competitor is <strong>Apple Notes</strong>, not Obsidian. spoonstack wins if it captures as fast as Apple Notes and surfaces things better than it. The brain tab doesn't need to be powerful — it needs to feel effortless. Search is the hero. Everything else is secondary.</p>
+      <div class="callout-label">what's built vs. what's stub</div>
+      <p>Brain tab uses <strong>BottomNav (4 tabs)</strong> — not Phase2Nav or any 6-tab variant. River model is live. Left nav, filter pills, and report stub pages are deployed. <strong>Weekly summary report: stub only.</strong> <strong>Connection map: stub only.</strong></p>
     </div>
     <div class="card">
-      <div class="card-title">three views of the same brain</div>
-      <p><strong>stream (mobile default)</strong> — dark header anchors search, light body for reading. Entries flow recency-first. Clusters emerge from colored cluster headers + spine lines. Question queue as gold ambient card. Domain filter chips scroll horizontally.</p>
-      <p style="margin-top:10px"><strong>wiki (desktop default)</strong> — sidebar with people and topics. Main panel shows wiki page for selected person/topic. Facts the brain has extracted from entries + raw entries below. Organized but self-built — no templates required.</p>
-      <p style="margin-top:10px"><strong>galaxy (visual overlay)</strong> — 12 vision-board category nodes radiating from center "your brain." Tap a node to see its entries bloom in a detail panel. One cluster at a time. Never the whole graph at once. See galaxy section below.</p>
+      <div class="card-title">what's deployed</div>
+      <p><strong>river model</strong> — entries flow as a vertical river, recency-first. Clusters emerge from colored headers and spine lines.</p>
+      <p><strong>left nav</strong> — domain categories listed vertically. Tap to filter to that domain.</p>
+      <p><strong>filter pills</strong> — horizontal scroll above river. Filter by tag, category, or date range.</p>
+      <p><strong>report stub pages</strong> — weekly summary and connection map exist as routes but are placeholder UI only.</p>
     </div>
     <div class="card-grid">
       <div class="grid-card">
         <div class="gc-title">search behavior</div>
-        <div class="gc-body">Semantic, not keyword. "The thing about Jackson's food" must find it. "The idea I had when I was anxious" must find it. Placeholder: "search by feeling, fragment, anything." Always focused on open.</div>
+        <div class="gc-body">Currently lexical. Semantic search is planned — "the thing about Jackson's food" needs to find it. This is the key differentiator from Apple Notes and a P1 backlog item.</div>
       </div>
       <div class="grid-card">
         <div class="gc-title">default sort</div>
-        <div class="gc-body">Recency first, always. "This week" then "earlier." Never by category or alphabetically. Timestamps always visible. "You saved this 3 days ago" beats any folder tree.</div>
-      </div>
-      <div class="grid-card">
-        <div class="gc-title">question queue</div>
-        <div class="gc-body">"✦ the brain's been wondering" — one question, derived from user's own entries, framed as curiosity. "swipe away · no pressure · no tracking." Never scheduled, never tracked, never more than one. PDA-safe framing always.</div>
+        <div class="gc-body">Recency first, always. "This week" then "earlier." Timestamps always visible. ND brains remember by time and context, not category.</div>
       </div>
       <div class="grid-card">
         <div class="gc-title">crash mode</div>
-        <div class="gc-body">Low spoon: banner "keeping things simple." Search bar only + 3 most recent entries. No clusters, no question, no connections. "the brain asks nothing on hard days." Never triggered automatically — detected from spoon level or explicit low-spoon toggle.</div>
+        <div class="gc-body">Low spoon: banner "keeping things simple." Search bar only + 3 most recent entries. No clusters, no question, no connections. "the brain asks nothing on hard days."</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">4-tab nav rule</div>
+        <div class="gc-body">Brain tab uses the same BottomNav as every other tab. 4 tabs only: home · people · brain · stacks. The Phase2Nav (6-tab) component is removed and must not be re-introduced.</div>
       </div>
     </div>
   </section>
@@ -456,7 +525,7 @@ NEXT ACTIONS (in order):
       </div>
       <div class="grid-card">
         <div class="gc-title">why not a full graph</div>
-        <div class="gc-body">The hairball problem — 352 entries shown at once = unusable. ND brains need one tunnel at a time. One cluster at a time respects monotropism. The galaxy feels like Obsidian without the navigation anxiety.</div>
+        <div class="gc-body">The hairball problem — hundreds of entries shown at once = unusable. ND brains need one tunnel at a time. One cluster at a time respects monotropism. The galaxy feels like Obsidian without the navigation anxiety.</div>
       </div>
       <div class="grid-card">
         <div class="gc-title">search still works</div>
@@ -469,19 +538,80 @@ NEXT ACTIONS (in order):
     </div>
   </section>
 
+  <!-- NUDGE + CURIOUS -->
+  <section class="section" id="nudge">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--teal)"></span>
+      <div><div class="section-num">HOME SCREEN FEATURES</div><h2 class="section-title">"while you have a minute" + nudge</h2></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">"while you have a minute" — filtering rules</div>
+      <p><strong>Shows brain entries from the last 90 days only.</strong> Filtered to actionable entries — must contain action language ("need to", "follow up", "call", "schedule", "check", "remind") OR be tagged with #todo, #followUp, #action.</p>
+      <p>If no entries match the filter, the section hides entirely — never shows an empty state, never shows a placeholder. The section simply doesn't render.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">"spoonstack is curious" nudge</div>
+      <p>Shows on home screen below "while you have a minute." One question at a time, derived from the user's own brain entries, framed as curiosity — never as a task or a prompt.</p>
+      <p><strong>Responses save to brain_entries</strong> with tag <code style="font-family:IBM Plex Mono;font-size:12px;background:var(--paper);padding:2px 6px;border-radius:4px">["nudge-response"]</code>. The question hash is stored in localStorage to prevent the same question appearing twice. User can swipe away with no consequence — no tracking, no judgment.</p>
+    </div>
+
+    <div class="callout callout-teal">
+      <div class="callout-label">PDA-safe framing rule</div>
+      <p>The nudge question must never feel like a demand. "the brain's been wondering..." not "you should think about..." or "have you considered...". One question only. Never more than one visible at once. Never scheduled. Never tracked beyond the hash.</p>
+    </div>
+  </section>
+
+  <!-- AUTH + ADMIN -->
+  <section class="section" id="auth">
+    <div class="section-header">
+      <span class="section-dot" style="background:var(--green)"></span>
+      <div><div class="section-num">ARCHITECTURE · BUILT</div><h2 class="section-title">auth + admin</h2></div>
+    </div>
+    <div class="card-grid">
+      <div class="grid-card">
+        <div class="gc-title">settings page</div>
+        <div class="gc-body">/settings — shows email, member since date, sign out, delete account. Protected route. Text link "settings" floats top-right above nav bar for logged-in users only.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">header indicator</div>
+        <div class="gc-body">Gold dot indicator in header when user is logged in. Subtle — not a badge count, just a presence signal.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">profile row creation</div>
+        <div class="gc-body">Profile row auto-creates via DB trigger on user signup. No manual insert needed. No race condition.</div>
+      </div>
+      <div class="grid-card">
+        <div class="gc-title">is_paid vs is_approved</div>
+        <div class="gc-body">These are SEPARATE fields. Stripe sets is_paid on successful payment. Brittany manually sets is_approved via /admin. A user can be paid but not yet approved. Both required to access the app.</div>
+      </div>
+    </div>
+    <div class="callout callout-coral">
+      <div class="callout-label">admin + approval flow — locked</div>
+      <p>Admin at /admin — Brittany only. Manual approval for paid users. Approval email fires <strong>ONLY via POST /api/admin/approve</strong> — never automatically, never from Stripe webhook directly.</p>
+    </div>
+  </section>
+
   <!-- LOCKED DECISIONS -->
   <section class="section" id="decisions">
     <div class="section-header">
       <span class="section-dot" style="background:var(--plum)"></span>
-      <div><div class="section-num">LOCKED</div><h2 class="section-title">decisions made this session</h2></div>
+      <div><div class="section-num">LOCKED</div><h2 class="section-title">decisions — never re-debate these</h2></div>
     </div>
-    <div class="decision"><div class="decision-num">01</div><div class="decision-body"><div class="d-title">brain tab is NOT the home screen</div><p>Home screen = capture + pinned + inbox. Brain tab = where your entries live. Separate nav destinations. Never confuse them in code or copy.</p></div></div>
-    <div class="decision"><div class="decision-num">02</div><div class="decision-num"></div><div class="decision-body"><div class="d-title">desktop brain is wiki-only, no separate stream view</div><p>Desktop defaults to wiki. Stream is mobile. Toggle between wiki and galaxy on desktop. No "desktop stream" as a third view.</p></div></div>
-    <div class="decision"><div class="decision-num">03</div><div class="decision-body"><div class="d-title">inbox items must sound like the brain knows you</div><p>Not the raw dump. The brain's restatement. Always uses what's in memory (jackson's safe foods, who had the scissors, how long since you talked to robin). This is what separates spoonstack from Apple Notes.</p></div></div>
-    <div class="decision"><div class="decision-num">04</div><div class="decision-num"></div><div class="decision-body"><div class="d-title">no colored pill backgrounds in inbox</div><p>Dots only for color. Time label gets the accent color. Row background stays neutral. The color signals category, not urgency level.</p></div></div>
-    <div class="decision"><div class="decision-num">05</div><div class="decision-body"><div class="d-title">light theme throughout — no dark brain view</div><p>Warm dark (#1A1714) is reserved for the capture bar and the wiki/stream dark header. The brain content area is always light. Not negotiable.</p></div></div>
-    <div class="decision"><div class="decision-num">06</div><div class="decision-body"><div class="d-title">galaxy nodes = vision board categories</div><p>12 nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith. These are life domains, not app domains. Faith is peach (#C4713A).</p></div></div>
-    <div class="decision"><div class="decision-num">07</div><div class="decision-body"><div class="d-title">beta sequence locked</div><p>Fix P0s → merge home screen branch → flip is_approved for first 5-8 users → watch behavior → brain-first architecture will be validated or revised based on what users actually do.</p></div></div>
+    <div class="decision"><div class="decision-num">01</div><div class="decision-body"><div class="d-title">4-tab nav, locked forever</div><p>home · people · brain · stacks. These 4 tabs are the permanent navigation. No other tabs. No exceptions. The Phase2Nav (6-tab) component is removed and must not return.</p></div></div>
+    <div class="decision"><div class="decision-num">02</div><div class="decision-body"><div class="d-title">home widgets locked: 4 only</div><p>💬 partner briefing · 🌊 regulator · 💛 ask the vault · 📍 where did i put it. PINNED_STORAGE_KEY = "spoonstack_pinned_v4". No other widgets on home screen. Contact circles permanently removed.</p></div></div>
+    <div class="decision"><div class="decision-num">03</div><div class="decision-body"><div class="d-title">spoonstack always lowercase</div><p>In code, copy, UI labels, database values, routes — spoonstack is always lowercase, no exceptions, nowhere.</p></div></div>
+    <div class="decision"><div class="decision-num">04</div><div class="decision-body"><div class="d-title">no em dashes anywhere in the app</div><p>Not in copy, not in AI responses, not in system prompts — never. Use a comma, period, or line break instead.</p></div></div>
+    <div class="decision"><div class="decision-num">05</div><div class="decision-body"><div class="d-title">no exclamation marks in AI output</div><p>AI responses never use exclamation marks. Sentence case for all AI output. Never clinical language. Never "you need to" / "don't forget" / "stay on track."</p></div></div>
+    <div class="decision"><div class="decision-num">06</div><div class="decision-body"><div class="d-title">demo family = Wallace only</div><p>Diane, Andre, Simone, Noah, Lily. These are the only names that appear in demos, landing pages, or any public-facing content. Real family names (Brittany, Branden, Bella, Ruby, Jackson) never appear publicly.</p></div></div>
+    <div class="decision"><div class="decision-num">07</div><div class="decision-body"><div class="d-title">manual approval — locked flow</div><p>Stripe sets is_paid. Brittany approves via /admin. Approval email fires ONLY via POST /api/admin/approve. This is not automated. This is intentional.</p></div></div>
+    <div class="decision"><div class="decision-num">08</div><div class="decision-body"><div class="d-title">brain tab is NOT the home screen</div><p>Home screen = capture + pinned widgets + inbox. Brain tab = where your entries live. Separate nav destinations. Never confuse them in code or copy.</p></div></div>
+    <div class="decision"><div class="decision-num">09</div><div class="decision-body"><div class="d-title">desktop brain is wiki-only, no separate stream view</div><p>Desktop defaults to wiki. Stream is mobile. Toggle between wiki and galaxy on desktop. No "desktop stream" as a third view.</p></div></div>
+    <div class="decision"><div class="decision-num">10</div><div class="decision-body"><div class="d-title">light theme throughout</div><p>Warm dark (#1A1714) is reserved for the capture bar only. The brain content area is always light. Not negotiable.</p></div></div>
+    <div class="decision"><div class="decision-num">11</div><div class="decision-body"><div class="d-title">Meal Decider display label</div><p>"Meal Decider" is the display label everywhere in UI copy. The widget ID stays <code style="font-family:IBM Plex Mono;font-size:12px;background:var(--paper);padding:2px 5px;border-radius:3px">dinner-decider</code> in code. Never change the widget ID.</p></div></div>
+    <div class="decision"><div class="decision-num">12</div><div class="decision-body"><div class="d-title">partner briefing pills — exactly 3</div><p>make it shorter · make it funnier · add more info. No other pills. No "change tone," no "edit," no "save to brain." Auto-logs silently. No manual save on partner briefing.</p></div></div>
+    <div class="decision"><div class="decision-num">13</div><div class="decision-body"><div class="d-title">galaxy nodes = vision board categories</div><p>12 nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith. These are life domains, not app domains. Faith is peach (#C4713A).</p></div></div>
   </section>
 
   <!-- ND PRINCIPLES -->
@@ -541,9 +671,10 @@ NEXT ACTIONS (in order):
       <span class="section-dot" style="background:var(--gold)"></span>
       <div><div class="section-num">TOKENS</div><h2 class="section-title">design system</h2></div>
     </div>
+    <p style="font-size:13px;color:var(--ink3);margin-bottom:20px">See the full <a href="style-guide-phase1.html" style="color:var(--teal)">Phase 1 style guide</a> for complete specs. Summary below.</p>
     <div class="card">
       <div class="card-title">fonts</div>
-      <p><strong>DM Sans</strong> — body, headings, UI text. Weights: 400, 500, 600, 700.</p>
+      <p><strong>DM Sans</strong> — body, headings, UI text. Weights: 400, 500, 700.</p>
       <p><strong>IBM Plex Mono</strong> — labels, timestamps, meta, tags, monospace sections. Weights: 400, 500.</p>
     </div>
     <div class="card">
@@ -552,7 +683,7 @@ NEXT ACTIONS (in order):
         <div class="token"><div class="token-swatch" style="background:#FAFAF7"></div><div class="token-label">bg #FAFAF7 — page</div></div>
         <div class="token"><div class="token-swatch" style="background:#FFFDF7"></div><div class="token-label">card #FFFDF7 — cards</div></div>
         <div class="token"><div class="token-swatch" style="background:#F4EFE4"></div><div class="token-label">paper #F4EFE4 — tags, inputs</div></div>
-        <div class="token"><div class="token-swatch" style="background:#1A1714;border-color:#444"></div><div class="token-label">dark #1A1714 — capture bar, headers</div></div>
+        <div class="token"><div class="token-swatch" style="background:#1A1714;border-color:#444"></div><div class="token-label">dark #1A1714 — capture bar</div></div>
       </div>
     </div>
     <div class="card">
@@ -567,19 +698,21 @@ NEXT ACTIONS (in order):
     <div class="card">
       <div class="card-title">accent colors</div>
       <div class="token-grid">
-        <div class="token"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-label">gold #DAAF2E — primary accent, ✦, send btn</div></div>
-        <div class="token"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-label">green #1D9E75 — family, success, my family stack</div></div>
-        <div class="token"><div class="token-swatch" style="background:#D85A30"></div><div class="token-label">coral #D85A30 — urgent, regulator, we can do hard things</div></div>
-        <div class="token"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-label">plum #7B2D8B — ideas, just me, work with me</div></div>
-        <div class="token"><div class="token-swatch" style="background:#E8399A"></div><div class="token-label">pink #E8399A — people, social, friends</div></div>
-        <div class="token"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-label">teal #2A7A8C — out of sight stack, home objects</div></div>
-        <div class="token"><div class="token-swatch" style="background:#C4713A"></div><div class="token-label">peach #C4713A — faith category</div></div>
+        <div class="token"><div class="token-swatch" style="background:#DAAF2E"></div><div class="token-label">gold #DAAF2E — primary accent, active state</div></div>
+        <div class="token"><div class="token-swatch" style="background:#D85A30"></div><div class="token-label">coral #D85A30 — cancel, danger, alert</div></div>
+        <div class="token"><div class="token-swatch" style="background:#1D9E75"></div><div class="token-label">green #1D9E75 — confirm, success</div></div>
+        <div class="token"><div class="token-swatch" style="background:#2A7A8C"></div><div class="token-label">teal #2A7A8C — vault, where did i put it</div></div>
+        <div class="token"><div class="token-swatch" style="background:#7B2D8B"></div><div class="token-label">plum #7B2D8B — patterns, brain, ideas</div></div>
+        <div class="token"><div class="token-swatch" style="background:#C4427A"></div><div class="token-label">pink #C4427A — dumpster fire stack</div></div>
+        <div class="token"><div class="token-swatch" style="background:#C47B00"></div><div class="token-label">amber #C47B00 — meal method chips</div></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">border + radius</div>
-      <p>Borders: 0.5px solid rgba(44,40,32,.09) default · rgba(44,40,32,.15) emphasis</p>
-      <p>Radius: 16px cards · 12px smaller cards · 9px inner elements · 100px pills/chips</p>
+      <div class="card-title">component quick ref</div>
+      <p>Cards: #FFFDF7 bg · 0.5px rgba(44,40,32,.09) border · 13-18px radius · 2.5px color accent bar at 55% width</p>
+      <p>Buttons: cancel=coral solid pill · confirm=green solid pill · primary=ink solid pill with gold text</p>
+      <p>Bottom nav: gold stroke + gold label + 4px gold dot below (active) · ink at 35% opacity (inactive)</p>
+      <p>Capture bar: #1A1714 bg · 14px radius · send button #DAAF2E 26px square 8px radius</p>
     </div>
   </section>
 
@@ -594,14 +727,16 @@ NEXT ACTIONS (in order):
       <p>These are locked. Code, copy, UI labels, database values, routes — all of these must match exactly and never be changed without explicit decision.</p>
     </div>
     <div class="locked-row"><div class="locked-name">"spoonstack"</div><div class="locked-note">always lowercase, everywhere, no exceptions</div></div>
+    <div class="locked-row"><div class="locked-name">widget headers</div><div class="locked-note">lowercase throughout — not "Partner Briefing," just "partner briefing"</div></div>
+    <div class="locked-row"><div class="locked-name">AI output</div><div class="locked-note">sentence case · no em dashes · no exclamation marks · under ~150 words</div></div>
+    <div class="locked-row"><div class="locked-name">no clinical language</div><div class="locked-note">never "dysregulated," "trauma response," "executive function failure" in UI copy</div></div>
+    <div class="locked-row"><div class="locked-name">forbidden phrases</div><div class="locked-note">"you need to" · "don't forget" · "stay on track" · "complete your" · "I've noticed you tend to"</div></div>
     <div class="locked-row"><div class="locked-name">stack: "out of sight, not out of mind"</div><div class="locked-note">nav label: "out of sight" · route: /display/out-of-sight</div></div>
     <div class="locked-row"><div class="locked-name">stack: "my family"</div><div class="locked-note">route: /display/my-family</div></div>
     <div class="locked-row"><div class="locked-name">stack: "we can do hard things"</div><div class="locked-note">route: /display/right-now</div></div>
     <div class="locked-row"><div class="locked-name">widget: "where did it go"</div><div class="locked-note">not "out of sight tracker" or any other name</div></div>
-    <div class="locked-row"><div class="locked-name">no em dashes anywhere</div><div class="locked-note">in copy, in AI responses, in the system prompt — never</div></div>
-    <div class="locked-row"><div class="locked-name">no exclamation marks</div><div class="locked-note">in copy, in AI responses, in toasts — never</div></div>
-    <div class="locked-row"><div class="locked-name">lowercase throughout</div><div class="locked-note">all UI copy, all brain responses, all placeholder text</div></div>
-    <div class="locked-row"><div class="locked-name">star copy (ad use)</div><div class="locked-note">"works like a mom brain instead of a man brain" — Brittany flagged this for advertising</div></div>
+    <div class="locked-row"><div class="locked-name">widget: "Meal Decider"</div><div class="locked-note">display label only — widget ID stays dinner-decider in code</div></div>
+    <div class="locked-row"><div class="locked-name">demo family</div><div class="locked-note">Wallace only (Diane, Andre, Simone, Noah, Lily) — real family never in demos</div></div>
   </section>
 
   <!-- BUILD PRIORITIES -->
@@ -613,57 +748,49 @@ NEXT ACTIONS (in order):
     <div class="feature-row">
       <div class="fr-icon" style="background:var(--coral-l)">🔧</div>
       <div class="fr-body">
-        <div class="fr-title">1. fix remaining P0 bugs</div>
-        <div class="fr-desc">OOO textarea · people circles routing · save-to-brain toast · pinned tile opens widget directly (not stack page). All are under 30 min each. Do these first before anything else ships.</div>
-        <span class="fr-tag tag-urgent">blocking beta</span>
+        <div class="fr-title">1. fix Dinner Decider sheet opening</div>
+        <div class="fr-desc">Currently opens /display/my-day on tap. Should open HomeWidgetSheet inline. This is P0 — it breaks the locked home widget grid interaction model.</div>
+        <span class="fr-tag tag-urgent">P0 · blocking</span>
       </div>
     </div>
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--gold-l)">🚀</div>
+      <div class="fr-icon" style="background:var(--coral-l)">💬</div>
       <div class="fr-body">
-        <div class="fr-title">2. merge + deploy home screen branch</div>
-        <div class="fr-desc">Branch claude/home-brain-first is committed. Verify on mobile viewport (375px), confirm capture bar works on iOS Safari, check smart inbox renders correctly. Then merge to main and deploy.</div>
-        <span class="fr-tag tag-next">next</span>
+        <div class="fr-title">2. fix partner briefing pills</div>
+        <div class="fr-desc">Pills must be exactly: make it shorter · make it funnier · add more info. No others. Remove any "change tone," "edit," or other pills. Apply to both the pill display and the AI handler.</div>
+        <span class="fr-tag tag-urgent">P1 · visible bug</span>
       </div>
     </div>
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--plum-l)">🧠</div>
+      <div class="fr-icon" style="background:var(--gold-l)">🔗</div>
       <div class="fr-body">
-        <div class="fr-title">3. build brain tab — stream + wiki</div>
-        <div class="fr-desc">Mobile stream: dark header, recency clusters, question queue, domain chips. Desktop wiki: sidebar with people/topics, main panel shows person/topic page with facts + entries. Toggle: stream / galaxy / wiki in top right. Spec in brain tab section above.</div>
-        <span class="fr-tag tag-next">after deploy</span>
+        <div class="fr-title">3. fix session state between widgets (mood propagation)</div>
+        <div class="fr-desc">Check-in mood selected by user never reaches widget AI calls. Need to thread mood context through from the check-in flow to all AI endpoints. This unlocks personalized widget responses.</div>
+        <span class="fr-tag tag-next">P0 · context-breaking</span>
       </div>
     </div>
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--gold-l)">🌌</div>
+      <div class="fr-icon" style="background:var(--plum-l)">📊</div>
       <div class="fr-body">
-        <div class="fr-title">4. build galaxy view</div>
-        <div class="fr-desc">12 nodes on a canvas. Center "your brain" ✦. Nodes radiate outward. Tap to open detail panel from bottom. Search bar at top always available. Mobile: full-screen overlay via ✦ button on brain tab. Desktop: accessible via mode toggle. Color + node specs in galaxy section above.</div>
-        <span class="fr-tag tag-soon">sprint 2</span>
+        <div class="fr-title">4. build weekly summary report (brain)</div>
+        <div class="fr-desc">Currently a stub. Pulls brain_entries from the past 7 days, clusters by domain, surfaces 3-5 patterns with the brain's voice. Output is gentle observation, not productivity tracking.</div>
+        <span class="fr-tag tag-next">after P0/P1 fixes</span>
       </div>
     </div>
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--green-l)">👥</div>
+      <div class="fr-icon" style="background:var(--gold-l)">😄</div>
       <div class="fr-body">
-        <div class="fr-title">5. let beta users in</div>
-        <div class="fr-desc">Flip is_approved for first 5-8 users from Threads (20 waiting). Watch what they reach for first. Does the stream feel right? Do they use stacks or capture? Let their behavior inform whether brain-first direction is validated before building more.</div>
-        <span class="fr-tag tag-soon">sprint 2</span>
+        <div class="fr-title">5. partner briefing "make it funnier" functional</div>
+        <div class="fr-desc">Currently pill exists but may not reliably swap message. Verify the AI call handles the tone shift correctly and that the pill always results in a visibly different (funnier) output.</div>
+        <span class="fr-tag tag-soon">after pill fix</span>
       </div>
     </div>
     <div class="feature-row">
-      <div class="fr-icon" style="background:var(--teal-l)">🔍</div>
+      <div class="fr-icon" style="background:var(--teal-l)">✦</div>
       <div class="fr-body">
-        <div class="fr-title">6. semantic search</div>
-        <div class="fr-desc">Current search is lexical. Need meaning-based retrieval — "the thing about Jackson's food" must find the safe foods entry. Likely: embed entries on save, vector search on query. This is the differentiator from Apple Notes. Do not ship as full product without it.</div>
-        <span class="fr-tag tag-open">backlog</span>
-      </div>
-    </div>
-    <div class="feature-row">
-      <div class="fr-icon" style="background:var(--paper)">🎙</div>
-      <div class="fr-body">
-        <div class="fr-title">7. voice capture</div>
-        <div class="fr-desc">Research shows voice notes outperform text journaling significantly for ND brains. Attachment button in capture bar is the entry point. Open question: does playback anxiety reduce usage? Test with beta users before building full voice pipeline.</div>
-        <span class="fr-tag tag-open">backlog</span>
+        <div class="fr-title">6. memory moment on capture (high priority UX)</div>
+        <div class="fr-desc">When user saves a brain dump, if the AI detects a match with an existing entry, surface a brief "the brain remembers..." moment before the confirmation. Single instance only. Never intrusive. This is the signature spoonstack moment.</div>
+        <span class="fr-tag tag-soon">high priority UX</span>
       </div>
     </div>
   </section>
@@ -676,49 +803,15 @@ NEXT ACTIONS (in order):
     </div>
     <div class="card">
       <div class="card-title">product</div>
-      <p>Does voice capture actually replace text capture for ND moms, or does playback anxiety reduce usage? What's the right threshold for AI-suggested connections — how many entries before connections feel useful vs. overwhelming? Does "this entry is connected to 3 others" as a badge create pressure to review those connections? At what cadence does a "from a while back" memory card delight vs. feel like the app is time-traveling on you?</p>
+      <p>Does voice capture actually replace text capture for ND moms, or does playback anxiety reduce usage? What's the right threshold for AI-suggested connections — how many entries before connections feel useful vs. overwhelming? At what cadence does a "from a while back" memory card delight vs. feel like the app is time-traveling on you?</p>
     </div>
     <div class="card">
-      <div class="card-title">architecture</div>
-      <p>"ask brain" button on home — does it open a dedicated chat-style view, or expand the capture bar inline into a back-and-forth? Pinned tiles grid — 2×2 for 4, or scrollable horizontal for unlimited? Lapsed-contact query — when should we add a real last_contact field to brain_entries vs. deriving from widget_responses?</p>
+      <div class="card-title">session state architecture</div>
+      <p>How should mood and context propagate across widgets? Shared React context? Supabase session row? If user sets mood at check-in, it should persist for the whole session without re-asking. What's the right TTL on mood context before it expires?</p>
     </div>
     <div class="card">
       <div class="card-title">beta</div>
       <p>How many users before we can validate the brain-first direction? What do we watch for — are they using the stream, the stacks, or just the capture bar? If users stop going to stacks after 2 weeks, brain-first is confirmed. If they still go to stacks, the direction needs revision.</p>
-    </div>
-    <div class="card">
-      <div class="card-title">cascade care (separate project)</div>
-      <p>Outstanding before real onboarding: attorney review of consent copy, production Supabase, Resend wiring, real staff invite flow. Pricing: $250/month per church, 70/30 split with Dr. Kevin Murriel. Do not confuse with spoonstack build work.</p>
-    </div>
-  </section>
-
-  <!-- OPENING PROMPT REPEAT -->
-  <section class="section">
-    <div class="prompt-box">
-      <div class="prompt-label">opening prompt · copy + paste</div>
-      <div class="prompt-text">I'm building spoonstack — an AI second brain for neurodivergent adults (AuDHD, ADHD, autistic, late-diagnosed women). Built solo by Brittany May (AuDHD, diagnosed at 37). Live at spoonstack.app. Repo: alittleagency/spoonstack-os (private). Stack: Next.js 14 · Supabase (xyxdcwtcfhhczucddhhj) · Anthropic Claude API · Tailwind · TypeScript strict · Vercel · Resend · Stripe ($79/year).
-
-CURRENT STATE — june 20 2026:
-✓ Sign-in working (brittanyhmay@gmail.com / SpoonStack2026!)
-✓ 29 widgets · 7 stacks · 352 brain entries · payment gate live
-✓ Home screen live — CaptureBar (smart routing: save/widget/answer), PinnedWidgets (4 tiles → bottom sheets), SmartInbox ("while you have a minute" + sort-it-out sheet), OooBottomSheet (timeline + refine), 4-tab nav (home · people · brain · stacks)
-✓ Regulator: 6 path pills · Partner briefing: 3 refinement pills
-✓ 82/82 Playwright tests passing · deployed: spoonstack.app
-
-NOT YET BUILT:
-✗ Brain tab (stream + wiki + galaxy) — designed, not built
-✗ Semantic search · New user onboarding · Beta users not yet admitted (20 waiting)
-
-ARCHITECTURE (locked):
-Brain is front door. Capture → inbox (AI processes) → brain. Home leads with capture bar. Brain tab: stream (mobile) + wiki (desktop) + galaxy (12 vision-board nodes). Galaxy nodes: ideas · questions · home · family · friends · work · fun · rest · active projects · wealth · health · faith (peach).
-
-FAMILY: Brittany (AuDHD founder) · Branden (partner ADHD) · Bella (13 cheer) · Ruby (10 twins dyslexia IEP) · Jackson (10 twins autistic storybots+maroon5 safe foods: cheez-its goldfish bacon olives green beans peas protein yogurt red grapes)
-
-LOCKED NAMES: spoonstack lowercase always · "out of sight, not out of mind" · "my family" · "we can do hard things" · "where did it go" · no em dashes · no exclamation marks
-
-SKILLS: spoonstack-builder · audhd-expert · qa-engineer · ai-boundaries · interface-design
-
-NEXT: 1. Brain tab stream+wiki 2. Galaxy view 3. Let beta users in 4. Semantic search</div>
     </div>
   </section>
 
@@ -739,11 +832,13 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 sections.forEach(s => observer.observe(s));
 navItems.forEach(n => {
-  n.addEventListener('click', e => {
-    e.preventDefault();
-    const id = n.getAttribute('href').slice(1);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  });
+  if (n.getAttribute('href')?.startsWith('#')) {
+    n.addEventListener('click', e => {
+      e.preventDefault();
+      const id = n.getAttribute('href').slice(1);
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 });
 </script>
 </body>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spoonstack · design system · phase 2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
+  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;--ink4:#B5AA97;
+  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.2);
+  /* phase 1 colors */
+  --gold:#DAAF2E;--gold-l:#FDF4D0;--gold-d:#6B4C00;
+  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#085041;
+  --coral:#D85A30;--coral-l:#FAECE7;--coral-d:#993C1D;
+  --teal:#2A7A8C;--teal-l:#E0F2F7;--teal-d:#1A4D57;
+  --plum:#7B2D8B;--plum-l:#EDE5F5;--plum-d:#3D1646;
+  --pink:#C4427A;--dark:#1A1714;
+  /* phase 2 new colors */
+  --rose:#E8939A;--rose-l:#FBF0F1;
+  --sage:#7DAE8C;--sage-l:#EBF5EE;
+  --butter:#F2D44E;--butter-l:#FDF8D6;
+  --peri:#8B9FD4;--peri-l:#EEF1FB;
+  --tan:#C4A882;--tan-l:#F5EFE6;
+  --sidebar:220px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--dark);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:28px 0 40px;z-index:100;scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px}
+.sb-wordmark{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--gold);letter-spacing:-.02em}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);font-family:'IBM Plex Mono',monospace;margin-top:3px}
+.sb-section{padding:6px 20px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-top:16px;margin-bottom:4px}
+.sb-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .15s;cursor:pointer;font-weight:500}
+.sb-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05)}
+.sb-link.active{color:var(--gold);background:rgba(218,175,46,.08)}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;padding:48px 64px 100px;max-width:calc(960px + var(--sidebar))}
+.main-inner{max-width:860px}
+
+/* HEADER */
+.doc-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.doc-title{font-size:36px;font-weight:800;color:var(--ink);line-height:1.1;margin-bottom:8px;letter-spacing:-.04em}
+.doc-vision{font-size:20px;color:var(--ink2);margin:16px 0 32px;line-height:1.5;font-style:italic;max-width:600px}
+.doc-tag{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--plum-l);color:var(--plum-d);padding:4px 12px;border-radius:20px;margin-bottom:32px;border:1px solid rgba(123,45,139,.2)}
+
+/* SECTIONS */
+.section{margin-bottom:60px;scroll-margin-top:32px}
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:14px;border-bottom:1.5px solid var(--border2)}
+
+/* COLOR SWATCHES */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.swatch{border-radius:12px;overflow:hidden;border:1.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.swatch-color{height:56px}
+.swatch-info{padding:10px 12px;background:var(--card)}
+.swatch-hex{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;color:var(--ink)}
+.swatch-name{font-size:11px;color:var(--ink2);margin-top:2px;font-weight:700}
+.swatch-use{font-size:10px;color:var(--ink3);margin-top:3px;line-height:1.4}
+.swatch-p1{border:0.5px solid var(--border2);box-shadow:none}
+
+/* COLOR BLOCKING */
+.color-block-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.color-block{border-radius:14px;overflow:hidden;border:1.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.cb-top{height:60px}
+.cb-bottom{height:60px}
+.cb-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;padding:8px 12px;background:var(--card);color:var(--ink3)}
+
+/* SPEC CARDS */
+.spec-card{background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:22px 26px;margin-bottom:14px;box-shadow:3px 3px 0 var(--ink)}
+.spec-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.spec-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:4px;background:var(--gold-l);color:var(--gold-d);border:1px solid rgba(218,175,46,.3)}
+.spec-row{display:flex;align-items:baseline;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);min-width:160px;flex-shrink:0}
+.spec-val{color:var(--ink2);line-height:1.5}
+
+/* EVOLUTION GRID */
+.evo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.evo-card{border-radius:12px;padding:18px 20px}
+.evo-p1{background:var(--paper);border:0.5px solid var(--border2)}
+.evo-p2{background:var(--ink);border:1.5px solid var(--ink);box-shadow:3px 3px 0 var(--gold)}
+.evo-label{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:500}
+.evo-p1 .evo-label{color:var(--ink3)}
+.evo-p2 .evo-label{color:var(--gold)}
+.evo-item{font-size:13px;padding:5px 0;border-bottom:0.5px solid rgba(44,40,32,.08);line-height:1.5}
+.evo-p1 .evo-item{color:var(--ink2)}
+.evo-p2 .evo-item{color:rgba(255,255,255,.75);border-bottom-color:rgba(255,255,255,.08)}
+.evo-item:last-child{border-bottom:none}
+
+/* BUTTON PREVIEWS */
+.preview-area{background:var(--paper);border-radius:12px;padding:20px;border:1px solid var(--border2);margin-bottom:10px}
+.btn-p2{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:all .12s;margin:4px}
+.btn-p2:active{transform:translate(3px,3px);box-shadow:none}
+.btn-p2-gold{background:var(--gold);color:var(--ink)}
+.btn-p2-coral{background:var(--coral);color:#FFFDF7}
+.btn-p2-green{background:var(--green);color:#FFFDF7}
+.btn-p2-ghost{background:#FFFDF7;color:var(--ink)}
+.btn-p2-rose{background:var(--rose);color:#FFFDF7}
+
+.pill-p2{display:inline-flex;align-items:center;padding:5px 13px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);margin:4px;transition:all .12s}
+.pill-p2:active{transform:translate(2px,2px);box-shadow:none}
+.pill-p2-gold{background:var(--gold-l);color:var(--gold-d)}
+.pill-p2-plum{background:var(--plum-l);color:var(--plum-d)}
+
+/* TAG PREVIEWS */
+.tag-p2{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;cursor:default;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);margin:3px}
+
+/* STAYS / CHANGES */
+.stays-changes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.stays-box{background:var(--green-l);border:1px solid rgba(29,158,117,.2);border-radius:12px;padding:16px 18px}
+.changes-box{background:var(--rose-l);border:1px solid rgba(232,147,154,.3);border-radius:12px;padding:16px 18px}
+.box-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-weight:700}
+.stays-box .box-label{color:var(--green-d)}
+.changes-box .box-label{color:#8b3a40}
+.box-item{font-size:13px;color:var(--ink2);line-height:1.6;padding:4px 0 4px 18px;position:relative;list-style:none}
+.stays-box .box-item::before{content:'✓';position:absolute;left:0;color:var(--green);font-size:12px}
+.changes-box .box-item::before{content:'→';position:absolute;left:0;color:var(--rose);font-size:12px}
+
+code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);padding:2px 6px;border-radius:4px;color:var(--ink)}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:28px 20px 80px}
+  .evo-grid,.stays-changes,.color-block-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-wordmark">spoonstack</div>
+    <div class="sb-sub">design system · phase 2</div>
+  </div>
+
+  <div class="sb-section">on this page</div>
+  <a class="sb-link active" onclick="goTo('vision')"><span class="sb-dot" style="background:var(--rose)"></span>vision</a>
+  <a class="sb-link" onclick="goTo('evolution')"><span class="sb-dot" style="background:var(--gold)"></span>how it evolves</a>
+  <a class="sb-link" onclick="goTo('colors')"><span class="sb-dot" style="background:var(--butter)"></span>color palette</a>
+  <a class="sb-link" onclick="goTo('blocking')"><span class="sb-dot" style="background:var(--peri)"></span>color blocking</a>
+  <a class="sb-link" onclick="goTo('typography')"><span class="sb-dot" style="background:var(--ink4)"></span>typography</a>
+  <a class="sb-link" onclick="goTo('components')"><span class="sb-dot" style="background:var(--sage)"></span>components</a>
+  <a class="sb-link" onclick="goTo('animation')"><span class="sb-dot" style="background:var(--gold)"></span>animation</a>
+  <a class="sb-link" onclick="goTo('stays-changes')"><span class="sb-dot" style="background:var(--green)"></span>stays vs. changes</a>
+
+  <div class="sb-section">playbook</div>
+  <a class="sb-link" href="index.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>playbook home</a>
+  <a class="sb-link" href="handoff.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>handoff doc</a>
+  <a class="sb-link" href="style-guide-phase1.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>style guide · phase 1</a>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div class="doc-eyebrow">spoonstack design system · phase 2 · 90s-inspired evolution · coming soon</div>
+  <h1 class="doc-title">style guide<br>phase 2</h1>
+  <div class="doc-tag">coming soon · not yet in production</div>
+
+  <!-- VISION -->
+  <div class="section" id="vision">
+    <div class="section-label">THE VISION</div>
+    <div class="section-title">vision statement</div>
+
+    <div style="background:var(--ink);border-radius:16px;padding:32px 36px;margin-bottom:24px;border:1.5px solid var(--ink);box-shadow:5px 5px 0 var(--gold)">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:16px">the concept</div>
+      <div style="font-size:22px;font-weight:700;color:#FFFDF7;line-height:1.45;letter-spacing:-.02em">Like a Lisa Frank planner met a Muji notebook and had a very organized baby.</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.55);margin-top:16px;line-height:1.6">Bold enough to be joyful. Structured enough to be useful. Warm enough to be safe.</div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">what this means in practice</div>
+      <div class="spec-row"><div class="spec-key">phase 1 was</div><div class="spec-val">a whisper — warm, restrained, almost invisible design. The interface steps back and the content breathes.</div></div>
+      <div class="spec-row"><div class="spec-key">phase 2 is</div><div class="spec-val">a speaking voice — the same warmth, but bolder, more graphic, more confident. Color-blocked. Tactile. Physical.</div></div>
+      <div class="spec-row"><div class="spec-key">the through-line</div><div class="spec-val">Same warm cream base. Same gold as primary accent. Same DM Sans + IBM Plex Mono. Same copy rules. Same voice. Different texture.</div></div>
+      <div class="spec-row"><div class="spec-key">the inspiration</div><div class="spec-val">90s graphic design energy — Clueless color palettes, Lisa Frank boldness, Muji organization discipline. Physical, tactile, joyful.</div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT EVOLVES -->
+  <div class="section" id="evolution">
+    <div class="section-label">COMPARISON</div>
+    <div class="section-title">how it evolves from phase 1</div>
+
+    <div class="evo-grid">
+      <div class="evo-card evo-p1">
+        <div class="evo-label">phase 1 · current</div>
+        <div class="evo-item">0.5px borders — barely there</div>
+        <div class="evo-item">No shadows — flat and clean</div>
+        <div class="evo-item">Soft colors — tints and pastels</div>
+        <div class="evo-item">DM Sans 400–700</div>
+        <div class="evo-item">200ms transitions</div>
+        <div class="evo-item">2.5px color accent bars</div>
+        <div class="evo-item">Geometric, precise icons</div>
+        <div class="evo-item">Neutral pill buttons</div>
+      </div>
+      <div class="evo-card evo-p2">
+        <div class="evo-label">phase 2 · coming</div>
+        <div class="evo-item">1.5px borders — graphic, visible</div>
+        <div class="evo-item">Hard offset shadows — physical feel</div>
+        <div class="evo-item">Richer colors — more saturated</div>
+        <div class="evo-item">DM Sans 700–800 for display</div>
+        <div class="evo-item">120ms transitions — snappier</div>
+        <div class="evo-item">4–5px color bars — thicker, bolder</div>
+        <div class="evo-item">Hand-drawn, organic icons</div>
+        <div class="evo-item">Bordered + shadowed buttons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR PALETTE -->
+  <div class="section" id="colors">
+    <div class="section-label">TOKENS</div>
+    <div class="section-title">color palette</div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">phase 1 colors (unchanged)</p>
+    <div class="swatch-grid">
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#FAFAF7"></div><div class="swatch-info"><div class="swatch-hex">#FAFAF7</div><div class="swatch-name">page bg</div><div class="swatch-use">same as phase 1</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#2C2820"></div><div class="swatch-info"><div class="swatch-hex">#2C2820</div><div class="swatch-name">ink</div><div class="swatch-use">same as phase 1</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#DAAF2E"></div><div class="swatch-info"><div class="swatch-hex">#DAAF2E</div><div class="swatch-name">gold</div><div class="swatch-use">stronger presence in P2</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#D85A30"></div><div class="swatch-info"><div class="swatch-hex">#D85A30</div><div class="swatch-name">coral</div><div class="swatch-use">same as phase 1</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#1D9E75"></div><div class="swatch-info"><div class="swatch-hex">#1D9E75</div><div class="swatch-name">green</div><div class="swatch-use">same as phase 1</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;margin-top:24px">phase 2 new additions — 90s-inspired palette</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#E8939A"></div><div class="swatch-info"><div class="swatch-hex">#E8939A</div><div class="swatch-name">dusty rose</div><div class="swatch-use">headers, color-block sections, accent</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#7DAE8C"></div><div class="swatch-info"><div class="swatch-hex">#7DAE8C</div><div class="swatch-name">sage green</div><div class="swatch-use">card accents, section headers</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F2D44E"></div><div class="swatch-info"><div class="swatch-hex">#F2D44E</div><div class="swatch-name">butter yellow</div><div class="swatch-use">highlight, accent on cream backgrounds</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8B9FD4"></div><div class="swatch-info"><div class="swatch-hex">#8B9FD4</div><div class="swatch-name">periwinkle</div><div class="swatch-use">widget card accent, cool counterpoint to warm</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C4A882"></div><div class="swatch-info"><div class="swatch-hex">#C4A882</div><div class="swatch-name">warm tan</div><div class="swatch-use">neutral warmth for section fills</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;margin-top:24px">phase 2 tints</p>
+    <div class="swatch-grid">
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#FBF0F1"></div><div class="swatch-info"><div class="swatch-hex">#FBF0F1</div><div class="swatch-name">rose light</div><div class="swatch-use">dusty rose callout bg</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#EBF5EE"></div><div class="swatch-info"><div class="swatch-hex">#EBF5EE</div><div class="swatch-name">sage light</div><div class="swatch-use">sage callout bg</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#FDF8D6"></div><div class="swatch-info"><div class="swatch-hex">#FDF8D6</div><div class="swatch-name">butter light</div><div class="swatch-use">butter highlight bg</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#EEF1FB"></div><div class="swatch-info"><div class="swatch-hex">#EEF1FB</div><div class="swatch-name">peri light</div><div class="swatch-use">periwinkle callout bg</div></div></div>
+      <div class="swatch swatch-p1"><div class="swatch-color" style="background:#F5EFE6"></div><div class="swatch-info"><div class="swatch-hex">#F5EFE6</div><div class="swatch-name">tan light</div><div class="swatch-use">warm tan callout bg</div></div></div>
+    </div>
+  </div>
+
+  <!-- COLOR BLOCKING -->
+  <div class="section" id="blocking">
+    <div class="section-label">COLOR SYSTEM</div>
+    <div class="section-title">color blocking examples</div>
+
+    <p style="font-size:13px;color:var(--ink2);margin-bottom:20px;line-height:1.6">Phase 2 uses colors in graphic blocks — two colors side by side as flat fills, not subtle gradients. The borders and offset shadows make each block feel physical, like sticker sheets.</p>
+
+    <div class="color-block-grid">
+      <div class="color-block">
+        <div class="cb-top" style="background:#E8939A"></div>
+        <div class="cb-bottom" style="background:#7DAE8C"></div>
+        <div class="cb-label">dusty rose + sage green — joyful, balanced</div>
+      </div>
+      <div class="color-block">
+        <div class="cb-top" style="background:#F2D44E"></div>
+        <div class="cb-bottom" style="background:#FAFAF7"></div>
+        <div class="cb-label">butter yellow + cream — warm accent on neutral</div>
+      </div>
+      <div class="color-block">
+        <div class="cb-top" style="background:#8B9FD4"></div>
+        <div class="cb-bottom" style="background:#2C2820"></div>
+        <div class="cb-label">periwinkle + ink — cool widget card on dark base</div>
+      </div>
+      <div class="color-block">
+        <div class="cb-top" style="background:#DAAF2E"></div>
+        <div class="cb-bottom" style="background:#2C2820"></div>
+        <div class="cb-label">gold + ink — same as phase 1, bolder expression</div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">how to use color blocks</div>
+      <div class="spec-row"><div class="spec-key">section headers</div><div class="spec-val">full-width color fill behind a section header — one of the phase 2 palette colors</div></div>
+      <div class="spec-row"><div class="spec-key">widget cards</div><div class="spec-val">accent bar becomes 4–5px and uses the more saturated phase 2 colors</div></div>
+      <div class="spec-row"><div class="spec-key">callout blocks</div><div class="spec-val">full background fill in a phase 2 tint — not just a border, the whole area fills</div></div>
+      <div class="spec-row"><div class="spec-key">never gradient</div><div class="spec-val">no gradients in phase 2 — always flat fills. the 90s were flat.</div></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section" id="typography">
+    <div class="section-label">FONTS</div>
+    <div class="section-title">typography evolution</div>
+
+    <div class="spec-card">
+      <div class="spec-title">same fonts, more expressive</div>
+      <div class="spec-row"><div class="spec-key">DM Sans weights</div><div class="spec-val">Phase 2 uses 700–800 for display text. Tighter tracking (-0.04em to -0.06em). Bigger, more confident type scale.</div></div>
+      <div class="spec-row"><div class="spec-key">IBM Plex Mono</div><div class="spec-val">Bold weight (700) for tags and chips in phase 2. More graphic, less metadata-like.</div></div>
+      <div class="spec-row"><div class="spec-key">type scale</div><div class="spec-val">Phase 2 display: 42–48px at weight 800. Section titles: 26px weight 700. More expressive range than phase 1.</div></div>
+      <div class="spec-row"><div class="spec-key">what stays</div><div class="spec-val">DM Sans for body/headings. IBM Plex Mono for meta/tags. 14–15px body size. 1.65 line height for body.</div></div>
+    </div>
+
+    <div style="background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:24px 28px;margin-bottom:14px;box-shadow:4px 4px 0 var(--ink)">
+      <div style="font-size:44px;font-weight:800;color:var(--ink);letter-spacing:-.05em;line-height:1">your brain.</div>
+      <div style="font-size:44px;font-weight:800;color:var(--rose);letter-spacing:-.05em;line-height:1;margin-top:4px">built for you.</div>
+      <div style="font-size:14px;color:var(--ink2);margin-top:20px;line-height:1.65">Phase 2 display type — DM Sans 800, tight tracking, two-color split.</div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="section" id="components">
+    <div class="section-label">COMPONENTS</div>
+    <div class="section-title">component evolution</div>
+
+    <div class="spec-card">
+      <div class="spec-title">buttons — neo-brutalist <span class="spec-badge">new in P2</span></div>
+      <div class="spec-row"><div class="spec-key">border</div><div class="spec-val"><code>1.5px solid #2C2820</code> — visible, graphic border on all buttons</div></div>
+      <div class="spec-row"><div class="spec-key">shadow</div><div class="spec-val"><code>3px 3px 0 #2C2820</code> — hard offset shadow, no blur. looks like a sticker.</div></div>
+      <div class="spec-row"><div class="spec-key">border radius</div><div class="spec-val">12px for action buttons · 100px for pill buttons</div></div>
+      <div class="spec-row"><div class="spec-key">active state</div><div class="spec-val"><code>transform: translate(3px,3px); box-shadow: none</code> — presses in like a real button</div></div>
+      <div class="spec-row"><div class="spec-key">no soft shadows</div><div class="spec-val">no <code>blur</code> in box-shadow — only hard offset. the 90s were physical.</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'IBM Plex Mono',monospace">phase 2 button preview — try pressing them</p>
+    <div class="preview-area">
+      <div>
+        <button class="btn-p2 btn-p2-gold">send to branden</button>
+        <button class="btn-p2 btn-p2-green">done</button>
+        <button class="btn-p2 btn-p2-coral">delete account</button>
+        <button class="btn-p2 btn-p2-ghost">cancel</button>
+        <button class="btn-p2 btn-p2-rose">try this</button>
+      </div>
+      <div style="margin-top:12px">
+        <span class="pill-p2 pill-p2-gold">make it shorter</span>
+        <span class="pill-p2 pill-p2-plum">add more info</span>
+        <span class="pill-p2" style="background:var(--rose-l);color:#8b3a40">make it funnier</span>
+      </div>
+    </div>
+
+    <div class="spec-card" style="margin-top:14px">
+      <div class="spec-title">cards <span class="spec-badge">evolution</span></div>
+      <div class="spec-row"><div class="spec-key">border</div><div class="spec-val"><code>1.5px solid #2C2820</code> — vs. 0.5px in phase 1</div></div>
+      <div class="spec-row"><div class="spec-key">shadow</div><div class="spec-val">Some cards get <code>4px 4px 0 #2C2820</code> offset — adds graphic weight</div></div>
+      <div class="spec-row"><div class="spec-key">color bars</div><div class="spec-val">4–5px height (vs. 2.5px in phase 1) — more visible, more graphic</div></div>
+      <div class="spec-row"><div class="spec-key">texture option</div><div class="spec-val">Subtle grain/halftone on card backgrounds using CSS — very subtle, optional</div></div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">tags + chips <span class="spec-badge">evolution</span></div>
+      <div class="spec-row"><div class="spec-key">border</div><div class="spec-val"><code>1.5px solid #2C2820</code> — visible border on all tags</div></div>
+      <div class="spec-row"><div class="spec-key">shadow</div><div class="spec-val"><code>2px 2px 0 #2C2820</code> — same physical press effect</div></div>
+      <div class="spec-row"><div class="spec-key">weight</div><div class="spec-val">IBM Plex Mono 700 — bold, more graphic</div></div>
+      <div class="spec-row"><div class="spec-key">feel</div><div class="spec-val">slightly imperfect / hand-pressed. like a rubber stamp, not laser-cut.</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'IBM Plex Mono',monospace">phase 2 tag preview</p>
+    <div class="preview-area">
+      <div>
+        <span class="tag-p2" style="background:var(--gold-l);color:var(--gold-d)">#todo</span>
+        <span class="tag-p2" style="background:var(--rose-l);color:#8b3a40">#followUp</span>
+        <span class="tag-p2" style="background:var(--peri-l);color:#3a4e8b">#ideas</span>
+        <span class="tag-p2" style="background:var(--sage-l);color:#2a5e3a">#family</span>
+        <span class="tag-p2" style="background:var(--butter-l);color:#8b6e00">#urgent</span>
+      </div>
+    </div>
+
+    <div class="spec-card" style="margin-top:14px">
+      <div class="spec-title">icons <span class="spec-badge">evolution</span></div>
+      <div class="spec-row"><div class="spec-key">style</div><div class="spec-val">hand-drawn stroke feel — slightly imperfect, organic lines vs. geometric precision in phase 1</div></div>
+      <div class="spec-row"><div class="spec-key">stroke weight</div><div class="spec-val">1.5–2px stroke, with slight variation (not perfectly uniform)</div></div>
+      <div class="spec-row"><div class="spec-key">corners</div><div class="spec-val">slightly rounded corners, not sharp — like drawn with a real pen</div></div>
+      <div class="spec-row"><div class="spec-key">feel</div><div class="spec-val">not geometric precision — a bit more alive. like the app was built by a person, not a system.</div></div>
+    </div>
+  </div>
+
+  <!-- ANIMATION -->
+  <div class="section" id="animation">
+    <div class="section-label">MOTION</div>
+    <div class="section-title">animation</div>
+
+    <div class="spec-card">
+      <div class="spec-title">phase 2 animation spec</div>
+      <div class="spec-row"><div class="spec-key">default transition</div><div class="spec-val">120ms (vs. 200ms in phase 1) — snappier, more physical</div></div>
+      <div class="spec-row"><div class="spec-key">button press</div><div class="spec-val"><code>transform: translate(3px,3px); box-shadow: none;</code> — 80ms duration. presses in, then springs back.</div></div>
+      <div class="spec-row"><div class="spec-key">spring curve</div><div class="spec-val">Bouncy spring on press: scale 0.92 → 1.04 → 1.0. Things feel physical, like they have weight.</div></div>
+      <div class="spec-row"><div class="spec-key">sheet entrance</div><div class="spec-val">Bottom sheet slides in with slight overshoot — 8px past target, then snaps to position. 160ms total.</div></div>
+      <div class="spec-row"><div class="spec-key">card tap</div><div class="spec-val">Brief scale 0.97 on tap, spring back. Under 100ms. Immediate tactile response.</div></div>
+      <div class="spec-row"><div class="spec-key">no fades</div><div class="spec-val">Prefer translate/scale transitions over opacity fades. Phase 2 things move — they don't fade.</div></div>
+    </div>
+
+    <div style="background:var(--ink);border-radius:12px;padding:20px 24px;border:1.5px solid var(--ink);box-shadow:4px 4px 0 var(--rose)">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:12px">spring animation spec</div>
+      <pre style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.8);line-height:1.8">/* button press spring */
+@keyframes btnPress {
+  0%   { transform: translate(0,0) scale(1); }
+  40%  { transform: translate(3px,3px) scale(0.97); box-shadow: none; }
+  70%  { transform: translate(-1px,-1px) scale(1.02); }
+  100% { transform: translate(0,0) scale(1); box-shadow: 3px 3px 0 var(--ink); }
+}
+
+/* snappy default */
+transition: all 0.12s ease-out;
+
+/* overshoot entrance (bottom sheet) */
+animation: slideUp 0.16s cubic-bezier(0.34, 1.56, 0.64, 1);</pre>
+    </div>
+  </div>
+
+  <!-- STAYS VS. CHANGES -->
+  <div class="section" id="stays-changes">
+    <div class="section-label">SUMMARY</div>
+    <div class="section-title">what stays · what changes</div>
+
+    <div class="stays-changes">
+      <div class="stays-box">
+        <div class="box-label">stays the same</div>
+        <ul>
+          <li class="box-item">spoonstack always lowercase</li>
+          <li class="box-item">DM Sans + IBM Plex Mono</li>
+          <li class="box-item">4-tab nav structure</li>
+          <li class="box-item">cream/warm base (#FAFAF7)</li>
+          <li class="box-item">gold as the primary accent</li>
+          <li class="box-item">voice and copy rules</li>
+          <li class="box-item">no em dashes, no exclamation marks</li>
+          <li class="box-item">no clinical language</li>
+          <li class="box-item">ND design principles</li>
+          <li class="box-item">4 home widget cards (same ones)</li>
+          <li class="box-item">capture bar in dark (#1A1714)</li>
+        </ul>
+      </div>
+      <div class="changes-box">
+        <div class="box-label">what changes</div>
+        <ul>
+          <li class="box-item">buttons get 1.5px borders + hard offset shadows</li>
+          <li class="box-item">colors get more saturated + color-blocked</li>
+          <li class="box-item">typography gets bigger and bolder (800 weight)</li>
+          <li class="box-item">animation gets bouncier (spring physics)</li>
+          <li class="box-item">cards get thicker borders + some offset shadows</li>
+          <li class="box-item">tags get borders + offset shadows too</li>
+          <li class="box-item">icons become slightly hand-drawn / organic</li>
+          <li class="box-item">5 new colors in the palette</li>
+          <li class="box-item">transitions faster (120ms vs 200ms)</li>
+          <li class="box-item">section headers can use color-block fills</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:24px 28px;box-shadow:4px 4px 0 var(--ink)">
+      <div style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px">the guiding principle for phase 2</div>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.75">Phase 2 is still spoonstack — it just speaks up. The warmth, the restraint, the care for ND brains — all of that stays. What changes is the graphic confidence. Phase 1 was designed to disappear. Phase 2 is designed to delight. But never at the expense of safety, clarity, or the people it's built for.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function goTo(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+}
+
+window.addEventListener('scroll', () => {
+  const ids = ['vision','evolution','colors','blocking','typography','components','animation','stays-changes'];
+  const links = document.querySelectorAll('.sb-link');
+  let current = '';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 140) current = id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    const fn = l.getAttribute('onclick') || '';
+    if (fn.includes(`'${current}'`)) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

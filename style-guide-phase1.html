@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>spoonstack · design system · phase 1</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF7;--card:#FFFDF7;--paper:#F4EFE4;
+  --ink:#2C2820;--ink2:#6B6254;--ink3:#8A8070;--ink4:#B5AA97;
+  --border:rgba(44,40,32,.09);--border2:rgba(44,40,32,.16);
+  --gold:#DAAF2E;--gold-l:#FDF4D0;--gold-d:#6B4C00;
+  --green:#1D9E75;--green-l:#E1F5EE;--green-d:#085041;
+  --coral:#D85A30;--coral-l:#FAECE7;--coral-d:#993C1D;
+  --teal:#2A7A8C;--teal-l:#E0F2F7;--teal-d:#1A4D57;
+  --plum:#7B2D8B;--plum-l:#EDE5F5;--plum-d:#3D1646;
+  --pink:#C4427A;--amber:#C47B00;
+  --dark:#1A1714;--sidebar:220px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--dark);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:28px 0 40px;z-index:100;scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px}
+.sb-wordmark{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--gold);letter-spacing:-.02em}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);font-family:'IBM Plex Mono',monospace;margin-top:3px}
+.sb-section{padding:6px 20px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);margin-top:16px;margin-bottom:4px}
+.sb-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .15s;cursor:pointer;font-weight:500}
+.sb-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05)}
+.sb-link.active{color:var(--gold);background:rgba(218,175,46,.08)}
+.sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;padding:48px 64px 100px;max-width:calc(960px + var(--sidebar))}
+.main-inner{max-width:860px}
+
+/* HEADER */
+.doc-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.doc-title{font-size:36px;font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:8px;letter-spacing:-.03em}
+.doc-tag{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--green-l);color:var(--green-d);padding:4px 12px;border-radius:20px;margin-bottom:32px;border:1px solid rgba(29,158,117,.2)}
+
+/* SECTIONS */
+.section{margin-bottom:60px;scroll-margin-top:32px}
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:700;color:var(--ink);margin-bottom:20px;padding-bottom:14px;border-bottom:1.5px solid var(--border2)}
+
+/* COLOR SWATCHES */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:20px}
+.swatch{border-radius:12px;overflow:hidden;border:0.5px solid var(--border2);box-shadow:0 1px 4px rgba(44,40,32,.06)}
+.swatch-color{height:60px}
+.swatch-info{padding:10px 12px;background:var(--card)}
+.swatch-hex{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;color:var(--ink)}
+.swatch-name{font-size:11px;color:var(--ink2);margin-top:2px;font-weight:600}
+.swatch-use{font-size:10px;color:var(--ink3);margin-top:3px;line-height:1.4}
+
+/* TYPOGRAPHY SPECIMENS */
+.type-spec{background:var(--card);border:0.5px solid var(--border2);border-radius:14px;padding:24px 28px;margin-bottom:12px}
+.type-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:12px}
+.type-sample{color:var(--ink);margin-bottom:8px}
+.type-weights{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border)}
+.weight-item{display:flex;align-items:baseline;gap:8px}
+.weight-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.weight-demo{color:var(--ink);font-size:14px}
+
+/* COMPONENT SPECS */
+.spec-card{background:var(--card);border:0.5px solid var(--border2);border-radius:14px;padding:22px 26px;margin-bottom:14px}
+.spec-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.spec-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:4px;background:var(--paper);color:var(--ink3)}
+.spec-row{display:flex;align-items:baseline;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);min-width:160px;flex-shrink:0}
+.spec-val{color:var(--ink2);line-height:1.5}
+code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);padding:2px 6px;border-radius:4px;color:var(--ink)}
+
+/* COMPONENT PREVIEW */
+.preview-area{background:var(--bg);border-radius:12px;padding:20px;border:0.5px solid var(--border2);margin-bottom:10px}
+
+/* BUTTON DEMOS */
+.btn-demo-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--ink);color:var(--gold)}
+.btn-coral{background:var(--coral);color:#FFFDF7}
+.btn-green{background:var(--green);color:#FFFDF7}
+.btn-ghost{background:var(--bg);color:var(--ink);border:1px solid var(--border2)}
+.btn-pill{display:inline-flex;align-items:center;padding:5px 13px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;background:var(--paper);color:var(--ink2);border:0.5px solid var(--border2)}
+
+/* NAV PREVIEW */
+.nav-preview{background:var(--card);border-top:0.5px solid rgba(44,40,32,.08);border-radius:0 0 16px 16px;display:flex;justify-content:space-around;padding:10px 0 4px}
+.nav-tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 16px;cursor:pointer;position:relative}
+.nav-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.nav-label-text{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.05em}
+.nav-dot-ind{width:4px;height:4px;border-radius:50%;margin-top:2px}
+.nav-tab.nav-active .nav-label-text{color:var(--gold)}
+.nav-tab.nav-active .nav-dot-ind{background:var(--gold)}
+.nav-tab.nav-inactive .nav-icon,.nav-tab.nav-inactive .nav-label-text{opacity:.35;color:var(--ink)}
+.nav-tab.nav-inactive .nav-dot-ind{background:transparent}
+
+/* CAPTURE BAR PREVIEW */
+.capture-preview{background:var(--dark);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.capture-text{flex:1;font-family:'IBM Plex Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);font-style:italic}
+.capture-send{width:26px;height:26px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* WIDGET CARD PREVIEW */
+.widget-grid-preview{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+.widget-card-preview{background:var(--card);border:0.5px solid var(--border2);border-radius:13px;padding:10px 12px;overflow:hidden;position:relative}
+.widget-bar{position:absolute;top:0;left:0;right:0;height:2.5px;width:55%}
+.widget-emoji-prev{font-size:16px;margin-top:8px;margin-bottom:4px;display:block}
+.widget-name-prev{font-size:11px;font-weight:500;color:var(--ink);display:block}
+.widget-sub-prev{font-size:9px;color:var(--ink3);display:block;margin-top:2px}
+
+/* TAG DEMOS */
+.tag-demo-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:9px;cursor:default}
+.tag-del{font-size:10px;opacity:.6}
+
+/* VOICE RULES */
+.rule-row{display:flex;gap:14px;padding:10px 0;border-bottom:0.5px solid var(--border);align-items:flex-start;font-size:13px}
+.rule-row:last-child{border-bottom:none}
+.rule-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.rule-body{color:var(--ink2);line-height:1.55}
+.rule-body strong{color:var(--ink)}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0;padding:28px 20px 80px}
+  .swatch-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-wordmark">spoonstack</div>
+    <div class="sb-sub">design system · phase 1</div>
+  </div>
+
+  <div class="sb-section">on this page</div>
+  <a class="sb-link active" onclick="goTo('colors')"><span class="sb-dot" style="background:var(--gold)"></span>color palette</a>
+  <a class="sb-link" onclick="goTo('typography')"><span class="sb-dot" style="background:var(--ink4)"></span>typography</a>
+  <a class="sb-link" onclick="goTo('cards')"><span class="sb-dot" style="background:var(--teal)"></span>cards</a>
+  <a class="sb-link" onclick="goTo('buttons')"><span class="sb-dot" style="background:var(--green)"></span>buttons</a>
+  <a class="sb-link" onclick="goTo('capture')"><span class="sb-dot" style="background:var(--ink4)"></span>capture bar</a>
+  <a class="sb-link" onclick="goTo('nav')"><span class="sb-dot" style="background:var(--gold)"></span>bottom nav</a>
+  <a class="sb-link" onclick="goTo('widget-cards')"><span class="sb-dot" style="background:var(--pink)"></span>widget cards</a>
+  <a class="sb-link" onclick="goTo('tags')"><span class="sb-dot" style="background:var(--plum)"></span>tags + chips</a>
+  <a class="sb-link" onclick="goTo('voice')"><span class="sb-dot" style="background:var(--coral)"></span>voice + copy</a>
+
+  <div class="sb-section">playbook</div>
+  <a class="sb-link" href="index.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>playbook home</a>
+  <a class="sb-link" href="handoff.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>handoff doc</a>
+  <a class="sb-link" href="style-guide-phase2.html"><span class="sb-dot" style="background:rgba(255,255,255,.25)"></span>style guide · phase 2</a>
+</nav>
+
+<div class="main">
+<div class="main-inner">
+
+  <div class="doc-eyebrow">spoonstack design system · phase 1 · current</div>
+  <h1 class="doc-title">style guide</h1>
+  <div class="doc-tag">✓ current · live in production</div>
+
+  <p style="font-size:16px;color:var(--ink2);max-width:600px;margin-bottom:48px;line-height:1.7">Warm, handmade, ND-brain-native. Not a productivity app. Not clinical. Not corporate. Phase 1 is a whisper — everything has warmth and restraint. See <a href="style-guide-phase2.html" style="color:var(--teal)">Phase 2</a> for the 90s-inspired evolution.</p>
+
+  <!-- COLOR PALETTE -->
+  <div class="section" id="colors">
+    <div class="section-label">TOKENS</div>
+    <div class="section-title">color palette</div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">background surfaces</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FAFAF7"></div><div class="swatch-info"><div class="swatch-hex">#FAFAF7</div><div class="swatch-name">page background</div><div class="swatch-use">main page bg, outer canvas</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FFFDF7"></div><div class="swatch-info"><div class="swatch-hex">#FFFDF7</div><div class="swatch-name">card background</div><div class="swatch-use">widget cards, content cards, sheets</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F4EFE4"></div><div class="swatch-info"><div class="swatch-hex">#F4EFE4</div><div class="swatch-name">paper</div><div class="swatch-use">input backgrounds, tags, subtle fills</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A1714;border:0.5px solid #444"></div><div class="swatch-info"><div class="swatch-hex">#1A1714</div><div class="swatch-name">dark</div><div class="swatch-use">capture bar only — not for cards</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">ink (text)</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#2C2820"></div><div class="swatch-info"><div class="swatch-hex">#2C2820</div><div class="swatch-name">ink</div><div class="swatch-use">primary text — warm dark brown, NOT black</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#6B6254"></div><div class="swatch-info"><div class="swatch-hex">#6B6254</div><div class="swatch-name">ink soft</div><div class="swatch-use">secondary text, descriptions</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8A8070"></div><div class="swatch-info"><div class="swatch-hex">#8A8070</div><div class="swatch-name">ink 3 / muted</div><div class="swatch-use">subtitles, placeholders, metadata</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#B5AA97"></div><div class="swatch-info"><div class="swatch-hex">#B5AA97</div><div class="swatch-name">ink faint</div><div class="swatch-use">ghost text, dividers, inactive labels</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">accent colors</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#DAAF2E"></div><div class="swatch-info"><div class="swatch-hex">#DAAF2E</div><div class="swatch-name">gold</div><div class="swatch-use">active state, primary accent, highlights, send button, ✦</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#D85A30"></div><div class="swatch-info"><div class="swatch-hex">#D85A30</div><div class="swatch-name">coral</div><div class="swatch-use">cancel, danger, delete account, hard things stack, alerts</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1D9E75"></div><div class="swatch-info"><div class="swatch-hex">#1D9E75</div><div class="swatch-name">green</div><div class="swatch-use">confirm, success, done state, my family stack</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#2A7A8C"></div><div class="swatch-info"><div class="swatch-hex">#2A7A8C</div><div class="swatch-name">teal</div><div class="swatch-use">vault, where did i put it, out of sight stack</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#7B2D8B"></div><div class="swatch-info"><div class="swatch-hex">#7B2D8B</div><div class="swatch-name">plum</div><div class="swatch-use">patterns, brain, ideas, just me stack</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C4427A"></div><div class="swatch-info"><div class="swatch-hex">#C4427A</div><div class="swatch-name">pink</div><div class="swatch-use">dumpster fire stack, people accent</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C47B00"></div><div class="swatch-info"><div class="swatch-hex">#C47B00</div><div class="swatch-name">amber</div><div class="swatch-use">meal method chips (bake, stovetop, etc.)</div></div></div>
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">light tints (for backgrounds + callouts)</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#FDF4D0"></div><div class="swatch-info"><div class="swatch-hex">#FDF4D0</div><div class="swatch-name">gold light</div><div class="swatch-use">gold callout bg, pill backgrounds</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FAECE7"></div><div class="swatch-info"><div class="swatch-hex">#FAECE7</div><div class="swatch-name">coral light</div><div class="swatch-use">danger callout bg</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E1F5EE"></div><div class="swatch-info"><div class="swatch-hex">#E1F5EE</div><div class="swatch-name">green light</div><div class="swatch-use">success callout bg</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#EDE5F5"></div><div class="swatch-info"><div class="swatch-hex">#EDE5F5</div><div class="swatch-name">plum light</div><div class="swatch-use">brain callout bg, info states</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E0F2F7"></div><div class="swatch-info"><div class="swatch-hex">#E0F2F7</div><div class="swatch-name">teal light</div><div class="swatch-use">vault callout bg</div></div></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section" id="typography">
+    <div class="section-label">FONTS</div>
+    <div class="section-title">typography</div>
+
+    <div class="type-spec">
+      <div class="type-label">DM Sans · body, headings, UI labels, buttons</div>
+      <div class="type-sample" style="font-size:28px;font-weight:700;letter-spacing:-.02em">your brain is the front door</div>
+      <div class="type-sample" style="font-size:16px;font-weight:400;color:var(--ink2);margin-top:8px">spoonstack surfaces the things that matter, when they matter, in your voice.</div>
+      <div class="type-weights">
+        <div class="weight-item"><span class="weight-num">400</span><span class="weight-demo" style="font-weight:400">regular — body text</span></div>
+        <div class="weight-item"><span class="weight-num">500</span><span class="weight-demo" style="font-weight:500">medium — UI labels, widget names</span></div>
+        <div class="weight-item"><span class="weight-num">700</span><span class="weight-demo" style="font-weight:700">bold — headings, section titles</span></div>
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="type-label">IBM Plex Mono · metadata, tags, labels, code, timestamps</div>
+      <div class="type-sample" style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink2)">spoonstack_pinned_v4 · saved 3 days ago · #todo #followUp</div>
+      <div class="type-sample" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);margin-top:10px;text-transform:uppercase;letter-spacing:.1em">MAKE IT SHORTER · MAKE IT FUNNIER · ADD MORE INFO</div>
+      <div class="type-weights">
+        <div class="weight-item"><span class="weight-num">400</span><span class="weight-demo" style="font-family:'IBM Plex Mono',monospace;font-weight:400">regular — metadata, timestamps</span></div>
+        <div class="weight-item"><span class="weight-num">500</span><span class="weight-demo" style="font-family:'IBM Plex Mono',monospace;font-weight:500">medium — labels, chips, eyebrows</span></div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">type scale</div>
+      <div class="spec-row"><div class="spec-key">page title</div><div class="spec-val">36–38px · DM Sans 700 · -0.03em tracking</div></div>
+      <div class="spec-row"><div class="spec-key">section title</div><div class="spec-val">22px · DM Sans 700</div></div>
+      <div class="spec-row"><div class="spec-key">card title</div><div class="spec-val">15px · DM Sans 700</div></div>
+      <div class="spec-row"><div class="spec-key">body</div><div class="spec-val">14–15px · DM Sans 400 · 1.65 line height</div></div>
+      <div class="spec-row"><div class="spec-key">secondary body</div><div class="spec-val">13px · DM Sans 400 · var(--ink2)</div></div>
+      <div class="spec-row"><div class="spec-key">widget name</div><div class="spec-val">11px · DM Sans 500 · var(--ink)</div></div>
+      <div class="spec-row"><div class="spec-key">widget subtitle</div><div class="spec-val">9px · IBM Plex Mono · var(--ink3)</div></div>
+      <div class="spec-row"><div class="spec-key">eyebrow / label</div><div class="spec-val">10–11px · IBM Plex Mono 500 · uppercase · 0.1em tracking</div></div>
+      <div class="spec-row"><div class="spec-key">tag / chip</div><div class="spec-val">9px · IBM Plex Mono · uppercase</div></div>
+      <div class="spec-row"><div class="spec-key">capture bar placeholder</div><div class="spec-val">12px · IBM Plex Mono · italic · rgba(255,255,255,.3)</div></div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="section" id="cards">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">cards</div>
+
+    <div class="spec-card">
+      <div class="spec-title">content card <span class="spec-badge">default</span></div>
+      <div class="spec-row"><div class="spec-key">background</div><div class="spec-val"><code>#FFFDF7</code></div></div>
+      <div class="spec-row"><div class="spec-key">border</div><div class="spec-val"><code>0.5px solid rgba(44,40,32,.09)</code></div></div>
+      <div class="spec-row"><div class="spec-key">border radius</div><div class="spec-val">14px outer · 12px inner elements · 9px smallest</div></div>
+      <div class="spec-row"><div class="spec-key">padding</div><div class="spec-val">22px 26px</div></div>
+      <div class="spec-row"><div class="spec-key">shadow</div><div class="spec-val">none in Phase 1 — shadow is a Phase 2 feature</div></div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">widget card on home screen <span class="spec-badge">home grid</span></div>
+      <div class="spec-row"><div class="spec-key">grid</div><div class="spec-val">2×2, gap 7px</div></div>
+      <div class="spec-row"><div class="spec-key">border radius</div><div class="spec-val">13px outer</div></div>
+      <div class="spec-row"><div class="spec-key">color accent bar</div><div class="spec-val">2.5px height · widget's color · 55% width from left</div></div>
+      <div class="spec-row"><div class="spec-key">emoji</div><div class="spec-val">16px, sits below accent bar</div></div>
+      <div class="spec-row"><div class="spec-key">name</div><div class="spec-val">11px DM Sans 500 · var(--ink)</div></div>
+      <div class="spec-row"><div class="spec-key">subtitle</div><div class="spec-val">9px IBM Plex Mono · var(--ink3)</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'IBM Plex Mono',monospace">widget card preview</p>
+    <div class="widget-grid-preview">
+      <div class="widget-card-preview">
+        <div class="widget-bar" style="background:var(--gold)"></div>
+        <span class="widget-emoji-prev">💬</span>
+        <span class="widget-name-prev">partner briefing</span>
+        <span class="widget-sub-prev">daily update for branden</span>
+      </div>
+      <div class="widget-card-preview">
+        <div class="widget-bar" style="background:var(--coral)"></div>
+        <span class="widget-emoji-prev">🌊</span>
+        <span class="widget-name-prev">regulator</span>
+        <span class="widget-sub-prev">process what you're feeling</span>
+      </div>
+      <div class="widget-card-preview">
+        <div class="widget-bar" style="background:var(--teal)"></div>
+        <span class="widget-emoji-prev">💛</span>
+        <span class="widget-name-prev">ask the vault</span>
+        <span class="widget-sub-prev">ask your brain anything</span>
+      </div>
+      <div class="widget-card-preview">
+        <div class="widget-bar" style="background:var(--plum)"></div>
+        <span class="widget-emoji-prev">📍</span>
+        <span class="widget-name-prev">where did i put it</span>
+        <span class="widget-sub-prev">find your things</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="section" id="buttons">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">buttons</div>
+
+    <div class="spec-card">
+      <div class="spec-title">button types</div>
+      <div class="spec-row"><div class="spec-key">primary action</div><div class="spec-val">ink solid pill (#2C2820 bg) with gold text — the strongest action</div></div>
+      <div class="spec-row"><div class="spec-key">cancel / danger</div><div class="spec-val">coral solid pill (#D85A30 bg) with #FFFDF7 text</div></div>
+      <div class="spec-row"><div class="spec-key">confirm / done</div><div class="spec-val">green solid pill (#1D9E75 bg) with #FFFDF7 text</div></div>
+      <div class="spec-row"><div class="spec-key">ghost</div><div class="spec-val">page bg with thin border — for secondary / tertiary actions</div></div>
+      <div class="spec-row"><div class="spec-key">pill (small)</div><div class="spec-val">IBM Plex Mono 11px · paper bg · 0.5px border · 100px radius — for refinement actions</div></div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-title">critical rule — cancel + done parity</div>
+      <div class="spec-row"><div class="spec-key">shape</div><div class="spec-val">cancel and done buttons must be identical shape and matched weight</div></div>
+      <div class="spec-row"><div class="spec-key">rationale</div><div class="spec-val">neither must look "stronger" — never bias the user toward one over the other. ND users experience button hierarchy as pressure.</div></div>
+      <div class="spec-row"><div class="spec-key">not allowed</div><div class="spec-val">one solid + one ghost, one larger + one smaller, one pill + one rect</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'IBM Plex Mono',monospace">button preview</p>
+    <div class="preview-area">
+      <div class="btn-demo-row">
+        <button class="btn btn-primary">send to branden</button>
+        <button class="btn btn-green">done</button>
+        <button class="btn btn-coral">delete account</button>
+        <button class="btn btn-ghost">cancel</button>
+      </div>
+      <div class="btn-demo-row" style="margin-top:10px">
+        <span class="btn-pill">make it shorter</span>
+        <span class="btn-pill">make it funnier</span>
+        <span class="btn-pill">add more info</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPTURE BAR -->
+  <div class="section" id="capture">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">capture bar</div>
+
+    <div class="spec-card">
+      <div class="spec-title">capture bar spec</div>
+      <div class="spec-row"><div class="spec-key">background</div><div class="spec-val"><code>#1A1714</code> (dark, warm near-black)</div></div>
+      <div class="spec-row"><div class="spec-key">border radius</div><div class="spec-val">14px</div></div>
+      <div class="spec-row"><div class="spec-key">placeholder</div><div class="spec-val">italic · IBM Plex Mono · <code>rgba(255,255,255,.3)</code></div></div>
+      <div class="spec-row"><div class="spec-key">placeholder text</div><div class="spec-val">"what's on your mind" — always this, nothing else</div></div>
+      <div class="spec-row"><div class="spec-key">cursor</div><div class="spec-val">blinking gold cursor when focused</div></div>
+      <div class="spec-row"><div class="spec-key">send button</div><div class="spec-val"><code>#DAAF2E</code> background · 26px square · 8px border-radius · arrow-up icon in ink</div></div>
+      <div class="spec-row"><div class="spec-key">below bar</div><div class="spec-val">"ask brain something" — dashed row, navigates to /brain with search focused</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'IBM Plex Mono',monospace">capture bar preview</p>
+    <div class="capture-preview">
+      <span class="capture-text">what's on your mind</span>
+      <div class="capture-send">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10V2M6 2L2.5 5.5M6 2L9.5 5.5" stroke="#2C2820" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="section" id="nav">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">bottom navigation</div>
+
+    <div class="spec-card">
+      <div class="spec-title">bottom nav spec <span class="spec-badge">4 tabs · locked</span></div>
+      <div class="spec-row"><div class="spec-key">tabs (locked)</div><div class="spec-val">home · people · brain · stacks — these 4, in this order, forever</div></div>
+      <div class="spec-row"><div class="spec-key">icons</div><div class="spec-val">minimal SVG line icons — not emojis</div></div>
+      <div class="spec-row"><div class="spec-key">active state</div><div class="spec-val">gold stroke on icon + gold label + 4px gold dot below</div></div>
+      <div class="spec-row"><div class="spec-key">inactive state</div><div class="spec-val">ink at 35% opacity — icon and label both fade</div></div>
+      <div class="spec-row"><div class="spec-key">background</div><div class="spec-val"><code>#FFFDF7</code> · border-top: <code>0.5px solid rgba(44,40,32,.08)</code></div></div>
+      <div class="spec-row"><div class="spec-key">settings link</div><div class="spec-val">text link "settings" floats top-right, above nav bar — logged-in users only</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'IBM Plex Mono',monospace">nav preview</p>
+    <div class="preview-area" style="padding:0;border-radius:12px;overflow:hidden">
+      <div class="nav-preview">
+        <div class="nav-tab nav-active">
+          <div class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 8.5L10 3L17 8.5V17H13V12H7V17H3V8.5Z" stroke="#DAAF2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="nav-label-text">home</div>
+          <div class="nav-dot-ind"></div>
+        </div>
+        <div class="nav-tab nav-inactive">
+          <div class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#2C2820" stroke-width="1.5"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#2C2820" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="nav-label-text">people</div>
+          <div class="nav-dot-ind"></div>
+        </div>
+        <div class="nav-tab nav-inactive">
+          <div class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v14M3 10h14" stroke="#2C2820" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="7" stroke="#2C2820" stroke-width="1.5"/></svg>
+          </div>
+          <div class="nav-label-text">brain</div>
+          <div class="nav-dot-ind"></div>
+        </div>
+        <div class="nav-tab nav-inactive">
+          <div class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="5.5" height="5.5" rx="1.5" stroke="#2C2820" stroke-width="1.5"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1.5" stroke="#2C2820" stroke-width="1.5"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1.5" stroke="#2C2820" stroke-width="1.5"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1.5" stroke="#2C2820" stroke-width="1.5"/></svg>
+          </div>
+          <div class="nav-label-text">stacks</div>
+          <div class="nav-dot-ind"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIDGET CARDS -->
+  <div class="section" id="widget-cards">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">home widget cards</div>
+
+    <div class="spec-card">
+      <div class="spec-title">widget card grid spec</div>
+      <div class="spec-row"><div class="spec-key">layout</div><div class="spec-val">2×2 grid · gap 7px · equal columns</div></div>
+      <div class="spec-row"><div class="spec-key">card radius</div><div class="spec-val">13px</div></div>
+      <div class="spec-row"><div class="spec-key">accent bar</div><div class="spec-val">2.5px height · widget's color · 55% width from left edge</div></div>
+      <div class="spec-row"><div class="spec-key">emoji</div><div class="spec-val">16px · sits below accent bar with 8px margin-top</div></div>
+      <div class="spec-row"><div class="spec-key">name</div><div class="spec-val">11px · DM Sans 500 · var(--ink)</div></div>
+      <div class="spec-row"><div class="spec-key">subtitle</div><div class="spec-val">9px · IBM Plex Mono 400 · var(--ink3)</div></div>
+      <div class="spec-row"><div class="spec-key">locked cards</div><div class="spec-val">💬 partner briefing (gold) · 🌊 regulator (coral) · 💛 ask the vault (teal) · 📍 where did i put it (plum)</div></div>
+    </div>
+  </div>
+
+  <!-- TAGS + CHIPS -->
+  <div class="section" id="tags">
+    <div class="section-label">COMPONENT</div>
+    <div class="section-title">tags + chips</div>
+
+    <div class="spec-card">
+      <div class="spec-title">tag spec</div>
+      <div class="spec-row"><div class="spec-key">font</div><div class="spec-val">9px IBM Plex Mono · uppercase in status chips · lowercase in content tags</div></div>
+      <div class="spec-row"><div class="spec-key">radius</div><div class="spec-val">100px (full pill)</div></div>
+      <div class="spec-row"><div class="spec-key">padding</div><div class="spec-val">3px 9px</div></div>
+      <div class="spec-row"><div class="spec-key">color cycling</div><div class="spec-val">tags cycle through: gold · teal · green · coral · plum · pink</div></div>
+      <div class="spec-row"><div class="spec-key">delete</div><div class="spec-val">includes × to remove · "edit tags" underlined text link inline</div></div>
+    </div>
+
+    <p style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'IBM Plex Mono',monospace">tag preview</p>
+    <div class="preview-area">
+      <div class="tag-demo-row">
+        <span class="tag" style="background:var(--gold-l);color:var(--gold-d)">#todo <span class="tag-del">×</span></span>
+        <span class="tag" style="background:var(--teal-l);color:var(--teal-d)">#followUp <span class="tag-del">×</span></span>
+        <span class="tag" style="background:var(--green-l);color:var(--green-d)">#family <span class="tag-del">×</span></span>
+        <span class="tag" style="background:var(--coral-l);color:var(--coral-d)">#urgent <span class="tag-del">×</span></span>
+        <span class="tag" style="background:var(--plum-l);color:var(--plum-d)">#ideas <span class="tag-del">×</span></span>
+        <span class="tag" style="background:#FBEAF0;color:#892249">#nudge-response <span class="tag-del">×</span></span>
+      </div>
+      <div class="tag-demo-row" style="margin-top:8px">
+        <span class="tag" style="background:var(--gold-l);color:var(--gold-d);text-transform:uppercase;letter-spacing:.05em">done</span>
+        <span class="tag" style="background:var(--coral-l);color:var(--coral-d);text-transform:uppercase;letter-spacing:.05em">broken</span>
+        <span class="tag" style="background:var(--green-l);color:var(--green-d);text-transform:uppercase;letter-spacing:.05em">built</span>
+        <span class="tag" style="background:var(--plum-l);color:var(--plum-d);text-transform:uppercase;letter-spacing:.05em">stub only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOICE + COPY RULES -->
+  <div class="section" id="voice">
+    <div class="section-label">LOCKED RULES</div>
+    <div class="section-title">voice + copy rules</div>
+
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>spoonstack always lowercase</strong> — in code, copy, UI labels, database values, routes. No exceptions. Never capitalized.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>no em dashes anywhere</strong> — in copy, AI responses, system prompts. Use a comma, period, or line break instead.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>no exclamation marks in AI output</strong> — ever. Not excited, not enthusiastic. Warm and present, not performative.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>sentence case for all AI output</strong> — first word capitalized, rest lowercase. No ALL CAPS emphasis.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>no clinical language</strong> — never "dysregulated," "executive dysfunction," "trauma response," "cognitive overload" in UI copy or AI output. Use the user's own language.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>widget headers lowercase</strong> — "partner briefing" not "Partner Briefing." Always lowercase in widget UI.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>AI responses under ~150 words</strong> — restraint is care. Long AI responses overwhelm ND brains. Say less, mean more.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>forbidden phrases</strong> — "you need to" · "don't forget" · "stay on track" · "complete your" · "I've noticed you tend to." These create anxiety, not support.</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>no "my kids" as a stack name anywhere</strong> — it's "my family."</div></div>
+    <div class="rule-row"><div class="rule-icon">✦</div><div class="rule-body"><strong>demo family is Wallace only</strong> — Diane, Andre, Simone, Noah, Lily. Real family names never in public-facing content.</div></div>
+
+    <div style="margin-top:28px;background:var(--card);border:0.5px solid var(--border2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px">the feel</div>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.75">Warm, handmade, ND-brain-native. Not a productivity app. Not clinical. Not corporate. spoonstack speaks the way a really good friend would — someone who remembers things about you, asks good questions, and never makes you feel judged for forgetting. Phase 1 is a whisper. Everything has warmth and restraint. Phase 2 speaks up a bit more — see the <a href="style-guide-phase2.html" style="color:var(--teal)">Phase 2 style guide</a>.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function goTo(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  event.target.closest('.sb-link').classList.add('active');
+}
+
+window.addEventListener('scroll', () => {
+  const ids = ['colors','typography','cards','buttons','capture','nav','widget-cards','tags','voice'];
+  const links = document.querySelectorAll('.sb-link');
+  let current = '';
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 140) current = id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    const fn = l.getAttribute('onclick') || '';
+    if (fn.includes(`'${current}'`)) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
